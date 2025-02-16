@@ -30,7 +30,7 @@ const Header = () => {
             className={`sticky top-0 right-0 left-0 z-50 border-b border-gray-300 bg-white transition-all duration-300`}
         >
             <div className='flex items-center justify-between py-3'>
-                <div className='grid w-full max-w-7xl grid-cols-3 items-center justify-between px-6 xl:mx-auto'>
+                <div className='mx-6 grid w-full max-w-7xl grid-cols-3 items-center justify-between xl:mx-auto'>
                     <Link to='/' className='w-24'>
                         <img src={logo} alt='logo' className='w-full' />
                     </Link>
