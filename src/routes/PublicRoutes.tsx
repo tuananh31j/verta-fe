@@ -1,6 +1,8 @@
 import ErrorPage from '~/pages/Error/ErrorPage';
 import MainLayout from '../layouts/client/MainLayout';
-import { HomePage, Suspense } from './LazyRoutes';
+import { HomePage, ProfilePage, Suspense } from './LazyRoutes';
+import AccountLayout from '~/layouts/client/AccountLayout';
+import { MAIN_ROUTES } from '~/constants/router';
 
 const PublicRoutes = [
     {
@@ -8,6 +10,7 @@ const PublicRoutes = [
         element: <MainLayout />,
         errorElement: <ErrorPage />,
         children: [
+            // HOMEPAGE
             {
                 path: '',
                 element: (
@@ -15,6 +18,21 @@ const PublicRoutes = [
                         <HomePage />
                     </Suspense>
                 ),
+            },
+
+            // ACCOUNT PAGE
+            {
+                path: MAIN_ROUTES.ACCOUNT,
+                element: (
+                    <Suspense>
+                        <AccountLayout />
+                    </Suspense>
+                ),
+                children: [
+                    { path: MAIN_ROUTES.PROFILE, element: <ProfilePage /> },
+                    // { path: MAIN_ROUTES.MY_ORDERS, element: <MyOrdersPage /> },
+                    // { path: MAIN_ROUTES.MY_ORDERS_DETAIL, element: <OrderDetailPage /> },
+                ],
             },
         ],
     },
