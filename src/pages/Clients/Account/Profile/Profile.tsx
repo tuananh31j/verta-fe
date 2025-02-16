@@ -1,9 +1,5 @@
 const Profile = () => {
-    return (
-        <>
-            ProfilePage <span className='text-primary'>aaa</span>
-        </>
-    );
+    return <>ProfilePage</>;
 };
 
 export default Profile;
