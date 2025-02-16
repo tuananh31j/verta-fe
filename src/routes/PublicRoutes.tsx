@@ -1,6 +1,6 @@
 import ErrorPage from '~/pages/Error/ErrorPage';
 import MainLayout from '../layouts/client/MainLayout';
-import { HomePage, Suspense } from './LazyRoutes';
+import { AuthPage, HomePage, Suspense } from './LazyRoutes';
 
 const PublicRoutes = [
     {
@@ -13,6 +13,14 @@ const PublicRoutes = [
                 element: (
                     <Suspense>
                         <HomePage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: '/auth',
+                element: (
+                    <Suspense>
+                        <AuthPage />
                     </Suspense>
                 ),
             },
