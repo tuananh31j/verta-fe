@@ -20,7 +20,7 @@ const ProductWrapper = <T extends object | undefined>({ title, data, isPending, 
 
     const nextSlide = useCallback(() => {
         if (!swiperRef.current) return;
-        swiperRef.current.swiper.slidePrev();
+        swiperRef.current.swiper.slideNext();
     }, []);
 
     const prevSlide = useCallback(() => {
