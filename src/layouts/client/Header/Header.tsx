@@ -152,7 +152,7 @@ const Header = () => {
                         </ConfigProvider>
                         <span className='text-xl text-[#8e8e8e]'>|</span>
                         <div className='cursor-pointer text-[#070707]'>
-                            <Popover content={content} placement='bottomRight' trigger={'click'}>
+                            <Popover content={content} placement='bottomRight' trigger={['click', 'hover']}>
                                 <ShoppingCartOutlined className='px-2 py-3' style={{ fontSize: 24 }} />{' '}
                                 <span>Giỏ hàng</span>
                             </Popover>

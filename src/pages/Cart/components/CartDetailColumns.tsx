@@ -1,7 +1,7 @@
 import { Image, TableProps } from 'antd';
-import { formatCurrency } from '~/utils/formatCurrrency';
 import CartDetailQuantityItem from './CartDetailQuantityItem';
 import RemoveCartItem from './DeleteCartItem';
+import { formatCurrency } from '~/utils/formatCurrrency';
 
 export interface CartTableType {
     thumbnail: string;
@@ -10,6 +10,8 @@ export interface CartTableType {
     productId: string;
     quantity: number;
     stock: number;
+    color: string;
+    size: string;
 }
 
 export const columns: TableProps<CartTableType>['columns'] = [
@@ -19,8 +21,8 @@ export const columns: TableProps<CartTableType>['columns'] = [
         key: 'thumbnail',
         render: (_, record, index) => {
             return (
-                <div className='w-20 min-w-10 rounded-md border border-black/50 p-2'>
-                    <Image src={record.thumbnail} alt={`cart thumbnail`} className='w-full object-contain' />
+                <div className='w-30 min-w-10 rounded-md p-2'>
+                    <img src={record.thumbnail} alt={`cart thumbnail`} className='w-full object-contain' />
                 </div>
             );
         },
@@ -31,10 +33,7 @@ export const columns: TableProps<CartTableType>['columns'] = [
         key: 'product',
         render: (_, record, index) => {
             return (
-                <div className='flex gap-10'>
-                    <div className='w-16 min-w-10 rounded-md border border-black/50 p-2'>
-                        <Image src={record.thumbnail} alt={`cart thumbnail`} className='w-full object-contain' />
-                    </div>
+                <div className='flex'>
                     <div>
                         <span className='block text-base font-medium'>{record.name}</span>
                         <span className='mt-1 block text-base font-medium'>{formatCurrency(record.price)}</span>

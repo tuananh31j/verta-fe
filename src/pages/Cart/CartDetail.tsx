@@ -7,23 +7,26 @@ import { formatCurrency } from '~/utils/formatCurrrency';
 import TextArea from 'antd/es/input/TextArea';
 import { ChangeEventHandler, useCallback } from 'react';
 import _ from 'lodash';
+import useGetAllCart from '~/hooks/queries/products/cart/useGetAllCart';
 
 type FieldType = {
     description?: string;
 };
 
 const CartDetail = () => {
-    // const { data: cartList, isPending } = useGetAllCart();
-    // const data = cartList?.items.map((item) => {
-    //     return {
-    //         productId: item.productId._id,
-    //         name: item.productId.name as string,
-    //         thumbnail: item.productId.thumbnail as string,
-    //         price: item.productId.price,
-    //         quantity: item.quantity,
-    //         stock: item.productId.stock,
-    //     };
-    // });
+    const { data: cartList, isLoading } = useGetAllCart();
+    const data = cartList?.items.map((item) => {
+        return {
+            productId: item._id,
+            name: item.product.name as string,
+            thumbnail: item.product.thumbnail as string,
+            price: Number(item.product.price),
+            quantity: item.quantity,
+            stock: item.variant.stock,
+            color: item.variant.color,
+            size: item.variant.size,
+        };
+    });
 
     const onDescriptionChange = useCallback((value: React.ChangeEvent<HTMLTextAreaElement>) => {
         console.log('Hehe', value);
@@ -37,7 +40,8 @@ const CartDetail = () => {
                         <Table<CartTableType>
                             rowKey='productId'
                             columns={columns}
-                            dataSource={[]}
+                            loading={isLoading}
+                            dataSource={data}
                             pagination={false}
                             scroll={{
                                 x: 'max-content',
@@ -62,14 +66,13 @@ const CartDetail = () => {
                                 <div className='mr-8 flex justify-end'>
                                     <span className='block text-xl font-semibold'>
                                         <span className='text-sm font-medium'>Tổng tiền:</span>{' '}
-                                        {formatCurrency(1699000)}
-                                        {/* {cartList &&
-                                        cartList.items.length > 0 &&
-                                        formatCurrency(
-                                            cartList?.items.reduce((acc, curr) => {
-                                                return acc + curr.productId.price * curr.quantity;
-                                            }, 0)
-                                        )} */}
+                                        {cartList &&
+                                            cartList.items.length > 0 &&
+                                            formatCurrency(
+                                                cartList?.items.reduce((acc, curr) => {
+                                                    return acc + curr.product.price * curr.quantity;
+                                                }, 0)
+                                            )}
                                     </span>
                                 </div>
                                 {/* {cartList && cartList.items.length > 0 && ( */}
