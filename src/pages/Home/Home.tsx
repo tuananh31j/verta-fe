@@ -4,9 +4,14 @@ import HomeNewBannerOne from '~/assets/home_new_banner_1_2048x2048.webp';
 import HomeNewBannerTwo from '~/assets/home_new_banner_2_2048x2048.webp';
 import BannerSlider from '~/components/BannerSlider/BannerSlider';
 import ProductWrapper from '~/components/ProductWrapper/ProductWrapper';
+import { useGetProductsBestSelling } from '~/hooks/queries/products/useGetProductsBestSelling';
+import { useGetProductsNewest } from '~/hooks/queries/products/useGetProductsNewest';
+import { IProductDetail } from '~/interfaces/product';
 import '~/styles/customSwiper.css';
 
 export default function HomePage() {
+    const { data: bestSellingData, isPending: isPendingBestSelling } = useGetProductsBestSelling();
+    const { data: newestData, isPending: isPendingNewest } = useGetProductsNewest();
     return (
         <>
             <BannerSlider />
@@ -27,7 +32,22 @@ export default function HomePage() {
                 </div>
             </div>
             <div className='mx-6 max-w-7xl xl:mx-auto'>
-                <ProductWrapper title='SẢN PHẨM MỚI' />
+                <div>
+                    <ProductWrapper<IProductDetail[]>
+                        title='SẢN PHẨM MỚI'
+                        description='Những sản phẩm xu hướng thời trang mới'
+                        data={bestSellingData?.data.data}
+                        isPending={isPendingBestSelling}
+                    />
+                </div>
+                <div className='mt-12'>
+                    <ProductWrapper<IProductDetail[]>
+                        title='SẢN PHẨM BÁN CHẠY'
+                        description='Những sản phẩm được mua nhiều nhất ở trên hệ thống'
+                        data={newestData?.data.data}
+                        isPending={isPendingNewest}
+                    />
+                </div>
             </div>
         </>
     );

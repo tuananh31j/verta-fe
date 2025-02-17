@@ -3,6 +3,14 @@ import { IProductDetail } from '~/interfaces/product';
 import instance from '~/utils/api/axiosInstance';
 
 export const productServices = {
+    async getProductsBestSelling() {
+        const data: IServerResponse<{ data: IProductDetail[] }> = await instance.get('/products/best-selling');
+        return data;
+    },
+    async getProductsNewest() {
+        const data: IServerResponse<{ data: IProductDetail[] }> = await instance.get('/products/newest');
+        return data;
+    },
     async getProductDetail(id: string) {
         const { data } = await instance.get<IProductDetail>(`/products/${id}`);
         return data;

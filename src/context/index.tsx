@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import QueryProvider from './QueryProvider';
 import ReduxProvider from './ReduxProvider';
 import { ToastProvider } from './ToastProvider';
+import AutoScrollToTop from './AutoScrollTop';
 
 export default function Provider({ children }: { children: React.ReactNode }) {
     return (
@@ -10,7 +11,9 @@ export default function Provider({ children }: { children: React.ReactNode }) {
             <BrowserRouter>
                 <ToastProvider>
                     <ReduxProvider>
-                        <QueryProvider>{children}</QueryProvider>
+                        <QueryProvider>
+                            <AutoScrollToTop>{children}</AutoScrollToTop>
+                        </QueryProvider>
                     </ReduxProvider>
                 </ToastProvider>
             </BrowserRouter>

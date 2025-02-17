@@ -14,7 +14,7 @@ export default function ProductCard({ product }: { product: IProductDetail }) {
                     <span>-30%</span>
                 </div> */}
                 <Link
-                    to='/'
+                    to={`/product/${product._id}`}
                     className='absolute top-0 bottom-0 left-0 flex w-full -translate-x-full bg-black/50 opacity-0 duration-300 group-hover:translate-x-0 group-hover:opacity-100'
                 >
                     <span className='hover:text-primary absolute top-[50%] right-[10%] left-[10%] block border border-white px-4 py-1.5 text-center font-bold text-white uppercase hover:bg-white'>
@@ -23,7 +23,7 @@ export default function ProductCard({ product }: { product: IProductDetail }) {
                 </Link>
             </div>
             <Link
-                to='/'
+                to={`/product/${product._id}`}
                 className='text-secondary hover:text-primary mt-3 mb-5 block text-center text-sm font-bold duration-300'
             >
                 {product.name}
