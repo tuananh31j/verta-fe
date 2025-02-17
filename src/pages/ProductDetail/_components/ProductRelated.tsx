@@ -39,7 +39,7 @@ const ProductRelated = ({ data }: Props) => {
                             ref={swiperRef}
                             modules={[Navigation, A11y]}
                             spaceBetween={8}
-                            slidesPerView={4}
+                            slidesPerView={relatedData.length > 4 ? 4 : relatedData.length}
                             loop
                             navigation={false}
                             keyboard={{ enabled: true, onlyInViewport: false }}
