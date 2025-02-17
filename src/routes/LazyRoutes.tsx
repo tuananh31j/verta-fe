@@ -5,6 +5,8 @@ export const HomePage = lazy(() => import('~/pages/Home/Home'));
 export const ProfilePage = lazy(() => import('~/pages/Clients/Account/Profile/Profile'));
 export const MyOrdersPage = lazy(() => import('~/pages/Clients/Account/MyOrders/MyOrders'));
 export const AuthPage = lazy(() => import('~/pages/Auth/AuthPage'));
+export const VerifyAccountPage = lazy(() => import('~/pages/Auth/VerifyAccount'));
+export const ProductDetailPage = lazy(() => import('~/pages/ProductDetail/ProductDetail'));
 
 // Admin
 
