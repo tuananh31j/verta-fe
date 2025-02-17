@@ -1,4 +1,4 @@
-import BellIcon from '@/components/_common/Icons/BellIcon';
+import BellIcon from '~/components/_common/Icons/BellIcon';
 import NotificationItem from './NotificationItem';
 import Dropdown from '../_module/Dropdown';
 

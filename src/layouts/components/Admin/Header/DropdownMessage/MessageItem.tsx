@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import StaticImages from '@/assets';
+import StaticImages from '~/assets';
 
 const MessageItem = () => {
     return (

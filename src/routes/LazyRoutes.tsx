@@ -4,6 +4,9 @@ import React, { lazy } from 'react';
 export const HomePage = lazy(() => import('~/pages/Home/Home'));
 export const ProfilePage = lazy(() => import('~/pages/Clients/Account/Profile/Profile'));
 export const MyOrdersPage = lazy(() => import('~/pages/Clients/Account/MyOrders/MyOrders'));
+export const AuthPage = lazy(() => import('~/pages/Auth/AuthPage'));
+
+// Admin
 
 export const Suspense = ({ children }: { children: React.ReactNode }) => {
     return <React.Suspense fallback={<div>Loading</div>}>{children}</React.Suspense>;

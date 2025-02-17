@@ -1,7 +1,7 @@
 import { CloseOutlined } from '@ant-design/icons';
 import { menuGroups } from './_options';
 import SidebarItem from './SidebarItem';
-import ClickOutside from '@/components/_common/ClickOutside';
+import ClickOutside from '~/components/_common/ClickOutside';
 
 interface SidebarProps {
     sidebarOpen: boolean;

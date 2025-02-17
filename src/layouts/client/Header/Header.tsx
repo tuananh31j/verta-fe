@@ -1,27 +1,65 @@
 import { SearchOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import { ConfigProvider, Dropdown, MenuProps, Popover } from 'antd';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import logo from '~/assets/logo.png';
+import { logout } from '~/store/slice/authSlice';
+import { useTypedSelector } from '~/store/store';
 
 const Header = () => {
-    const dropDownItems: MenuProps['items'] = [
-        {
-            key: '1',
-            label: (
-                <Link className='pr-10 capitalize' to='/'>
-                    Đăng nhập
-                </Link>
-            ),
-        },
-        {
-            key: '2',
-            label: (
-                <Link className='pr-10 capitalize' to='/'>
-                    Đăng ký
-                </Link>
-            ),
-        },
-    ];
+    const user = useTypedSelector((state) => state.auth.user);
+    const dispatch = useDispatch();
+    const handleLogout = () => {
+        dispatch(logout());
+    };
+    const dropDownItems: MenuProps['items'] = user
+        ? [
+              {
+                  key: '1',
+                  label: (
+                      <Link className='pr-10 capitalize' to='/profile'>
+                          Tài khoản của tôi
+                      </Link>
+                  ),
+              },
+              {
+                  key: '2',
+                  label: (
+                      <Link className='pr-10 capitalize' to='/orders'>
+                          Đơn hàng của tôi
+                      </Link>
+                  ),
+              },
+              {
+                  key: '3',
+                  label: (
+                      <button onClick={handleLogout} className='cursor-pointer pr-10 capitalize'>
+                          Đăng xuất
+                      </button>
+                  ),
+              },
+          ]
+        : [
+              {
+                  key: '1',
+                  label: (
+                      <Link className='pr-10 capitalize' to='/auth'>
+                          Đăng nhập
+                      </Link>
+                  ),
+              },
+              {
+                  key: '2',
+                  label: (
+                      <Link className='pr-10 capitalize' to='/auth'>
+                          Đăng ký
+                      </Link>
+                  ),
+              },
+          ];
+    const truncateText = (text: string, maxLength: number) => {
+        return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+    };
 
     const content = <div>Chưa có sản phẩm nào trong giỏ hàng lor</div>;
 
@@ -99,9 +137,16 @@ const Header = () => {
                                 trigger={['hover']}
                                 placement='bottomLeft'
                             >
-                                <div className='cursor-pointer text-[#070707]'>
-                                    <UserOutlined className='px-2 py-3' style={{ fontSize: 24 }} />
-                                    <span>Tài khoản</span>
+                                <div className='flex cursor-pointer items-center gap-2 text-[#070707]'>
+                                    {user ? (
+                                        <div className='px-2 py-3'>
+                                            <img src={user.avatar} className='inline w-6 rounded-full' alt='' />
+                                        </div>
+                                    ) : (
+                                        <UserOutlined className='px-2 py-3' style={{ fontSize: 24 }} />
+                                    )}
+
+                                    <span>{user?.name ? truncateText(user.name, 8) : 'Tài khoản'}</span>
                                 </div>
                             </Dropdown>
                         </ConfigProvider>

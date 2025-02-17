@@ -3,7 +3,7 @@ import SidebarDropdown from './SidebarDropdown';
 import { IMenuItem } from './_options';
 import { FC, useState } from 'react';
 import { CaretDownOutlined } from '@ant-design/icons';
-import { cn } from '@/utils';
+import { cn } from '~/utils';
 
 export type ISidebarItem = {
     item: IMenuItem;

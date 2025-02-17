@@ -1,6 +1,6 @@
 import { FC, ReactNode, useState } from 'react';
-import ClickOutside from '@/components/_common/ClickOutside';
-import { cn } from '@/utils';
+import ClickOutside from '../../../../../components/_common/ClickOutside';
+import { cn } from '../../../../../utils';
 
 type IDropdown = {
     title: string;

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Sidebar from '../_components/Admin/Sidebar';
-import Header from '../_components/Admin/Header/Header';
-import useDocumentTitle from '@/hooks/_common/useDocumentTitle';
+import Sidebar from '../components/Admin/Sidebar';
+import Header from '../components/Admin/Header/Header';
+import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 
 export default function AdminLayout() {
     useDocumentTitle('Quản trị');

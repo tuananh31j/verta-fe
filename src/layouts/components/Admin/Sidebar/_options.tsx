@@ -9,7 +9,7 @@ import {
     StarOutlined,
     TagsOutlined,
 } from '@ant-design/icons';
-import { ADMIN_ROUTES } from '@/constants/router';
+import { ADMIN_ROUTES } from '~/constants/router';
 
 export type IChildrenItem = {
     label: string;

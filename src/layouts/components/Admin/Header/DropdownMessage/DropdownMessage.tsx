@@ -1,6 +1,6 @@
 import MessageItem from './MessageItem';
 import Dropdown from '../_module/Dropdown';
-import MessageIcon from '@/components/_common/Icons/MesageIcon';
+import MessageIcon from '~/components/_common/Icons/MesageIcon';
 
 const DropdownMessage = () => {
     return (
