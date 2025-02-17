@@ -26,7 +26,9 @@ export default function HomePage() {
                     </div>
                 </div>
             </div>
-            <ProductWrapper title='Sản phẩm mới' />
+            <div className='mx-6 max-w-7xl xl:mx-auto'>
+                <ProductWrapper title='SẢN PHẨM MỚI' />
+            </div>
         </>
     );
 }
