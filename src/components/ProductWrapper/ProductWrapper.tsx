@@ -2,10 +2,9 @@ import { useCallback, useRef } from 'react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { A11y, Navigation } from 'swiper/modules';
-import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperRef } from 'swiper/react';
 import NavigatonSlider from '~/components/elements/NavigationSlider';
 import '~/styles/customSwiper.css';
-import ProductCard from '../ProductCard/ProductCard';
 
 type Props<T> = {
     title: string;
@@ -38,7 +37,7 @@ const ProductWrapper = <T extends {}>({ title, data }: Props<T>) => {
                     navigation={false}
                     keyboard={{ enabled: true, onlyInViewport: false }}
                 >
-                    <SwiperSlide>
+                    {/* <SwiperSlide>
                         <ProductCard />
                     </SwiperSlide>
                     <SwiperSlide>
@@ -55,7 +54,7 @@ const ProductWrapper = <T extends {}>({ title, data }: Props<T>) => {
                     </SwiperSlide>
                     <SwiperSlide>
                         <ProductCard />
-                    </SwiperSlide>
+                    </SwiperSlide> */}
                 </Swiper>
                 <NavigatonSlider prev handleAction={prevSlide} />
                 <NavigatonSlider next handleAction={nextSlide} />

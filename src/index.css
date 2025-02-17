@@ -16,3 +16,6 @@
 .custom-popover-arrow {
     display: none;
 }
+.antd-custom .ant-input-number input {
+    text-align: center !important;
+}
