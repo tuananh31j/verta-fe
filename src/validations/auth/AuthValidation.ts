@@ -4,7 +4,8 @@ export const registerSchema = z
     .object({
         name: z
             .string({ message: 'Họ và tên không được để trống' })
-            .min(2, { message: 'Họ và tên phải có ít nhất 2 ký tự' }),
+            .min(2, { message: 'Họ và tên phải có ít nhất 2 ký tự' })
+            .max(20, { message: 'Họ và tên phải có dưới 20 ký tự' }),
         email: z.string({ message: 'Email không được để trống' }).email('Email không hợp lệ'),
         phone: z
             .string({ message: 'Số điện thoại không được để trống' })

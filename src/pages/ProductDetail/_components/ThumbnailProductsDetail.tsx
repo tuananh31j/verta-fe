@@ -63,18 +63,22 @@ export default function ThumbnailProductsDetail({
                         </SwiperSlide>
                     ))}
                 </Swiper>
-                <div
-                    onClick={prevSlide}
-                    className='absolute top-1 left-[50%] z-[1] translate-x-[-50%] cursor-pointer rounded-[2px] bg-black/50 px-2 py-1 duration-300 select-none hover:bg-black/40'
-                >
-                    <UpOutlined style={{ color: '#fff', fontSize: 14 }} />
-                </div>
-                <div
-                    onClick={nextSlide}
-                    className='absolute bottom-1 left-[50%] z-[1] translate-x-[-50%] cursor-pointer rounded-[2px] bg-black/50 px-2 py-1 duration-300 select-none hover:bg-black/40'
-                >
-                    <DownOutlined style={{ color: '#fff', fontSize: 14 }} />
-                </div>
+                {images.length < 3 && (
+                    <>
+                        <div
+                            onClick={prevSlide}
+                            className='absolute top-1 left-[50%] z-[1] translate-x-[-50%] cursor-pointer rounded-[2px] bg-black/50 px-2 py-1 duration-300 select-none hover:bg-black/40'
+                        >
+                            <UpOutlined style={{ color: '#fff', fontSize: 14 }} />
+                        </div>
+                        <div
+                            onClick={nextSlide}
+                            className='absolute bottom-1 left-[50%] z-[1] translate-x-[-50%] cursor-pointer rounded-[2px] bg-black/50 px-2 py-1 duration-300 select-none hover:bg-black/40'
+                        >
+                            <DownOutlined style={{ color: '#fff', fontSize: 14 }} />
+                        </div>
+                    </>
+                )}
             </div>
 
             <div className='flex w-[100%] items-start justify-center overflow-hidden'>
