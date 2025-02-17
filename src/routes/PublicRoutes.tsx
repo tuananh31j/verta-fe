@@ -1,6 +1,6 @@
 import ErrorPage from '~/pages/Error/ErrorPage';
 import MainLayout from '../layouts/client/MainLayout';
-import { AuthPage, HomePage, ProductDetailPage, Suspense, VerifyAccountPage } from './LazyRoutes';
+import { AuthPage, CartDetail, HomePage, ProductDetailPage, Suspense, VerifyAccountPage } from './LazyRoutes';
 import ProtectedLogged from '~/layouts/protected/ProtectedLogged';
 import { Navigate } from 'react-router-dom';
 import NotFoundPage from '~/pages/NotFound/NotFoundPage';
@@ -43,6 +43,16 @@ const PublicRoutes = [
                     <Suspense>
                         <ProtectedLogged>
                             <VerifyAccountPage />
+                        </ProtectedLogged>
+                    </Suspense>
+                ),
+            },
+            {
+                path: '/cart/detail',
+                element: (
+                    <Suspense>
+                        <ProtectedLogged>
+                            <CartDetail />
                         </ProtectedLogged>
                     </Suspense>
                 ),

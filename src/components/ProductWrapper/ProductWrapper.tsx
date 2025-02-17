@@ -27,7 +27,7 @@ const ProductWrapper = <T extends {}>({ title, data }: Props<T>) => {
 
     return (
         <div className='mt-5'>
-            <h2 className='text-primary my-8 text-center text-[2rem] font-bold'>{title}</h2>
+            <h2 className='text-primary my-10 text-center text-[2rem] font-bold'>{title}</h2>
             <div className='relative'>
                 <Swiper
                     ref={swiperRef}
