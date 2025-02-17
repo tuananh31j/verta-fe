@@ -3,10 +3,8 @@ interface Size {
     value: string;
 }
 
-interface Item {
+export interface ISizeInColor {
     _id: string;
-    image: string;
-    imageRef: string;
     size: Size;
     stock: number;
 }
@@ -15,22 +13,23 @@ interface Color {
     _id: string;
     name: string;
     hex: string;
+    image: string;
 }
 
-interface Variant {
+export interface IVariantDetail {
     color: Color;
-    items: Item[];
+    items: ISizeInColor[];
 }
 
-interface IProductDetail {
+export interface IProductDetail {
     _id: string;
     name: string;
-    price: string;
+    price: number;
     summary: string;
     thumbnail: string;
     thumbnailRef: string;
     sold: number;
-    variants: Variant[];
+    variants: IVariantDetail[];
     categories: string[];
     filterSize: string[];
     filterColor: string[];
