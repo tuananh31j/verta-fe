@@ -21,7 +21,7 @@ export default function ThumbnailProductsDetail({
     const [indexImage, setIndexImage] = useState<number>(0);
     const nextSlide = useCallback(() => {
         if (!swiperRef.current) return;
-        swiperRef.current.swiper.slidePrev();
+        swiperRef.current.swiper.slideNext();
     }, []);
 
     const prevSlide = useCallback(() => {
@@ -35,6 +35,7 @@ export default function ThumbnailProductsDetail({
         const indexOfColor = variants?.findIndex((variant) => variant.color._id === selectedColor?.color._id) ?? 0;
         setIndexImage(indexOfColor);
     }, [selectedColor, variants]);
+    console.log(images.length);
     return (
         <div className='flex gap-5'>
             <div className='relative h-[80vh] w-[30%] overflow-hidden'>
@@ -63,7 +64,7 @@ export default function ThumbnailProductsDetail({
                         </SwiperSlide>
                     ))}
                 </Swiper>
-                {images.length < 3 && (
+                {images.length > 3 && (
                     <>
                         <div
                             onClick={prevSlide}
