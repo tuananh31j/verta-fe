@@ -3,7 +3,7 @@ import RegisterComponent from './_components/RegisterComponent';
 
 export default function AuthPage() {
     return (
-        <div className='min-h-[100vh]'>
+        <div className='mt-4 min-h-[100vh]'>
             <div className='border-b border-gray-300 pb-4'>
                 <div className='mx-6 flex max-w-7xl items-center gap-2 text-sm font-normal xl:mx-auto'>
                     <h3 className='uppercase'>Trang chủ</h3> / <h3 className='uppercase'>Tài khoản</h3>
