@@ -15,4 +15,8 @@ export const authService = {
         const data = await instance.post<{ email: string }, IServerResponse<null>>('/auth/sendVerify', body);
         return data;
     },
+    async activeAccount(body: { token: string }) {
+        const data = await instance.post<{ token: string }>('/auth/verify', body);
+        return data;
+    },
 };

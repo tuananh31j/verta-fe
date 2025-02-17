@@ -1,6 +1,9 @@
 import ErrorPage from '~/pages/Error/ErrorPage';
 import MainLayout from '../layouts/client/MainLayout';
-import { AuthPage, HomePage, Suspense } from './LazyRoutes';
+import { AuthPage, HomePage, Suspense, VerifyAccountPage } from './LazyRoutes';
+import ProtectedLogged from '~/layouts/protected/ProtectedLogged';
+import { Navigate } from 'react-router-dom';
+import NotFoundPage from '~/pages/NotFound/NotFoundPage';
 
 const PublicRoutes = [
     {
@@ -20,11 +23,31 @@ const PublicRoutes = [
                 path: '/auth',
                 element: (
                     <Suspense>
-                        <AuthPage />
+                        <ProtectedLogged>
+                            <AuthPage />
+                        </ProtectedLogged>
+                    </Suspense>
+                ),
+            },
+            {
+                path: '/verifyAccount',
+                element: (
+                    <Suspense>
+                        <ProtectedLogged>
+                            <VerifyAccountPage />
+                        </ProtectedLogged>
                     </Suspense>
                 ),
             },
         ],
+    },
+    {
+        path: '*',
+        element: <Navigate to={'/404'} />,
+    },
+    {
+        path: '/404',
+        element: <NotFoundPage />,
     },
 ];
 

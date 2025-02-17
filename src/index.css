@@ -2,6 +2,11 @@
 @custom-variant dark (&:where(.dark, .dark *));
 @import './theme.css' layer(theme);
 
+@theme {
+    --breakpoint-xl: 1330px;
+    --container-7xl: 1330px;
+}
+
 /* custom popover transparent */
 .custom-popover-content {
     background-color: transparent;
