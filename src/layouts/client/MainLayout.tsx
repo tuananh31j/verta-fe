@@ -19,7 +19,7 @@ export default function MainLayout() {
         <>
             <HeaderTop />
             <Header />
-            <main className={`${isSticky ? 'mt-[3%]' : 'mt-4'} min-h-[60vh] duration-300`}>
+            <main className={`${isSticky ? 'mt-[3%]' : ''} min-h-[60vh] duration-300`}>
                 <Outlet />
             </main>
             <Footer />

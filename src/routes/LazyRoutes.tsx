@@ -6,9 +6,11 @@ export const ProfilePage = lazy(() => import('~/pages/Clients/Account/Profile/Pr
 export const MyOrdersPage = lazy(() => import('~/pages/Clients/Account/MyOrders/MyOrders'));
 export const AuthPage = lazy(() => import('~/pages/Auth/AuthPage'));
 export const VerifyAccountPage = lazy(() => import('~/pages/Auth/VerifyAccount'));
+export const ProductDetailPage = lazy(() => import('~/pages/ProductDetail/ProductDetail'));
 
 // Admin
-
+export const ProductsList = lazy(() => import('~/pages/Admins/Product/ProductList'));
+export const CreateProduct = lazy(() => import('~/pages/Admins/Product/CreateProduct'));
 export const Suspense = ({ children }: { children: React.ReactNode }) => {
     return <React.Suspense fallback={<div>Loading</div>}>{children}</React.Suspense>;
 };
