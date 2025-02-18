@@ -54,6 +54,7 @@ export default function ActionProductDetail({
         if (!firstAvailableColor) {
             setOutOfStock(true);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setColorVariant, variants]);
 
     useEffect(() => {
