@@ -28,6 +28,7 @@ const getBase64 = (file: RcFile): Promise<string> =>
     });
 
 const UpdateProduct = () => {
+    const [isLoading, setIsLoading] = useState(false);
     const [form] = Form.useForm<any>();
     const { productId } = useParams<{ productId: string }>();
     const navigater = useNavigate();
@@ -111,6 +112,12 @@ const UpdateProduct = () => {
     };
 
     const onFinish = async (values: any) => {
+        setIsLoading(true);
+        if (!values.variants || values.variants.length === 0) {
+            message.error('Vui lòng thêm biến thể cho sản phẩm!');
+            return setIsLoading(false);
+        }
+
         try {
             const formDataThumnail = new FormData();
             const thumb: any = {
@@ -128,6 +135,9 @@ const UpdateProduct = () => {
                 await Promise.all(
                     values.variants.map(async (variant: any) => {
                         const formDataVariant = new FormData();
+                        if (!variant.properties || variant.properties.length === 0) {
+                            throw Error('Vui lòng thêm thuộc tính cho biến thể!');
+                        }
                         if (variant.image[0].originFileObj) {
                             formDataVariant.append('image', variant.image[0].originFileObj);
                             const variantRes = await uploadService.uploadImage(formDataVariant);
@@ -166,9 +176,12 @@ const UpdateProduct = () => {
             console.log(updatePayload);
             await updateProduct({ id: productId!, data: updatePayload });
             navigater(ADMIN_ROUTES.PRODUCTS);
-        } catch (error) {
-            console.log(error);
-            message.error('Cập nhật sản phẩm thất bại!');
+        } catch (err) {
+            if (err instanceof Error) {
+                message.error(err.message);
+            } else {
+                message.error('Vui lòng điền đầy đủ thông tin!');
+            }
         }
     };
     useEffect(() => {
@@ -436,8 +449,8 @@ const UpdateProduct = () => {
                         htmlType='submit'
                         icon={<PlusSquareOutlined />}
                         className='mr-3 px-5'
-                        // loading={isPending && !isHide}
-                        // disabled={isPending}
+                        loading={isLoading}
+                        disabled={isLoading}
                         size='large'
                         // onClick={handleSaveAndShow}
                     >

@@ -4,7 +4,6 @@ import { Button, Form, Input, InputNumber, message, Modal, Select, TreeSelect, U
 import TextArea from 'antd/es/input/TextArea';
 import { RcFile } from 'antd/es/upload';
 import { UploadFile, UploadProps } from 'antd/lib';
-import { error } from 'console';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import WrapperCard from '~/components/_common/WrapperCard';
@@ -94,7 +93,6 @@ const CreateProduct = () => {
     };
 
     const onFinish = async (values: any) => {
-        console.log(values);
         setIsLoading(true);
         if (!values.variants || values.variants.length === 0) {
             message.error('Vui lòng thêm biến thể cho sản phẩm!');
