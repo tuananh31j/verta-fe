@@ -7,6 +7,7 @@ import { formatCurrency } from '~/utils/formatCurrrency';
 import ActionProductDetail from './_components/ActionProductDetail';
 import ProductRelated from './_components/ProductRelated';
 import ThumbnailProductsDetail from './_components/ThumbnailProductsDetail';
+import { useDispatch } from 'react-redux';
 
 export default function ProductDetail() {
     const { id } = useParams();
@@ -14,6 +15,11 @@ export default function ProductDetail() {
     const imagesProducts = data?.variants.map((item) => item.color.image);
     const [selectedSize, setSelectedSize] = useState<ISizeInColor | null>();
     const [selectedColor, setSelectedColor] = useState<IVariantDetail>();
+
+    console.log(data);
+    // console.log(selectedSize)
+    // console.log(selectedColor)
+
     return data && !isPending ? (
         <div className='mt-4'>
             <div className='border-b border-gray-300 pb-4'>

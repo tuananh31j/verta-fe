@@ -3,6 +3,11 @@ import { useEffect, useState } from 'react';
 import { ISizeInColor, IVariantDetail } from '~/interfaces/product';
 import SelectSizeModal from './SelectSizeModal';
 import soldOut from '~/assets/soldout.webp';
+import { useDispatch } from 'react-redux';
+import { openCart } from '~/store/slice/cartSlice';
+import CartModal from '~/components/CartModal/CartModal';
+import useAddCart from '~/hooks/mutations/cart/useAddCart';
+import { useParams } from 'react-router-dom';
 
 type IProps = {
     variants: IVariantDetail[];
@@ -18,6 +23,17 @@ export default function ActionProductDetail({
     setSizeSelect,
     setColorVariant,
 }: IProps) {
+    const { id } = useParams();
+    const [quantity, setQuantity] = useState<number>(1);
+    const { mutate: addToCart, isPending } = useAddCart();
+
+    const handleAddToCart = () => {
+        console.log(id);
+        if (!isPending && id) {
+            addToCart({ productId: id, quantity, variantId: selectedSize._id });
+        }
+    };
+
     useEffect(() => {
         // Tìm màu đầu tiên có stock > 0
         const firstAvailableColor = variants.find((variant) => variant.items.some((item) => item.stock > 0));
@@ -25,6 +41,7 @@ export default function ActionProductDetail({
             setColorVariant(firstAvailableColor);
         }
     }, [setColorVariant, variants]);
+
     useEffect(() => {
         if (!selectedColor) return;
         const availableSize = selectedColor.items.find((item) => item.stock > 0);
@@ -32,7 +49,7 @@ export default function ActionProductDetail({
             setSizeSelect(availableSize);
         }
     }, [selectedColor, setSizeSelect]);
-    const [quantity, setQuantity] = useState<number>(1);
+
     return (
         <>
             <div>
@@ -134,7 +151,10 @@ export default function ActionProductDetail({
                 </div>
             </div>
             <div className='mt-4 flex'>
-                <button className='w-full cursor-pointer border-2 border-black bg-white py-2 font-semibold text-black duration-300 hover:bg-black hover:text-white'>
+                <button
+                    onClick={handleAddToCart}
+                    className='w-full cursor-pointer border-2 border-black bg-white py-2 font-semibold text-black duration-300 hover:bg-black hover:text-white'
+                >
                     Thêm vào giỏ hàng
                 </button>
             </div>

@@ -1,13 +1,12 @@
-import { Form, Input, Table } from 'antd';
+import { Form, Table } from 'antd';
 // import useGetAllCart from '~/hooks/queries/cart/useGetAllCart';
 import { CartTableType, columns } from './components/CartDetailColumns';
 // import { formatCurrency } from '~/utils/formatCurrency';
-import { Link } from 'react-router-dom';
-import { formatCurrency } from '~/utils/formatCurrrency';
 import TextArea from 'antd/es/input/TextArea';
-import { ChangeEventHandler, useCallback } from 'react';
-import _ from 'lodash';
+import { useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import useGetAllCart from '~/hooks/queries/products/cart/useGetAllCart';
+import { formatCurrency } from '~/utils/formatCurrrency';
 
 type FieldType = {
     description?: string;
@@ -17,7 +16,7 @@ const CartDetail = () => {
     const { data: cartList, isLoading } = useGetAllCart();
     const data = cartList?.items.map((item) => {
         return {
-            productId: item._id,
+            productId: item.product._id,
             name: item.product.name as string,
             thumbnail: item.product.thumbnail as string,
             price: Number(item.product.price),
@@ -25,6 +24,7 @@ const CartDetail = () => {
             stock: item.variant.stock,
             color: item.variant.color,
             size: item.variant.size,
+            variantId: item.variant._id,
         };
     });
 
@@ -43,6 +43,7 @@ const CartDetail = () => {
                             loading={isLoading}
                             dataSource={data}
                             pagination={false}
+                            size='small'
                             scroll={{
                                 x: 'max-content',
                             }}
@@ -50,7 +51,7 @@ const CartDetail = () => {
                     </div>
                     <div className='rounded p-3'>
                         {/* <span className='text-xl font-medium'>Hóa đơn</span> */}
-                        <div className='mt-5 grid grid-cols-[2fr_1fr] gap-8'>
+                        <div className='mt-5 grid grid-cols-2 gap-8'>
                             <Form
                                 name='basic'
                                 autoComplete='off'
@@ -63,9 +64,9 @@ const CartDetail = () => {
                             </Form>
 
                             <div>
-                                <div className='mr-8 flex justify-end'>
+                                <div className='mr-10 flex justify-end'>
                                     <span className='block text-xl font-semibold'>
-                                        <span className='text-sm font-medium'>Tổng tiền:</span>{' '}
+                                        <span className='text-sm font-medium'>Tổng:</span>{' '}
                                         {cartList &&
                                             cartList.items.length > 0 &&
                                             formatCurrency(

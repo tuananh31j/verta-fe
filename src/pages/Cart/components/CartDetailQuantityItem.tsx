@@ -3,23 +3,26 @@ import { Button, ConfigProvider, InputNumber } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 // import useUpdateCartQuantity from '~/hooks/mutations/cart/useUpdateCartQuantity';
 import _ from 'lodash';
+import useUpdateCartQuantity from '~/hooks/mutations/cart/useUpdateCartQuantity';
 
 type Props = {
     quantityValue: number;
     productId: string;
     stock: number;
+    variantId: string;
 };
 
-const CartDetailQuantityItem = ({ quantityValue, productId, stock }: Props) => {
+const CartDetailQuantityItem = ({ quantityValue, productId, stock, variantId }: Props) => {
     const [debouncedQuantity, setDebounceQuantity] = useState<number | null>(null);
     const [quantity, setQuantity] = useState(quantityValue);
+    // console.log(quantityValue, productId, stock, variantId);
 
-    // const { mutate } = useUpdateCartQuantity();
+    const { mutate } = useUpdateCartQuantity();
 
     const handleDebouncedUpdateQuantity = useMemo(() => {
-        // return _.debounce((itemData) => {
-        //     mutate(itemData);
-        // }, 800);
+        return _.debounce((itemData) => {
+            mutate(itemData);
+        }, 600);
     }, []);
 
     const handleDecreaseQuantity = () => {
@@ -36,14 +39,11 @@ const CartDetailQuantityItem = ({ quantityValue, productId, stock }: Props) => {
         setDebounceQuantity(newQuantity);
     };
 
-    // useEffect(() => {
-    //     if (debouncedQuantity) {
-    //         handleDebouncedUpdateQuantity({ productId, quantity: debouncedQuantity });
-    //     }
-    //     return () => {
-    //         handleDebouncedUpdateQuantity.cancel();
-    //     };
-    // }, [debouncedQuantity, handleDebouncedUpdateQuantity, productId]);
+    useEffect(() => {
+        if (debouncedQuantity) {
+            handleDebouncedUpdateQuantity({ productId, quantity: debouncedQuantity, variantId });
+        }
+    }, [debouncedQuantity, handleDebouncedUpdateQuantity, productId]);
 
     useEffect(() => {
         if (quantityValue != quantity) {
@@ -67,7 +67,7 @@ const CartDetailQuantityItem = ({ quantityValue, productId, stock }: Props) => {
                     },
                 }}
             >
-                <InputNumber min={1} disabled={true} value={quantity} className='' />
+                <InputNumber min={1} disabled={true} value={quantity} className='text-center' />
             </ConfigProvider>
 
             <Button

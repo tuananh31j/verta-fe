@@ -12,6 +12,7 @@ export interface CartTableType {
     stock: number;
     color: string;
     size: string;
+    variantId: string;
 }
 
 export const columns: TableProps<CartTableType>['columns'] = [
@@ -31,7 +32,7 @@ export const columns: TableProps<CartTableType>['columns'] = [
         title: 'Sản phẩm',
         dataIndex: 'product',
         key: 'product',
-        render: (_, record, index) => {
+        render: (_, record) => {
             return (
                 <div className='flex'>
                     <div>
@@ -47,7 +48,12 @@ export const columns: TableProps<CartTableType>['columns'] = [
         dataIndex: 'quantity',
         key: 'quantity',
         render: (_, record) => (
-            <CartDetailQuantityItem productId={record.productId} quantityValue={record.quantity} stock={record.stock} />
+            <CartDetailQuantityItem
+                productId={record.productId}
+                quantityValue={record.quantity}
+                stock={record.stock}
+                variantId={record.variantId}
+            />
         ),
     },
     {

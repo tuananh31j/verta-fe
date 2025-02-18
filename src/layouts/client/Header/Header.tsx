@@ -3,6 +3,7 @@ import { ConfigProvider, Dropdown, MenuProps, Popover } from 'antd';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import logo from '~/assets/logo.png';
+import CartModal from '~/components/CartModal/CartModal';
 import { logout } from '~/store/slice/authSlice';
 import { useTypedSelector } from '~/store/store';
 
@@ -160,6 +161,7 @@ const Header = () => {
                     </div>
                 </div>
             </div>
+            <CartModal />
         </header>
     );
 };
