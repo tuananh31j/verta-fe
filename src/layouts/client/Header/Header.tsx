@@ -1,22 +1,20 @@
 import { SearchOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
-import { ConfigProvider, Dropdown, MenuProps, Popover } from 'antd';
+import { Badge, ConfigProvider, Dropdown, MenuProps, Popover } from 'antd';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import logo from '~/assets/logo.png';
 import CartModal from '~/components/CartModal/CartModal';
 import HeaderCart from '~/components/HeaderCart/HeaderCart';
-import useGetAllCart from '~/hooks/queries/products/cart/useGetAllCart';
 import { logout } from '~/store/slice/authSlice';
 import { useTypedSelector } from '~/store/store';
 
 const Header = () => {
     const user = useTypedSelector((state) => state.auth.user);
     const dispatch = useDispatch();
-
     const handleLogout = () => {
         dispatch(logout());
     };
-
+    const quantityCart = useTypedSelector((state) => state.cart.quantityInCart);
     const dropDownItems: MenuProps['items'] = user
         ? [
               {
@@ -157,7 +155,9 @@ const Header = () => {
                         <div className='cursor-pointer text-[#070707]'>
                             {user ? (
                                 <Popover content={<HeaderCart />} placement='bottomRight' trigger={['click']}>
-                                    <ShoppingCartOutlined className='px-2 py-3' style={{ fontSize: 24 }} />{' '}
+                                    <Badge count={quantityCart} showZero className='px-2 py-3'>
+                                        <ShoppingCartOutlined style={{ fontSize: 24 }} />
+                                    </Badge>{' '}
                                     <span>Giỏ hàng</span>
                                 </Popover>
                             ) : (
