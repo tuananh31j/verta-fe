@@ -6,4 +6,9 @@ export const QUERY_KEY = {
         BESTSELLING: 'BEST_SELLING',
         NEWEST: 'NEWEST',
     },
+    SHIPPING: {
+        PROVINCE: 'PROVINCE',
+        DISTRICT: 'DISTRICT',
+        WARD: 'WARD',
+    },
 };
