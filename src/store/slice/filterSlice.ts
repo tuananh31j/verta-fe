@@ -16,4 +16,4 @@ const filterSlice = createSlice({
 });
 
 export const { setQuery, updateGrid } = filterSlice.actions;
-export default filterSlice;
+export default filterSlice.reducer;

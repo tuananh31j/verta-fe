@@ -1,5 +1,5 @@
-import { IColor } from '~/types/color';
-import { ISize } from '~/types/size';
+import { IColor } from '~/types/Color';
+import { ISize } from '~/types/Size';
 
 export type IVariant = {
     color: IColor;

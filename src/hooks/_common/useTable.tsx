@@ -3,9 +3,9 @@ import { FilterDropdownProps, FilterValue } from 'antd/es/table/interface';
 import { Input, Button, Space, InputRef, TableColumnType } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
+import useFilter from './useFilter';
 import { SorterResult } from 'antd/lib/table/interface';
 import { convertObject } from '~/utils/convertToQueryParams';
-import useFilter from '~/hooks/_common/useFilter';
 
 const useTable = <T extends object>() => {
     const [searchText, setSearchText] = useState('');
@@ -59,7 +59,12 @@ const useTable = <T extends object>() => {
                 sortParams = `-${sortColumKey}`;
             }
         }
-        updateQueryParam({ ...query, ...filterParams, sort: sortParams, page: String(1) });
+        updateQueryParam({
+            ...query,
+            ...filterParams,
+            sort: sortParams,
+            page: String(1),
+        });
     };
 
     const getColumnSearchProps = (dataIndex: string): TableColumnType<T> => ({

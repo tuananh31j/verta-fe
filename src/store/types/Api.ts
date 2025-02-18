@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type IRankValue = {
     min: number | string;
     max: string | number;

@@ -1,15 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMutation } from '@tanstack/react-query';
 import { useToast } from '~/context/ToastProvider';
 import { productServices } from '~/services/product.service';
-import { ICreateProductPayload } from '~/types/Product';
 
-export const useCreatePro = () => {
+export const useUpdatePro = () => {
     const toast = useToast();
     return useMutation({
         mutationKey: ['PRODUCT'],
-        mutationFn: (data: ICreateProductPayload) => productServices.createProduct(data),
+        mutationFn: ({ data, id }: { data: any; id: string }) => productServices.updateProduct(data, id),
         onSuccess: () => {
-            toast('success', 'Thêm sản phẩm thành công!');
+            toast('success', 'Cập nhật sản phẩm thành công!');
         },
     });
 };

@@ -1,20 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, message, Modal, Select, TreeSelect, Upload } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { RcFile } from 'antd/es/upload';
 import { UploadFile, UploadProps } from 'antd/lib';
+import { error } from 'console';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import WrapperCard from '~/components/_common/WrapperCard';
 import { ADMIN_ROUTES } from '~/constants/router';
+import useGetAllColors from '~/hooks/Colors/Queries/useGetAllColors';
 import { useCreatePro } from '~/hooks/mutations/products/useCreatePro';
 import { useGetAllCate } from '~/hooks/queries/catrgories/useGetAllCate';
+import useGetAllSizes from '~/hooks/Sizes/Queries/useGetAllSizes';
 import WrapperPageAdmin from '~/pages/Admins/_common/WrapperPageAdmin';
 import { productServices } from '~/services/product.service';
 import { uploadService } from '~/services/upload.service';
 import { SizeEnum } from '~/types/enum';
-import { ICreateProductPayload } from '~/types/product';
-import { ICreateVariant } from '~/types/variant';
+import { ICreateProductPayload } from '~/types/Product';
+import { ICreateVariant } from '~/types/Variant';
 
 const getBase64 = (file: RcFile): Promise<string> =>
     new Promise((resolve, reject) => {
@@ -26,13 +30,17 @@ const getBase64 = (file: RcFile): Promise<string> =>
 
 const CreateProduct = () => {
     const [form] = Form.useForm<any>();
-    const navigater = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
-    const [category, setCategory] = useState<string | undefined>(undefined);
     const { data: categoryList } = useGetAllCate();
     const { mutateAsync: createPro } = useCreatePro();
+    const [typeSize, setTypeSize] = useState<SizeEnum>(SizeEnum.FreeSize);
+    const { data: colorList } = useGetAllColors();
+    const { data: sizeList } = useGetAllSizes({ type: typeSize });
+
     const categoriesTreeData = categoryList?.map((cate) => {
         if (cate.items.length === 0) {
             return {
@@ -50,10 +58,6 @@ const CreateProduct = () => {
         };
     });
 
-    const selectCate = (value: string) => {
-        console.log(value);
-        setCategory(value);
-    };
     const handleCancel = () => setPreviewOpen(false);
 
     const handlePreview = async (file: UploadFile) => {
@@ -90,6 +94,13 @@ const CreateProduct = () => {
     };
 
     const onFinish = async (values: any) => {
+        console.log(values);
+        setIsLoading(true);
+        if (!values.variants || values.variants.length === 0) {
+            message.error('Vui lòng thêm biến thể cho sản phẩm!');
+            return setIsLoading(false);
+        }
+
         try {
             const formDataThumnail = new FormData();
             formDataThumnail.append('image', values.thumbnail.fileList[0].originFileObj);
@@ -99,12 +110,16 @@ const CreateProduct = () => {
                 await Promise.all(
                     values.variants.map(async (variant: any) => {
                         const formDataVariant = new FormData();
+                        if (!variant.properties || variant.properties.length === 0) {
+                            throw Error('Vui lòng thêm thuộc tính cho biến thể!');
+                        }
                         formDataVariant.append('image', variant.image[0].originFileObj);
                         const variantRes = await uploadService.uploadImage(formDataVariant);
+
                         return variant.properties.map((property: any) => ({
-                            size: '67b40a2976f809b5e35838b4',
+                            size: property.size,
                             stock: property.stock,
-                            color: '67b40a2976f809b5e35838bf',
+                            color: variant.color,
                             image: variantRes.downloadURL,
                             imageRef: variantRes.urlRef,
                         }));
@@ -132,11 +147,16 @@ const CreateProduct = () => {
                 filterColor: colorIds,
                 imageRefVariants,
             };
-            console.log(productParentPayload);
             await createPro(productParentPayload);
-            navigater(ADMIN_ROUTES.PRODUCTS);
-        } catch (error) {
-            console.log(error);
+            navigate(ADMIN_ROUTES.PRODUCTS);
+        } catch (err) {
+            if (err instanceof Error) {
+                message.error(err.message);
+            } else {
+                message.error('Vui lòng điền đầy đủ thông tin!');
+            }
+        } finally {
+            setIsLoading(false);
         }
     };
     return (
@@ -177,6 +197,12 @@ const CreateProduct = () => {
                             label='Tên sản phẩm'
                             name='name'
                             required
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng nhập tên sản phẩm',
+                                },
+                            ]}
                             className='font-medium text-[#08090F]'
                         >
                             <Input placeholder='Nhập tên sản phẩm...' size='large' />
@@ -184,6 +210,12 @@ const CreateProduct = () => {
                         <Form.Item<any>
                             label='Danh mục'
                             name='categories'
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng chọn danh mục sản phẩm',
+                                },
+                            ]}
                             required
                             className='font-medium text-[#08090F]'
                         >
@@ -197,7 +229,18 @@ const CreateProduct = () => {
                                 onChange={(value) => form.setFieldsValue({ categories: value })}
                             />
                         </Form.Item>
-                        <Form.Item<any> label='Giá cả' name='price' required className='font-medium text-[#08090F]'>
+                        <Form.Item<any>
+                            label='Giá cả'
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng nhập giá thành sản phẩm',
+                                },
+                            ]}
+                            name='price'
+                            required
+                            className='font-medium text-[#08090F]'
+                        >
                             <InputNumber
                                 prefix='đ'
                                 placeholder='Nhập giá thành...'
@@ -206,7 +249,18 @@ const CreateProduct = () => {
                             />
                         </Form.Item>
 
-                        <Form.Item<any> required label='Mô tả' name='summary' className='font-medium text-[#08090F]'>
+                        <Form.Item<any>
+                            required
+                            label='Mô tả'
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng nhập mô tả sản phẩm',
+                                },
+                            ]}
+                            name='summary'
+                            className='font-medium text-[#08090F]'
+                        >
                             <TextArea placeholder='Nhập mô tả sản phẩm...' rows={4} className='w-full' />
                         </Form.Item>
                     </WrapperCard>
@@ -215,7 +269,8 @@ const CreateProduct = () => {
                         <Form.Item name='sizeType' label='Loại cỡ' required>
                             <Select
                                 defaultValue={SizeEnum.FreeSize}
-                                style={{ width: 120 }}
+                                style={{ width: 140 }}
+                                onChange={(value) => setTypeSize(value)}
                                 size='large'
                                 options={[
                                     { value: SizeEnum.FreeSize, label: 'Free size' },
@@ -241,10 +296,12 @@ const CreateProduct = () => {
                                                 <Select
                                                     placeholder='Chọn màu sắc'
                                                     size='large'
-                                                    options={[
-                                                        { value: 'Vàng', label: 'Vàng' },
-                                                        { value: 'Đỏ', label: 'Đỏ' },
-                                                    ]}
+                                                    options={colorList?.map((color) => {
+                                                        return {
+                                                            value: color._id,
+                                                            label: <p>{color.name}</p>,
+                                                        };
+                                                    })}
                                                 />
                                             </Form.Item>
 
@@ -290,10 +347,10 @@ const CreateProduct = () => {
                                                                     <Select
                                                                         placeholder='Chọn kích cỡ'
                                                                         size='large'
-                                                                        options={[
-                                                                            { value: '30', label: '30' },
-                                                                            { value: '31', label: '31' },
-                                                                        ]}
+                                                                        options={sizeList?.map((size) => ({
+                                                                            value: size._id,
+                                                                            label: <p>{size.value}</p>,
+                                                                        }))}
                                                                     />
                                                                 </Form.Item>
 
@@ -333,6 +390,7 @@ const CreateProduct = () => {
                                                             icon={<PlusOutlined />}
                                                             block
                                                             htmlType='button'
+                                                            disabled={properties.length >= 8}
                                                         >
                                                             Thêm thuộc tính
                                                         </Button>
@@ -356,6 +414,7 @@ const CreateProduct = () => {
                                         htmlType='button'
                                         onClick={() => addVariant()}
                                         icon={<PlusOutlined />}
+                                        disabled={variants.length >= 5}
                                         block
                                     >
                                         Thêm biến thể
@@ -371,8 +430,8 @@ const CreateProduct = () => {
                         htmlType='submit'
                         icon={<PlusSquareOutlined />}
                         className='mr-3 px-5'
-                        // loading={isPending && !isHide}
-                        // disabled={isPending}
+                        loading={isLoading}
+                        disabled={isLoading}
                         size='large'
                         // onClick={handleSaveAndShow}
                     >

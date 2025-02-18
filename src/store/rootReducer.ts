@@ -7,8 +7,8 @@ import cartSlice from './slice/cartSlice';
 const rootReducer = combineReducers({
     theme,
     auth: authReducer,
-    filter: filterSlice.reducer,
     cart: cartSlice.reducer,
+    filter: filterSlice,
 });
 
 export default rootReducer;

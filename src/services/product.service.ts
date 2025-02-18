@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Params } from '~/types/Api';
 import { IServerResponse } from '~/interfaces/api';
 import { IProductDetail } from '~/interfaces/product';
 import instance from '~/utils/api/axiosInstance';
-import { ICreateProductPayload, IProductDetailsForAdmin, IProductResponse } from '~/types/product';
-import { ICreateVariant, IVariantResponse } from '~/types/variant';
+import { ICreateProductPayload, IProductDetailsForAdmin, IProductResponse } from '~/types/Product';
+import { ICreateVariant, IVariantResponse } from '~/types/Variant';
 import { AxiosResponse } from 'axios';
 
 export const productServices = {
@@ -41,5 +42,8 @@ export const productServices = {
     async getProductsRelated(cateId: string) {
         const { data } = await instance.get<IServerResponse<IProductDetail[]>>(`/products/related/${cateId}`);
         return data;
+    },
+    async updateProduct(body: any, id: string) {
+        await instance.patch<IServerResponse<any>>(`/products/update/${id}`, body);
     },
 };

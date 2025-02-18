@@ -1,4 +1,4 @@
-import { ICate } from '~/types/category';
+import { ICate } from '~/types/Category';
 import instance from '~/utils/api/axiosInstance';
 
 export const categoryServices = {

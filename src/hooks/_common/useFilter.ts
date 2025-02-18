@@ -22,8 +22,12 @@ const useFilter = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const reset = () => {
-        dispatch(setQuery({}));
+    const reset = (isClientFilter: boolean = true) => {
+        if (isClientFilter && query['category']) {
+            dispatch(setQuery({ category: query['category'] }));
+        } else {
+            dispatch(setQuery({}));
+        }
         navigator(`${pathname}`);
     };
     const updateGridUI = (gridClass: string) => {

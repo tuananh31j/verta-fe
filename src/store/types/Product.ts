@@ -1,6 +1,6 @@
-import { ICategory } from '~/types/category';
+import { ICategory } from '~/types/Category';
 import { SizeEnum } from '~/types/enum';
-import { IVariant } from '~/types/variant';
+import { IVariant } from '~/types/Variant';
 
 export type IProductResponse = {
     data: IProduct[];

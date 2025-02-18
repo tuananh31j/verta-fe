@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Space, Tag, Tooltip } from 'antd';
+import { Button, Space, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { ADMIN_ROUTES } from '~/constants/router';
@@ -9,11 +9,11 @@ import useTable from '~/hooks/_common/useTable';
 import TableDisplay from '~/components/_common/TableDisplay';
 import { TableProps } from 'antd/lib';
 import { useGetAllProductForAdmin } from '~/hooks/queries/products/useGetAllProductForAdmin';
-import { IProduct } from '~/types/product';
-import { IVariant } from '~/types/variant';
+import { IProduct } from '~/types/Product';
+import { IVariant } from '~/types/Variant';
 
 const ProductList = () => {
-    const { onSelectPaginateChange, query, onFilter, getColumnSearchProps, getFilteredValue } = useTable<IProduct>();
+    const { onSelectPaginateChange, query, onFilter, getColumnSearchProps } = useTable<IProduct>();
     const currentPage = Number(query.page || 1);
     const { data } = useGetAllProductForAdmin(query);
 

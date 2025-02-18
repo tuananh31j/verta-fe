@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, message, Modal, Select, TreeSelect, Upload } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
@@ -8,15 +9,15 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import WrapperCard from '~/components/_common/WrapperCard';
 import { ADMIN_ROUTES } from '~/constants/router';
-import { useCreatePro } from '~/hooks/mutations/products/useCreatePro';
+import useGetAllColors from '~/hooks/Colors/Queries/useGetAllColors';
+import { useUpdatePro } from '~/hooks/mutations/products/useUpdatePro';
 import { useGetAllCate } from '~/hooks/queries/catrgories/useGetAllCate';
 import { useGetProductDetailsForAdmin } from '~/hooks/queries/products/useGetProductDetailsForAdmin';
+import useGetAllSizes from '~/hooks/Sizes/Queries/useGetAllSizes';
 import WrapperPageAdmin from '~/pages/Admins/_common/WrapperPageAdmin';
-import { productServices } from '~/services/product.service';
 import { uploadService } from '~/services/upload.service';
 import { SizeEnum } from '~/types/enum';
-import { ICreateProductPayload } from '~/types/product';
-import { ICreateVariant } from '~/types/variant';
+import { ICreateVariant } from '~/types/Variant';
 
 const getBase64 = (file: RcFile): Promise<string> =>
     new Promise((resolve, reject) => {
@@ -33,11 +34,15 @@ const UpdateProduct = () => {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
-    const [category, setCategory] = useState<string | undefined>(undefined);
+    const [_, setFileList] = useState<UploadFile[]>([]);
+
+    const { mutate: updateProduct } = useUpdatePro();
+
     const { data: categoryList } = useGetAllCate();
-    const { mutateAsync: createPro } = useCreatePro();
     const { data: productDetails } = useGetProductDetailsForAdmin(productId as string);
-    console.log(productDetails, 'oooooo');
+    const [typeSize, setTypeSize] = useState<SizeEnum>(SizeEnum.FreeSize);
+    const { data: colorList } = useGetAllColors();
+    const { data: sizeList } = useGetAllSizes({ type: typeSize });
     const categoriesTreeData = categoryList?.map((cate) => {
         if (cate.items.length === 0) {
             return {
@@ -55,10 +60,6 @@ const UpdateProduct = () => {
         };
     });
 
-    const selectCate = (value: string) => {
-        console.log(value);
-        setCategory(value);
-    };
     const handleCancel = () => setPreviewOpen(false);
 
     const handlePreview = async (file: UploadFile) => {
@@ -93,14 +94,34 @@ const UpdateProduct = () => {
 
         return false;
     };
+    const handleThumbnailChange = (info: UploadChangeParam) => {
+        let newFileList = [...info.fileList];
+
+        if (newFileList.length > 1) {
+            newFileList = newFileList.slice(-1);
+        }
+
+        setFileList(newFileList);
+
+        if (newFileList.length > 0) {
+            form.setFieldsValue({
+                thumbnail: newFileList,
+            });
+        }
+    };
 
     const onFinish = async (values: any) => {
         try {
             const formDataThumnail = new FormData();
-            if (values.thumbnail.fileList[0].originFileObj) {
-                formDataThumnail.append('image', values.thumbnail.fileList[0].originFileObj);
+            const thumb: any = {
+                thumbnail: null,
+                thumbnailRef: null,
+            };
+            if (values.thumbnail[0] && values.thumbnail[0].originFileObj) {
+                formDataThumnail.append('image', values.thumbnail[0].originFileObj);
                 const thumbnailRes = await uploadService.uploadImage(formDataThumnail);
-                values.thumbnail = thumbnailRes.downloadURL;
+                thumb.thumbnail = thumbnailRes.downloadURL;
+                thumb.thumbnailRef = thumbnailRes.urlRef;
             }
 
             const variantsPayload: ICreateVariant[] = (
@@ -110,84 +131,62 @@ const UpdateProduct = () => {
                         if (variant.image[0].originFileObj) {
                             formDataVariant.append('image', variant.image[0].originFileObj);
                             const variantRes = await uploadService.uploadImage(formDataVariant);
-                            variant.image = variantRes.downloadURL;
+                            return variant.properties.map((property: any) => ({
+                                _id: property._id || null,
+                                size: property.size,
+                                stock: property.stock,
+                                color: variant.color,
+                                image: variantRes.downloadURL,
+                                imageRef: variantRes.urlRef,
+                            }));
                         }
                         return variant.properties.map((property: any) => ({
+                            _id: property._id || null,
                             size: property.size,
                             stock: property.stock,
                             color: variant.color,
-                            image: variant.image,
                         }));
                     })
                 )
             ).flat();
+            const imageRefVariants = [...variantsPayload.map((variant) => variant.imageRef), thumb.thumbnailRef].filter(
+                (item) => item
+            );
 
             const updatePayload: any = {
                 name: values.name,
                 price: values.price,
-                thumbnail: values.thumbnail,
+                thumbnail: thumb.thumbnail,
+                thumbnailRef: thumb.thumbnailRef,
                 summary: values.summary,
-                type: { hasColor: true, sizeType: values.sizeType || SizeEnum.FreeSize },
                 variants: variantsPayload,
                 categories: values.categories.split(','),
+                imageRefVariants,
             };
-
-            // await updateProduct(updatePayload);
-            message.success('Cập nhật sản phẩm thành công!');
+            console.log(updatePayload);
+            await updateProduct({ id: productId!, data: updatePayload });
             navigater(ADMIN_ROUTES.PRODUCTS);
         } catch (error) {
             console.log(error);
             message.error('Cập nhật sản phẩm thất bại!');
         }
     };
-    const [isOK, setIsOk] = useState(false);
     useEffect(() => {
         if (productDetails) {
             const { name, price, summary, categories, thumbnail, variants, type } = productDetails;
-            console.log(
-                {
-                    name,
-                    price,
-                    summary,
-                    categories,
-                    sizeType: type.sizeType,
-                    thumbnail,
-                    variants,
-                },
-                'ok ko'
-            );
-            // Điền dữ liệu vào form
             form.setFieldsValue({
                 name,
                 price,
                 summary,
                 categories,
                 sizeType: type.sizeType,
-                thumbnail: thumbnail.fileList,
+                thumbnail,
                 variants,
             });
-            setIsOk(true);
         }
-        console.log(form.getFieldValue('variants'), 'ooooooooooooooooooo');
-    }, [productDetails, form, isOK]);
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
-    const handleThumbnailChange = (info: UploadChangeParam) => {
-        let newFileList = [...info.fileList];
+        setFileList([]);
+    }, [productDetails, form]);
 
-        // Nếu bạn muốn thay thế ảnh cũ khi chọn ảnh mới, giữ lại chỉ 1 file trong list
-        if (newFileList.length > 1) {
-            newFileList = newFileList.slice(-1); // Giữ lại 1 ảnh cuối cùng
-        }
-
-        setFileList(newFileList);
-
-        // Cập nhật lại thumbnail trong form nếu file mới được chọn
-        if (newFileList.length > 0) {
-            form.setFieldsValue({
-                thumbnail: newFileList,
-            });
-        }
-    };
     return (
         <WrapperPageAdmin
             title='Cập nhật sản phẩm'
@@ -211,19 +210,6 @@ const UpdateProduct = () => {
                             dependencies={['images']}
                         >
                             <span className='flex gap-3'>
-                                {/* <Upload
-                                    name='thumbnail'
-                                    listType='picture-card'
-                                    beforeUpload={beforeUpload}
-                                    maxCount={1}
-                                    onPreview={handlePreview}
-                                    fileList={isOK ? form.getFieldValue('thumbnail') : []}
-                                >
-                                    <div>
-                                        <PlusOutlined />
-                                        <div style={{ marginTop: 8 }}>Upload</div>
-                                    </div>
-                                </Upload> */}
                                 <Upload
                                     name='thumbnail'
                                     listType='picture-card'
@@ -281,8 +267,10 @@ const UpdateProduct = () => {
                     <WrapperCard title='Thông tin biến thể'>
                         <Form.Item name='sizeType' label='Loại cỡ' required>
                             <Select
+                                disabled
                                 defaultValue={SizeEnum.FreeSize}
-                                style={{ width: 120 }}
+                                style={{ width: 140 }}
+                                onChange={(value) => setTypeSize(value)}
                                 size='large'
                                 options={[
                                     { value: SizeEnum.FreeSize, label: 'Free size' },
@@ -308,10 +296,12 @@ const UpdateProduct = () => {
                                                 <Select
                                                     placeholder='Chọn màu sắc'
                                                     size='large'
-                                                    options={[
-                                                        { value: 'Vàng', label: 'Vàng' },
-                                                        { value: 'Đỏ', label: 'Đỏ' },
-                                                    ]}
+                                                    options={colorList?.map((color) => {
+                                                        return {
+                                                            value: color._id,
+                                                            label: <p>{color.name}</p>,
+                                                        };
+                                                    })}
                                                 />
                                             </Form.Item>
 
@@ -344,12 +334,14 @@ const UpdateProduct = () => {
                                                                 className='mt-4 ml-4 rounded border p-4'
                                                                 style={{ border: '1px solid #f0f0f0' }}
                                                             >
+                                                                {/* @ID */}
                                                                 <Form.Item
                                                                     className='hidden'
                                                                     name={[property.name, '_id']}
                                                                 >
-                                                                    <Input className='hidden' />
+                                                                    <Input />
                                                                 </Form.Item>
+
                                                                 <Form.Item
                                                                     label={`Size (${propertyIndex + 1})`}
                                                                     name={[property.name, 'size']}
@@ -363,10 +355,10 @@ const UpdateProduct = () => {
                                                                     <Select
                                                                         placeholder='Chọn kích cỡ'
                                                                         size='large'
-                                                                        options={[
-                                                                            { value: '30', label: '30' },
-                                                                            { value: '31', label: '31' },
-                                                                        ]}
+                                                                        options={sizeList?.map((size) => ({
+                                                                            value: size._id,
+                                                                            label: <p>{size.value}</p>,
+                                                                        }))}
                                                                     />
                                                                 </Form.Item>
 
@@ -449,7 +441,7 @@ const UpdateProduct = () => {
                         size='large'
                         // onClick={handleSaveAndShow}
                     >
-                        Lưu
+                        Cập nhật
                     </Button>
                 </div>
             </Form>

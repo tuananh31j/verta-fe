@@ -16,3 +16,10 @@ export const UpdateProduct = lazy(() => import('~/pages/Admins/Product/UpdatePro
 export const Suspense = ({ children }: { children: React.ReactNode }) => {
     return <React.Suspense fallback={<div>Loading</div>}>{children}</React.Suspense>;
 };
+export const DashboardPage = lazy(() => import('~/pages/Admin/_dashboard_'));
+export const ColorList = lazy(() => import('~/pages/Admin/_color_'));
+export const CreateColor = lazy(() => import('~/pages/Admin/_color_/CreateColor'));
+export const UpdateColor = lazy(() => import('~/pages/Admin/_color_/UpdateColor'));
+export const SizeList = lazy(() => import('~/pages/Admin/_size_/'));
+export const CreateSize = lazy(() => import('~/pages/Admin/_size_/CreateSize'));
+export const UpdateSize = lazy(() => import('~/pages/Admin/_size_/UpdateSize'));
