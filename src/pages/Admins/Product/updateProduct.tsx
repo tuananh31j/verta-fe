@@ -3,12 +3,14 @@ import { Button, Form, Input, InputNumber, message, Modal, Select, TreeSelect, U
 import TextArea from 'antd/es/input/TextArea';
 import { RcFile } from 'antd/es/upload';
 import { UploadFile, UploadProps } from 'antd/lib';
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { UploadChangeParam } from 'antd/lib/upload';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import WrapperCard from '~/components/_common/WrapperCard';
 import { ADMIN_ROUTES } from '~/constants/router';
 import { useCreatePro } from '~/hooks/mutations/products/useCreatePro';
 import { useGetAllCate } from '~/hooks/queries/catrgories/useGetAllCate';
+import { useGetProductDetailsForAdmin } from '~/hooks/queries/products/useGetProductDetailsForAdmin';
 import WrapperPageAdmin from '~/pages/Admins/_common/WrapperPageAdmin';
 import { productServices } from '~/services/product.service';
 import { uploadService } from '~/services/upload.service';
@@ -26,6 +28,7 @@ const getBase64 = (file: RcFile): Promise<string> =>
 
 const UpdateProduct = () => {
     const [form] = Form.useForm<any>();
+    const { productId } = useParams<{ productId: string }>();
     const navigater = useNavigate();
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
@@ -33,6 +36,8 @@ const UpdateProduct = () => {
     const [category, setCategory] = useState<string | undefined>(undefined);
     const { data: categoryList } = useGetAllCate();
     const { mutateAsync: createPro } = useCreatePro();
+    const { data: productDetails } = useGetProductDetailsForAdmin(productId as string);
+    console.log(productDetails, 'oooooo');
     const categoriesTreeData = categoryList?.map((cate) => {
         if (cate.items.length === 0) {
             return {
@@ -92,56 +97,100 @@ const UpdateProduct = () => {
     const onFinish = async (values: any) => {
         try {
             const formDataThumnail = new FormData();
-            formDataThumnail.append('image', values.thumbnail.fileList[0].originFileObj);
-            const thumbnailRes = await uploadService.uploadImage(formDataThumnail);
+            if (values.thumbnail.fileList[0].originFileObj) {
+                formDataThumnail.append('image', values.thumbnail.fileList[0].originFileObj);
+                const thumbnailRes = await uploadService.uploadImage(formDataThumnail);
+                values.thumbnail = thumbnailRes.downloadURL;
+            }
 
             const variantsPayload: ICreateVariant[] = (
                 await Promise.all(
                     values.variants.map(async (variant: any) => {
                         const formDataVariant = new FormData();
-                        formDataVariant.append('image', variant.image[0].originFileObj);
-                        const variantRes = await uploadService.uploadImage(formDataVariant);
+                        if (variant.image[0].originFileObj) {
+                            formDataVariant.append('image', variant.image[0].originFileObj);
+                            const variantRes = await uploadService.uploadImage(formDataVariant);
+                            variant.image = variantRes.downloadURL;
+                        }
                         return variant.properties.map((property: any) => ({
-                            size: '67b40a2976f809b5e35838b4',
+                            size: property.size,
                             stock: property.stock,
-                            color: '67b40a2976f809b5e35838bf',
-                            image: variantRes.downloadURL,
-                            imageRef: variantRes.urlRef,
+                            color: variant.color,
+                            image: variant.image,
                         }));
                     })
                 )
             ).flat();
 
-            const variantsRes = await productServices.createMultipleVariant(variantsPayload);
-
-            const variantIds = variantsRes.map((variant) => variant._id);
-            const sizeIds = variantsPayload.map((variant) => variant.size);
-            const colorIds = variantsPayload.map((variant) => variant.color);
-            const imageRefVariants = variantsPayload.map((variant) => variant.imageRef);
-
-            const productParentPayload: ICreateProductPayload = {
+            const updatePayload: any = {
                 name: values.name,
                 price: values.price,
-                thumbnail: thumbnailRes.downloadURL,
-                thumbnailRef: thumbnailRes.urlRef,
+                thumbnail: values.thumbnail,
                 summary: values.summary,
                 type: { hasColor: true, sizeType: values.sizeType || SizeEnum.FreeSize },
-                variants: variantIds,
+                variants: variantsPayload,
                 categories: values.categories.split(','),
-                filterSize: sizeIds,
-                filterColor: colorIds,
-                imageRefVariants,
             };
-            console.log(productParentPayload);
-            await createPro(productParentPayload);
+
+            // await updateProduct(updatePayload);
+            message.success('Cập nhật sản phẩm thành công!');
             navigater(ADMIN_ROUTES.PRODUCTS);
         } catch (error) {
             console.log(error);
+            message.error('Cập nhật sản phẩm thất bại!');
+        }
+    };
+    const [isOK, setIsOk] = useState(false);
+    useEffect(() => {
+        if (productDetails) {
+            const { name, price, summary, categories, thumbnail, variants, type } = productDetails;
+            console.log(
+                {
+                    name,
+                    price,
+                    summary,
+                    categories,
+                    sizeType: type.sizeType,
+                    thumbnail,
+                    variants,
+                },
+                'ok ko'
+            );
+            // Điền dữ liệu vào form
+            form.setFieldsValue({
+                name,
+                price,
+                summary,
+                categories,
+                sizeType: type.sizeType,
+                thumbnail: thumbnail.fileList,
+                variants,
+            });
+            setIsOk(true);
+        }
+        console.log(form.getFieldValue('variants'), 'ooooooooooooooooooo');
+    }, [productDetails, form, isOK]);
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
+    const handleThumbnailChange = (info: UploadChangeParam) => {
+        let newFileList = [...info.fileList];
+
+        // Nếu bạn muốn thay thế ảnh cũ khi chọn ảnh mới, giữ lại chỉ 1 file trong list
+        if (newFileList.length > 1) {
+            newFileList = newFileList.slice(-1); // Giữ lại 1 ảnh cuối cùng
+        }
+
+        setFileList(newFileList);
+
+        // Cập nhật lại thumbnail trong form nếu file mới được chọn
+        if (newFileList.length > 0) {
+            form.setFieldsValue({
+                thumbnail: newFileList,
+            });
         }
     };
     return (
         <WrapperPageAdmin
-            title='Thêm mới sản phẩm'
+            title='Cập nhật sản phẩm'
             option={
                 <Link to={ADMIN_ROUTES.PRODUCTS} className='underline'>
                     Quay lại
@@ -161,17 +210,35 @@ const UpdateProduct = () => {
                             className='font-medium text-[#08090F]'
                             dependencies={['images']}
                         >
-                            <Upload
-                                listType='picture-card'
-                                beforeUpload={beforeUpload}
-                                maxCount={1}
-                                onPreview={handlePreview}
-                            >
-                                <div>
-                                    <PlusOutlined />
-                                    <div style={{ marginTop: 8 }}>Upload</div>
-                                </div>
-                            </Upload>
+                            <span className='flex gap-3'>
+                                {/* <Upload
+                                    name='thumbnail'
+                                    listType='picture-card'
+                                    beforeUpload={beforeUpload}
+                                    maxCount={1}
+                                    onPreview={handlePreview}
+                                    fileList={isOK ? form.getFieldValue('thumbnail') : []}
+                                >
+                                    <div>
+                                        <PlusOutlined />
+                                        <div style={{ marginTop: 8 }}>Upload</div>
+                                    </div>
+                                </Upload> */}
+                                <Upload
+                                    name='thumbnail'
+                                    listType='picture-card'
+                                    beforeUpload={beforeUpload}
+                                    maxCount={1}
+                                    onPreview={handlePreview}
+                                    fileList={form.getFieldValue('thumbnail')}
+                                    onChange={handleThumbnailChange}
+                                >
+                                    <div>
+                                        <PlusOutlined />
+                                        <div style={{ marginTop: 8 }}>Upload</div>
+                                    </div>
+                                </Upload>
+                            </span>
                         </Form.Item>
                         <Form.Item<any>
                             label='Tên sản phẩm'
@@ -189,12 +256,12 @@ const UpdateProduct = () => {
                         >
                             <TreeSelect
                                 treeData={categoriesTreeData}
-                                value={category}
+                                value={form.getFieldValue('categories')}
                                 className='font-medium text-[#08090F]'
                                 placeholder='Chọn danh mục sản phẩm...'
                                 treeDefaultExpandAll
                                 size='large'
-                                onChange={selectCate}
+                                onChange={(value) => form.setFieldsValue({ categories: value })}
                             />
                         </Form.Item>
                         <Form.Item<any> label='Giá cả' name='price' required className='font-medium text-[#08090F]'>
@@ -277,6 +344,12 @@ const UpdateProduct = () => {
                                                                 className='mt-4 ml-4 rounded border p-4'
                                                                 style={{ border: '1px solid #f0f0f0' }}
                                                             >
+                                                                <Form.Item
+                                                                    className='hidden'
+                                                                    name={[property.name, '_id']}
+                                                                >
+                                                                    <Input className='hidden' />
+                                                                </Form.Item>
                                                                 <Form.Item
                                                                     label={`Size (${propertyIndex + 1})`}
                                                                     name={[property.name, 'size']}

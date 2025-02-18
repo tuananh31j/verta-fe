@@ -189,12 +189,12 @@ const CreateProduct = () => {
                         >
                             <TreeSelect
                                 treeData={categoriesTreeData}
-                                value={category}
+                                value={form.getFieldValue('categories')}
                                 className='font-medium text-[#08090F]'
                                 placeholder='Chọn danh mục sản phẩm...'
                                 treeDefaultExpandAll
                                 size='large'
-                                onChange={selectCate}
+                                onChange={(value) => form.setFieldsValue({ categories: value })}
                             />
                         </Form.Item>
                         <Form.Item<any> label='Giá cả' name='price' required className='font-medium text-[#08090F]'>

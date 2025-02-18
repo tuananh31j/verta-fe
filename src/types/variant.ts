@@ -1,4 +1,5 @@
 import { IColor } from '~/types/color';
+import { ISize } from '~/types/size';
 
 export type IVariant = {
     color: IColor;
@@ -7,7 +8,7 @@ export type IVariant = {
 
 export type IVariantItem = {
     _id: string;
-    size: Size;
+    size: ISize;
     stock: number;
 };
 

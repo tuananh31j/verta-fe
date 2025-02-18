@@ -1,4 +1,4 @@
-import { CreateProduct, ProductsList, Suspense } from '~/routes/LazyRoutes';
+import { CreateProduct, ProductsList, Suspense, UpdateProduct } from '~/routes/LazyRoutes';
 import AdminLayout from '../layouts/Admin';
 import { ADMIN_ROUTES } from '~/constants/router';
 export const PrivateRoutes = [
@@ -12,6 +12,7 @@ export const PrivateRoutes = [
         children:[
             { path: ADMIN_ROUTES.PRODUCTS, element: <Suspense><ProductsList/></Suspense> },
             { path: ADMIN_ROUTES.PRODUCTS_CREATE, element: <Suspense><CreateProduct/></Suspense> },
+            { path: ADMIN_ROUTES.PRODUCTS_EDIT + '/:productId', element: <Suspense><UpdateProduct/></Suspense> },
         ]
     },
 ];

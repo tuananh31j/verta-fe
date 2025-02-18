@@ -134,7 +134,7 @@ const ProductList = () => {
                 <Space key={record._id} className='flex flex-col items-start justify-start'>
                     <Tooltip title='Cập nhật'>
                         <Link
-                            to={`/admin/products`}
+                            to={`${ADMIN_ROUTES.PRODUCTS_EDIT}/${record._id}`}
                             className='text-blue-500 transition-colors duration-500 hover:text-blue-400'
                         >
                             Cập nhật

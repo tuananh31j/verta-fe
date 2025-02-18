@@ -2,7 +2,7 @@ import { Params } from '~/types/Api';
 import { IServerResponse } from '~/interfaces/api';
 import { IProductDetail } from '~/interfaces/product';
 import instance from '~/utils/api/axiosInstance';
-import { ICreateProductPayload, IProductResponse } from '~/types/product';
+import { ICreateProductPayload, IProductDetailsForAdmin, IProductResponse } from '~/types/product';
 import { ICreateVariant, IVariantResponse } from '~/types/variant';
 import { AxiosResponse } from 'axios';
 
@@ -17,6 +17,10 @@ export const productServices = {
     },
     async getProductDetail(id: string) {
         const { data } = await instance.get<IProductDetail>(`/products/${id}`);
+        return data;
+    },
+    async getProductDetailForAdmin(id: string) {
+        const { data } = await instance.get<IProductDetailsForAdmin>(`/products/admin/product-details/${id}`);
         return data;
     },
     async getAllProductForAdmin(params: Params) {

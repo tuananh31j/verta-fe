@@ -12,6 +12,7 @@ export const CartDetail = lazy(() => import('~/pages/Cart/CartDetail'));
 // Admin
 export const ProductsList = lazy(() => import('~/pages/Admins/Product/ProductList'));
 export const CreateProduct = lazy(() => import('~/pages/Admins/Product/CreateProduct'));
+export const UpdateProduct = lazy(() => import('~/pages/Admins/Product/UpdateProduct'));
 export const Suspense = ({ children }: { children: React.ReactNode }) => {
     return <React.Suspense fallback={<div>Loading</div>}>{children}</React.Suspense>;
 };
