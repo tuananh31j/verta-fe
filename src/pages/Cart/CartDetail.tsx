@@ -3,11 +3,15 @@ import { Form, Table } from 'antd';
 import { CartTableType, columns } from './components/CartDetailColumns';
 // import { formatCurrency } from '~/utils/formatCurrency';
 import TextArea from 'antd/es/input/TextArea';
-import { useCallback } from 'react';
-import useGetAllCart from '~/hooks/queries/products/cart/useGetAllCart';
-import { formatCurrency } from '~/utils/formatCurrrency';
+import { useCallback, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '~/context/ToastProvider';
+import useGetAllCart from '~/hooks/queries/products/cart/useGetAllCart';
+import { reset, setDescription } from '~/store/slice/checkoutSlice';
+import { formatCurrency } from '~/utils/formatCurrrency';
+import { useTypedSelector } from '~/store/store';
+import { closeCart } from '~/store/slice/cartSlice';
 
 type FieldType = {
     description?: string;
@@ -15,8 +19,10 @@ type FieldType = {
 
 const CartDetail = () => {
     const { data: cartList, isLoading } = useGetAllCart();
+    const isOpenCart = useTypedSelector((state) => state.cart.isOpen);
     const toast = useToast();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const data = cartList?.items.map((item) => {
         return {
             productId: item.product._id,
@@ -36,12 +42,20 @@ const CartDetail = () => {
             toast('info', 'Có sản phẩm đã hết hàng trong giỏ, vui lòng kiểm tra lại!');
             return;
         }
+        if (isOpenCart) {
+            dispatch(closeCart());
+        }
         navigate('/checkout');
     };
-    const onDescriptionChange = useCallback((value: React.ChangeEvent<HTMLTextAreaElement>) => {
-        console.log('Hehe', value);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const onDescriptionChange = useCallback((value: any) => {
+        dispatch(setDescription(value.description));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
+    useEffect(() => {
+        dispatch(reset());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return (
         <div className='m-auto mt-8 w-full max-w-7xl bg-white px-2'>
             <div className=''>

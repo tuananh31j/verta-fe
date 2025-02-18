@@ -120,9 +120,11 @@ export const WISHLIST_ENDPOINT = {
 };
 
 export const SHIPPING_ENDPOINT = {
-    GET_SERVICES: '/shipping/get-service',
-    GET_PROVINCE: '/shipping/get-province',
-    GET_DISTRICT: '/shipping/get-district',
-    GET_WARD: '/shipping/get-ward',
-    CALCULATE_FEE: '/shipping/calculate-shipping-fee',
+    PROVINCES: 'shipping/get-province',
+    DISTRICT: 'shipping/get-district',
+    WARD: 'shipping/get-ward',
+};
+export const ORDER_ENDPONT = {
+    CREATEORDERCOD: 'orders/create-order',
+    MYORDER: 'orders/my-orders',
 };

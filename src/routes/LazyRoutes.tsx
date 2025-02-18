@@ -8,6 +8,8 @@ export const AuthPage = lazy(() => import('~/pages/Auth/AuthPage'));
 export const VerifyAccountPage = lazy(() => import('~/pages/Auth/VerifyAccount'));
 export const ProductDetailPage = lazy(() => import('~/pages/ProductDetail/ProductDetail'));
 export const CartDetail = lazy(() => import('~/pages/Cart/CartDetail'));
+export const ShippingAddressPage = lazy(() => import('~/pages/Checkout/ShippingAddress/ShippingAddress'));
+export const PaymentPage = lazy(() => import('~/pages/Checkout/MethodPayment/MethodPayment'));
 
 // Admin
 export const ProductsList = lazy(() => import('~/pages/Admins/Product/ProductList'));
