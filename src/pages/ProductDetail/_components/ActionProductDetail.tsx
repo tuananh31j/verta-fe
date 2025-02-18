@@ -1,15 +1,12 @@
 import { Button, InputNumber } from 'antd';
 import { useEffect, useState } from 'react';
-import { ISizeInColor, IVariantDetail } from '~/interfaces/product';
-import SelectSizeModal from './SelectSizeModal';
-import soldOut from '~/assets/soldout.webp';
-import { useDispatch } from 'react-redux';
-import { openCart } from '~/store/slice/cartSlice';
-import CartModal from '~/components/CartModal/CartModal';
-import useAddCart from '~/hooks/mutations/cart/useAddCart';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useTypedSelector } from '~/store/store';
+import soldOut from '~/assets/soldout.webp';
 import { useToast } from '~/context/ToastProvider';
+import useAddCart from '~/hooks/mutations/cart/useAddCart';
+import { ISizeInColor, IVariantDetail } from '~/interfaces/product';
+import { useTypedSelector } from '~/store/store';
+import SelectSizeModal from './SelectSizeModal';
 
 type IProps = {
     variants: IVariantDetail[];
@@ -36,6 +33,9 @@ export default function ActionProductDetail({
         if (!user) {
             toast('info', 'Bạn cần phải đăng nhập trước');
             navigate('/auth');
+        }
+        if (selectedSize.stock === 0) {
+            toast('info', 'Sản phẩm đã hết hàng');
         }
         if (!isPending && id) {
             addToCart({ productId: id, quantity, variantId: selectedSize._id });

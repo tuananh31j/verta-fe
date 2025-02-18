@@ -8,7 +8,6 @@ import { formatCurrency } from '~/utils/formatCurrrency';
 const HeaderCart = () => {
     const { data: cartList, isLoading } = useGetAllCart();
     const { mutate } = useRemoveCartItem();
-
     const removeCartItem = (id: string) => {
         mutate(id);
     };
@@ -70,7 +69,14 @@ const HeaderCart = () => {
                                         ></button>
                                     </div>
                                     <div className='text-secondary mt-1'>
-                                        Số lượng: <span className='text-secondary text-base'>{item.quantity}</span>
+                                        {item.variant.stock === 0 ? (
+                                            <span className='text-sm text-red-500'>Hết hàng</span>
+                                        ) : (
+                                            <span>
+                                                Số lượng:{' '}
+                                                <span className='text-secondary text-base'>{item.quantity}</span>
+                                            </span>
+                                        )}
                                     </div>
                                     <div className='text-primary flex justify-end text-base font-semibold'>
                                         {formatCurrency(item.product.price)}
@@ -95,12 +101,7 @@ const HeaderCart = () => {
                                 )}
                             </span>
                         </div>
-                        <Link to='/' className='mt-3 block'>
-                            <div className='bg-black py-2 text-center font-medium text-white duration-300 hover:bg-black/80'>
-                                Thanh toán ngay
-                            </div>
-                        </Link>
-                        <Link to='/' className='mt-3 block'>
+                        <Link to='/cart/detail' className='mt-3 block'>
                             <div className='border border-black bg-white py-2 text-center font-medium text-black duration-300 hover:bg-white/80'>
                                 Xem giỏ hàng
                             </div>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, ConfigProvider, InputNumber } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
@@ -49,7 +50,11 @@ const CartDetailQuantityItem = ({ quantityValue, productId, stock, variantId }: 
         }
     }, [quantityValue]);
 
-    return (
+    return stock === 0 ? (
+        <div className='mt-2 flex items-center'>
+            <span className='font-medium text-red-500'>Sản phẩm hết hàng</span>
+        </div>
+    ) : (
         <div className='mt-2 flex items-center'>
             <Button
                 type='default'

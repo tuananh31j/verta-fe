@@ -4,9 +4,10 @@ import { CartTableType, columns } from './components/CartDetailColumns';
 // import { formatCurrency } from '~/utils/formatCurrency';
 import TextArea from 'antd/es/input/TextArea';
 import { useCallback } from 'react';
-import { Link } from 'react-router-dom';
 import useGetAllCart from '~/hooks/queries/products/cart/useGetAllCart';
 import { formatCurrency } from '~/utils/formatCurrrency';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '~/context/ToastProvider';
 
 type FieldType = {
     description?: string;
@@ -14,6 +15,8 @@ type FieldType = {
 
 const CartDetail = () => {
     const { data: cartList, isLoading } = useGetAllCart();
+    const toast = useToast();
+    const navigate = useNavigate();
     const data = cartList?.items.map((item) => {
         return {
             productId: item.product._id,
@@ -27,7 +30,14 @@ const CartDetail = () => {
             variantId: item.variant._id,
         };
     });
-
+    const navigateCheckout = () => {
+        const hasOutOfStock = data?.some((item) => item.stock === 0);
+        if (hasOutOfStock) {
+            toast('info', 'Có sản phẩm đã hết hàng trong giỏ, vui lòng kiểm tra lại!');
+            return;
+        }
+        navigate('/checkout');
+    };
     const onDescriptionChange = useCallback((value: React.ChangeEvent<HTMLTextAreaElement>) => {
         console.log('Hehe', value);
     }, []);
@@ -81,12 +91,12 @@ const CartDetail = () => {
                                         {/* <div className='mt-5 cursor-pointer rounded-full border-[1px] border-black bg-black px-6 py-2 font-bold text-white duration-300 hover:bg-black/80'>
                                         Xóa tất cả
                                     </div> */}
-                                        <Link
-                                            to='/checkout'
+                                        <p
+                                            onClick={navigateCheckout}
                                             className='mt-5 cursor-pointer rounded-full border-[1px] border-black bg-black px-8 py-2 font-bold text-white duration-300 hover:bg-black/80'
                                         >
                                             Thanh toán
-                                        </Link>
+                                        </p>
                                     </div>
                                 )}
                             </div>

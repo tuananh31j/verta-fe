@@ -21,7 +21,9 @@ export const columns: TableProps<CartTableType>['columns'] = [
         title: '',
         dataIndex: 'thumbnail',
         key: 'thumbnail',
-        render: (_, record) => <ThumbnailImage productId={record.productId} thumbnail={record.thumbnail} />,
+        render: (_, record) => (
+            <ThumbnailImage stock={record.stock} productId={record.productId} thumbnail={record.thumbnail} />
+        ),
     },
     {
         title: 'Sản phẩm',
@@ -29,7 +31,7 @@ export const columns: TableProps<CartTableType>['columns'] = [
         key: 'product',
         render: (_, record) => {
             return (
-                <div className='flex'>
+                <div className={`flex ${record.stock === 0 ? 'opacity-70' : 'opacity-100'}`}>
                     <div>
                         <span className='block text-base font-medium'>{record.name}</span>
                         <div className='my-1 flex items-center gap-4'>
@@ -64,15 +66,23 @@ export const columns: TableProps<CartTableType>['columns'] = [
         title: 'Đơn giá',
         dataIndex: 'quantity',
         key: 'quantity',
-        render: (_, record) => <span className='font-medium'>{formatCurrency(record.price)}</span>,
+        render: (_, record) =>
+            record.stock === 0 ? (
+                <span className='text-red-500'>{formatCurrency(0)}</span>
+            ) : (
+                <span className='font-medium'>{formatCurrency(record.price)}</span>
+            ),
     },
     {
         title: 'Tổng',
         dataIndex: 'subTotal',
         key: 'subTotal',
-        render(_, record) {
-            return <span className='font-medium'>{formatCurrency(record.price * record.quantity)}</span>;
-        },
+        render: (_, record) =>
+            record.stock === 0 ? (
+                <span className='text-red-500'>{formatCurrency(0)}</span>
+            ) : (
+                <span className='font-medium'>{formatCurrency(record.price * record.quantity)}</span>
+            ),
     },
 
     {
