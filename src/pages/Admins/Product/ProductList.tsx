@@ -9,14 +9,15 @@ import useTable from '~/hooks/_common/useTable';
 import TableDisplay from '~/components/_common/TableDisplay';
 import { TableProps } from 'antd/lib';
 import { useGetAllProductForAdmin } from '~/hooks/queries/products/useGetAllProductForAdmin';
+import { IProduct } from '~/types/product';
+import { IVariant } from '~/types/variant';
 
 const ProductList = () => {
-    const { onSelectPaginateChange, query, onFilter, getColumnSearchProps, getFilteredValue } = useTable<any>();
+    const { onSelectPaginateChange, query, onFilter, getColumnSearchProps, getFilteredValue } = useTable<IProduct>();
     const currentPage = Number(query.page || 1);
     const { data } = useGetAllProductForAdmin(query);
-    console.log(data);
 
-    const columns: TableProps<any>['columns'] = [
+    const columns: TableProps<IProduct>['columns'] = [
         {
             title: 'Tên sản phẩm',
             dataIndex: 'name',
@@ -35,26 +36,23 @@ const ProductList = () => {
                         </div>
                     </div>
                     <div className='border-graydark border-opacity-10 ms-7 mt-1 border-s-4 p-5'>
-                        {/* {record.variationIds.map((item, index) => (
+                        {record.variants.map((item, index) => (
                             <div className='my-4 flex items-center gap-2' key={index}>
                                 <div>
-                                    <img src={item.image} className='h-8 w-8 object-cover' alt={record.name + index} />
+                                    <img
+                                        src={item.color.image}
+                                        className='h-8 w-8 object-cover'
+                                        alt={record.name + item.color.name}
+                                    />
                                 </div>
                                 <div>
-                                    <p className='text-[10px]'>
-                                        {item.variantAttributes.map((att) => att.value).join(', ')}
-                                    </p>
+                                    <p>{item.color.name}</p>
                                 </div>
-                                <div className='ms-2'>
-                                    {item.isActive && (
-                                        <Tag className='text-[10px]' color='blue'>
-                                            Đang bán
-                                        </Tag>
-                                    )}
-                                    {!item.isActive && <Tag className='text-[10px]'>Đang không bán</Tag>}
+                                <div>
+                                    <p className='text-[10px]'>{item.items.map((att) => att.size.value).join(', ')}</p>
                                 </div>
                             </div>
-                        ))} */}
+                        ))}
                     </div>
                 </>
             ),
@@ -62,19 +60,12 @@ const ProductList = () => {
         {
             title: 'Đã bán',
             key: 'sold',
-            render: (_, record) => (
+            dataIndex: 'sold',
+            render: (sold) => (
                 <>
                     <div className='flex flex-col justify-between'>
-                        {/* <p className='h-14'>{record.variationIds.reduce((acc, curr) => acc + (curr.sold || 0), 0)}</p> */}
-                        ok
+                        <p className='h-14'>{sold}</p>
                     </div>
-                    {/* <div className=''>
-                        {record.variationIds.map((item, index) => (
-                            <p className='my-4 h-8' key={index}>
-                                {item.sold}
-                            </p>
-                        ))}
-                    </div> */}
                 </>
             ),
             responsive: ['md'],
@@ -82,26 +73,12 @@ const ProductList = () => {
         {
             title: 'Giá tiền (VNĐ)',
             key: 'price',
-            render: (_, record) => {
+            dataIndex: 'price',
+            render: (price) => {
                 return (
                     <>
                         <div className='flex flex-col justify-between'>
-                            {/* <p className='h-14 whitespace-nowrap'>
-                                {record.variationIds &&
-                                    record.variationIds.length > 1 &&
-                                    `${Currency.format(record.variationIds[0].price)} - ${Currency.format(record.variationIds[record.variationIds.length - 1].price)}`}
-                                {record.variationIds &&
-                                    record.variationIds.length === 1 &&
-                                    `${Currency.format(record.variationIds[0].price)}`}
-                            </p> */}
-                            ok
-                        </div>
-                        <div className=''>
-                            {/* {record.variationIds.map((item, index) => (
-                                <p className='my-4 h-8' key={index}>
-                                    {Currency.format(item.price)}
-                                </p>
-                            ))} */}
+                            <p className='h-14 whitespace-nowrap'>{price}</p>
                         </div>
                     </>
                 );
@@ -110,24 +87,25 @@ const ProductList = () => {
         {
             title: 'Kho hàng',
             key: 'stock',
-            render: (_, record) => (
+            dataIndex: 'variants',
+            render: (variants) => (
                 <>
                     <div className='flex flex-col justify-between'>
-                        {/* <p className='h-14 whitespace-nowrap'>
-                            {record.variationIds.reduce((acc, curr) => acc + (curr.stock || 0), 0) !== 0 ? (
-                                record.variationIds.reduce((acc, curr) => acc + (curr.stock || 0), 0)
-                            ) : (
-                                <span className='text-red'>Hết hàng</span>
-                            )}
-                        </p> */}
-                        ok
+                        <p className='h-14 whitespace-nowrap'>
+                            {variants.reduce((acc: number, curr: IVariant) => {
+                                return acc + curr.items.reduce((accSub, currSub) => accSub + currSub.stock, 0);
+                            }, 0) || <span className='text-red'>Hết hàng</span>}
+                        </p>
                     </div>
                     <div className=''>
-                        {/* {record.variationIds.map((item, index) => (
-                            <p className='my-4 h-8' key={index}>
-                                {item.stock ? item.stock : <span className='text-red'>Hết hàng</span>}
-                            </p>
-                        ))} */}
+                        {variants.map((el: IVariant) => {
+                            const stockColor = el.items.reduce((accSub, currSub) => accSub + currSub.stock, 0);
+                            return (
+                                <p className='my-4 h-8' key={el.color._id}>
+                                    {stockColor !== 0 ? stockColor : <span className='text-red'>Hết hàng</span>}
+                                </p>
+                            );
+                        }, 0) || <span className='text-red'>Hết hàng</span>}
                     </div>
                 </>
             ),
@@ -136,34 +114,15 @@ const ProductList = () => {
             title: 'Danh mục',
             key: 'categoryId',
             filters: [],
-            filteredValue: getFilteredValue('categoryId'),
-            render: (_, record) => {
-                return <h4>{record.categoryId.name}</h4>;
-            },
-        },
-        {
-            title: 'Thương hiệu',
-            key: 'brandId',
-            filteredValue: getFilteredValue('brandId'),
-            filters: [],
-            render: (_, record) => {
-                return <h4>{record.brandId.name}</h4>;
-            },
-        },
-        {
-            title: 'Trạng thái',
-            key: 'isHide',
-            filteredValue: getFilteredValue('isHide'),
-            filters: [
-                { text: 'Ẩn', value: 'true' },
-                { text: 'Hiện', value: 'false' },
-            ],
+            // filteredValue: getFilteredValue('categoryId'),
             render: (_, record) => {
                 return (
-                    <>
-                        <p className='text-red'>{record.isHide && 'Đã ẩn'}</p>
-                        <p className='text-green-400'>{!record.isHide && 'Đang hiển thị'}</p>
-                    </>
+                    <h4>
+                        {record.categories
+                            .filter((item) => item !== null)
+                            .map((item) => item.name)
+                            .join('/')}
+                    </h4>
                 );
             },
         },
@@ -175,7 +134,7 @@ const ProductList = () => {
                 <Space key={record._id} className='flex flex-col items-start justify-start'>
                     <Tooltip title='Cập nhật'>
                         <Link
-                            to={`/admin/products/${record._id}/edit`}
+                            to={`/admin/products`}
                             className='text-blue-500 transition-colors duration-500 hover:text-blue-400'
                         >
                             Cập nhật
@@ -197,11 +156,11 @@ const ProductList = () => {
                 </Link>
             }
         >
-            <TableDisplay<any>
+            <TableDisplay<IProduct>
                 onFilter={onFilter}
                 columns={columns}
                 currentPage={currentPage}
-                dataSource={[]}
+                dataSource={data?.data || []}
                 onSelectPaginateChange={onSelectPaginateChange}
                 totalDocs={2}
             />

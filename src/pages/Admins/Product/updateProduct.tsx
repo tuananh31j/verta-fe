@@ -24,7 +24,7 @@ const getBase64 = (file: RcFile): Promise<string> =>
         reader.onerror = (error) => reject(`Error: ${error}`);
     });
 
-const CreateProduct = () => {
+const UpdateProduct = () => {
     const [form] = Form.useForm<any>();
     const navigater = useNavigate();
     const [previewOpen, setPreviewOpen] = useState(false);
@@ -383,4 +383,4 @@ const CreateProduct = () => {
         </WrapperPageAdmin>
     );
 };
-export default CreateProduct;
+export default UpdateProduct;
