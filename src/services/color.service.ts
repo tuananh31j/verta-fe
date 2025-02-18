@@ -1,4 +1,4 @@
-import { COLOR_ENDPOINT } from '~/constants/endpoint';
+import { COLOR_ENDPOINT } from '~/constants/endPoint';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import { IColor, IColorFormData, IColorResponse } from '~/types/Color';
 import instance from '~/utils/api/axiosInstance';

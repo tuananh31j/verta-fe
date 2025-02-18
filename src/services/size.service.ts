@@ -1,4 +1,4 @@
-import { SIZE_ENDPOINT } from '~/constants/endpoint';
+import { SIZE_ENDPOINT } from '~/constants/endPoint';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import { ISize, ISizeFormData } from '~/types/Size';
 import instance from '~/utils/api/axiosInstance';
