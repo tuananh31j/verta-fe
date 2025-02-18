@@ -6,6 +6,7 @@ export const MAIN_ROUTES = {
     MY_ORDER_DETAILS: 'account/my-orders/:id',
 };
 export const ADMIN_ROUTES = {
+    DASHBOARD: '/admin',
     SIZES: '/admin/sizes',
     SIZE_CREATE: '/admin/sizes/create',
     SIZE_EDIT: '/admin/sizes/edit', // @id
