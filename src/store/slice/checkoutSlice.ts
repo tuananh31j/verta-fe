@@ -1,6 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+export interface ItemsReduxPayload {
+    productId: string;
+    variantId: string;
+    name: string;
+    size: string;
+    color: string;
+    category: string;
+    quantity: number;
+    price: number;
+    image: string;
+    stock?: number;
+}
 
 export type CheckOutReduxType = {
+    items: ItemsReduxPayload[] | null;
     description: string;
     customerInfor: {
         name: string;
@@ -23,6 +36,7 @@ export type CheckOutReduxType = {
 };
 
 const initialState: CheckOutReduxType = {
+    items: null,
     description: '', // 🛠 Sửa 'desription' thành 'description'
     customerInfor: {
         name: '',
@@ -63,10 +77,20 @@ const checkoutSlice = createSlice({
         setCustomerInfo: (state, action) => {
             state.customerInfor = { ...state.customerInfor, ...action.payload };
         },
+        setProductsItems: (state, action: PayloadAction<ItemsReduxPayload[]>) => {
+            state.items = action.payload;
+        },
         reset: () => initialState,
     },
 });
 
-export const { setDescription, setCustomerInfo, setShippingFee, setPrice, reset, setShippingAddress } =
-    checkoutSlice.actions;
+export const {
+    setDescription,
+    setProductsItems,
+    setCustomerInfo,
+    setShippingFee,
+    setPrice,
+    reset,
+    setShippingAddress,
+} = checkoutSlice.actions;
 export default checkoutSlice;

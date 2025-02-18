@@ -10,6 +10,8 @@ import { useToast } from '~/context/ToastProvider';
 import useGetAllCart from '~/hooks/queries/products/cart/useGetAllCart';
 import { reset, setDescription } from '~/store/slice/checkoutSlice';
 import { formatCurrency } from '~/utils/formatCurrrency';
+import { useTypedSelector } from '~/store/store';
+import { closeCart } from '~/store/slice/cartSlice';
 
 type FieldType = {
     description?: string;
@@ -17,6 +19,7 @@ type FieldType = {
 
 const CartDetail = () => {
     const { data: cartList, isLoading } = useGetAllCart();
+    const isOpenCart = useTypedSelector((state) => state.cart.isOpen);
     const toast = useToast();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -38,6 +41,9 @@ const CartDetail = () => {
         if (hasOutOfStock) {
             toast('info', 'Có sản phẩm đã hết hàng trong giỏ, vui lòng kiểm tra lại!');
             return;
+        }
+        if (isOpenCart) {
+            dispatch(closeCart());
         }
         navigate('/checkout');
     };

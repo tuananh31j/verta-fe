@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Link, Navigate, Outlet } from 'react-router-dom';
 import { useToast } from '~/context/ToastProvider';
 import useGetAllCart from '~/hooks/queries/products/cart/useGetAllCart';
-import { setPrice } from '~/store/slice/checkoutSlice';
+import { ItemsReduxPayload, setPrice, setProductsItems } from '~/store/slice/checkoutSlice';
 import { useAppDispatch, useTypedSelector } from '~/store/store';
 import { formatCurrency } from '~/utils/formatCurrrency';
 
@@ -15,14 +15,15 @@ export default function CheckoutLayout() {
 
     const data = cartList?.items.map((item) => ({
         productId: item.product._id,
+        variantId: item.variant._id,
         name: item.product.name as string,
-        thumbnail: item.product.thumbnail as string,
+        size: item.variant.size.value,
+        color: item.variant.color.hex,
+        image: item.product.thumbnail as string,
         price: Number(item.product.price),
+        category: 'Sports',
         quantity: item.quantity,
         stock: item.variant.stock,
-        color: item.variant.color.hex,
-        size: item.variant.size.value,
-        variantId: item.variant._id,
     }));
     const totalPrice = cartList
         ? cartList?.items?.reduce((acc, curr) => acc + curr.product.price * curr.quantity, 0)
@@ -31,7 +32,11 @@ export default function CheckoutLayout() {
     useEffect(() => {
         dispatch(setPrice(calTotalPrice));
     }, [calTotalPrice, dispatch]);
-
+    useEffect(() => {
+        if (data) {
+            dispatch(setProductsItems(data as ItemsReduxPayload[]));
+        }
+    }, [data, dispatch]);
     // PROTECTED LAYOUT
     const hasOutOfStock = data?.some((item) => item.stock === 0);
 

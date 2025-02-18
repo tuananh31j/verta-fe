@@ -60,7 +60,7 @@ export default function ShippingAddress() {
                 {isValidCustomer && isValidAddress && (
                     <>
                         &gt;
-                        <Link className='text-[#338dbc] duration-300 hover:text-cyan-500' to={'/cart/detail'}>
+                        <Link className='text-[#338dbc] duration-300 hover:text-cyan-500' to={'/checkout/payment'}>
                             Phương thức thanh toán
                         </Link>
                     </>

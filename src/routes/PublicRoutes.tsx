@@ -14,6 +14,7 @@ import ProtectedLogged from '~/layouts/protected/ProtectedLogged';
 import { Navigate } from 'react-router-dom';
 import NotFoundPage from '~/pages/NotFound/NotFoundPage';
 import CheckoutLayout from '~/layouts/checkout/CheckoutLayout';
+import OrderSuccessPage from '~/pages/Checkout/OrderSuccessPage';
 
 const PublicRoutes = [
     {
@@ -94,6 +95,10 @@ const PublicRoutes = [
                 ),
             },
         ],
+    },
+    {
+        path: '/order/success/:id',
+        element: <OrderSuccessPage />,
     },
     {
         path: '*',

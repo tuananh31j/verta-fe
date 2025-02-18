@@ -9,3 +9,7 @@ export const SHIPPING_ENDPOINT = {
     DISTRICT: 'shipping/get-district',
     WARD: 'shipping/get-ward',
 };
+export const ORDER_ENDPONT = {
+    CREATEORDERCOD: 'orders/create-order',
+    MYORDER: 'orders/my-orders',
+};
