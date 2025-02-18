@@ -46,7 +46,7 @@ export default function ShippingAddress() {
             phone: values.phone,
         };
         dispatch(setCustomerInfo(payload));
-        navigate('/cart/detail');
+        navigate('/checkout/payment');
     };
     return (
         <div>

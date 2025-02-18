@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Link, Navigate, Outlet } from 'react-router-dom';
 import { useToast } from '~/context/ToastProvider';
 import useGetAllCart from '~/hooks/queries/products/cart/useGetAllCart';
 import { setPrice } from '~/store/slice/checkoutSlice';
@@ -57,7 +57,9 @@ export default function CheckoutLayout() {
         <main className='mx-6 max-w-7xl px-24 xl:mx-auto'>
             <div className='grid grid-cols-[60%_50%]'>
                 <div className='py-11'>
-                    <h1 className='text-4xl font-semibold'>VERTA</h1>
+                    <Link to={'/'} className='text-4xl font-semibold'>
+                        VERTA
+                    </Link>
                     <div className='mt-8'>
                         <Outlet />
                     </div>

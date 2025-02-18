@@ -4,6 +4,7 @@ import {
     AuthPage,
     CartDetail,
     HomePage,
+    PaymentPage,
     ProductDetailPage,
     ShippingAddressPage,
     Suspense,
@@ -81,6 +82,14 @@ const PublicRoutes = [
                 element: (
                     <Suspense>
                         <ShippingAddressPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'payment',
+                element: (
+                    <Suspense>
+                        <PaymentPage />
                     </Suspense>
                 ),
             },
