@@ -4,15 +4,19 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import logo from '~/assets/logo.png';
 import CartModal from '~/components/CartModal/CartModal';
+import HeaderCart from '~/components/HeaderCart/HeaderCart';
+import useGetAllCart from '~/hooks/queries/products/cart/useGetAllCart';
 import { logout } from '~/store/slice/authSlice';
 import { useTypedSelector } from '~/store/store';
 
 const Header = () => {
     const user = useTypedSelector((state) => state.auth.user);
     const dispatch = useDispatch();
+
     const handleLogout = () => {
         dispatch(logout());
     };
+
     const dropDownItems: MenuProps['items'] = user
         ? [
               {
@@ -61,8 +65,6 @@ const Header = () => {
     const truncateText = (text: string, maxLength: number) => {
         return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
     };
-
-    const content = <div>Chưa có sản phẩm nào trong giỏ hàng lor</div>;
 
     return (
         <header
@@ -153,10 +155,17 @@ const Header = () => {
                         </ConfigProvider>
                         <span className='text-xl text-[#8e8e8e]'>|</span>
                         <div className='cursor-pointer text-[#070707]'>
-                            <Popover content={content} placement='bottomRight' trigger={['click', 'hover']}>
-                                <ShoppingCartOutlined className='px-2 py-3' style={{ fontSize: 24 }} />{' '}
-                                <span>Giỏ hàng</span>
-                            </Popover>
+                            {user ? (
+                                <Popover content={<HeaderCart />} placement='bottomRight' trigger={['click']}>
+                                    <ShoppingCartOutlined className='px-2 py-3' style={{ fontSize: 24 }} />{' '}
+                                    <span>Giỏ hàng</span>
+                                </Popover>
+                            ) : (
+                                <>
+                                    <ShoppingCartOutlined className='px-2 py-3' style={{ fontSize: 24 }} />{' '}
+                                    <span>Giỏ hàng</span>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>

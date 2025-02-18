@@ -14,4 +14,8 @@ export const cartService = {
         const res = await instance.patch<null>(CART_ENDPOINT.UPDATE_CART, cartData);
         return res.data;
     },
+    async removeCartItem(id: string) {
+        const res = await instance.delete<null>(`${CART_ENDPOINT.REMOVE_ITEM}/${id}`);
+        return res.data;
+    },
 };

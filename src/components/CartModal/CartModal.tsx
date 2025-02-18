@@ -19,7 +19,7 @@ const CartModal = () => {
                 title={`Giỏ hàng của bạn (Đang có ${cartQuantity} sản phẩm)`}
             >
                 <CartDetail />
-                <div className='flex items-center gap-1' onClick={() => dispatch(closeCart())}>
+                <div className='flex cursor-pointer items-center gap-1' onClick={() => dispatch(closeCart())}>
                     <img src={backToBuying} alt='tiep tuc mua hang' className='w-4' />
                     <span>Tiếp tục mua hàng</span>
                 </div>

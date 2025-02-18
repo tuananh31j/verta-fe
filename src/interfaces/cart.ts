@@ -1,3 +1,15 @@
+type CartColor = {
+    _id: string;
+    name: string;
+    hex: string;
+};
+
+type CartSize = {
+    _id: string;
+    value: string;
+    type: string;
+};
+
 interface ICartItem {
     _id: string;
     product: {
@@ -25,9 +37,9 @@ interface ICartItem {
         _id: string;
         image: string;
         imageRef: string;
-        size: string;
+        size: CartSize;
         stock: number;
-        color: string;
+        color: CartColor;
         createdAt: string;
         updatedAt: string;
     };

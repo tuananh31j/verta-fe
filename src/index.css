@@ -19,3 +19,7 @@
 .antd-custom .ant-input-number input {
     text-align: center !important;
 }
+
+.quantity--input .ant-input-number-input {
+    text-align: center;
+}

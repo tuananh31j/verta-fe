@@ -31,9 +31,7 @@ const PublicRoutes = [
                 path: '/auth',
                 element: (
                     <Suspense>
-                        <ProtectedLogged>
-                            <AuthPage />
-                        </ProtectedLogged>
+                        <AuthPage />
                     </Suspense>
                 ),
             },

@@ -15,8 +15,6 @@ type Props = {
 const CartDetailQuantityItem = ({ quantityValue, productId, stock, variantId }: Props) => {
     const [debouncedQuantity, setDebounceQuantity] = useState<number | null>(null);
     const [quantity, setQuantity] = useState(quantityValue);
-    // console.log(quantityValue, productId, stock, variantId);
-
     const { mutate } = useUpdateCartQuantity();
 
     const handleDebouncedUpdateQuantity = useMemo(() => {
@@ -46,7 +44,7 @@ const CartDetailQuantityItem = ({ quantityValue, productId, stock, variantId }: 
     }, [debouncedQuantity, handleDebouncedUpdateQuantity, productId]);
 
     useEffect(() => {
-        if (quantityValue != quantity) {
+        if (quantityValue !== quantity) {
             setQuantity(quantityValue);
         }
     }, [quantityValue]);
@@ -67,7 +65,7 @@ const CartDetailQuantityItem = ({ quantityValue, productId, stock, variantId }: 
                     },
                 }}
             >
-                <InputNumber min={1} disabled={true} value={quantity} className='text-center' />
+                <InputNumber min={1} disabled={true} value={quantity} className='quantity--input' />
             </ConfigProvider>
 
             <Button

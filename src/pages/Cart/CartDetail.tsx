@@ -22,8 +22,8 @@ const CartDetail = () => {
             price: Number(item.product.price),
             quantity: item.quantity,
             stock: item.variant.stock,
-            color: item.variant.color,
-            size: item.variant.size,
+            color: item.variant.color.hex,
+            size: item.variant.size.value,
             variantId: item.variant._id,
         };
     });
@@ -76,19 +76,19 @@ const CartDetail = () => {
                                             )}
                                     </span>
                                 </div>
-                                {/* {cartList && cartList.items.length > 0 && ( */}
-                                <div className='flex items-center justify-center gap-4'>
-                                    <div className='mt-5 cursor-pointer rounded-full border-[1px] border-black bg-black px-6 py-2 font-bold text-white duration-300 hover:bg-black/80'>
+                                {cartList && cartList.items.length > 0 && (
+                                    <div className='flex items-center justify-center gap-4'>
+                                        {/* <div className='mt-5 cursor-pointer rounded-full border-[1px] border-black bg-black px-6 py-2 font-bold text-white duration-300 hover:bg-black/80'>
                                         Xóa tất cả
+                                    </div> */}
+                                        <Link
+                                            to='/checkout'
+                                            className='mt-5 cursor-pointer rounded-full border-[1px] border-black bg-black px-8 py-2 font-bold text-white duration-300 hover:bg-black/80'
+                                        >
+                                            Thanh toán
+                                        </Link>
                                     </div>
-                                    <Link
-                                        to='/checkout'
-                                        className='mt-5 cursor-pointer rounded-full border-[1px] border-black bg-black px-8 py-2 font-bold text-white duration-300 hover:bg-black/80'
-                                    >
-                                        Thanh toán
-                                    </Link>
-                                </div>
-                                {/* )} */}
+                                )}
                             </div>
                         </div>
                     </div>

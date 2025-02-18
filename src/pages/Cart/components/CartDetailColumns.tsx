@@ -1,7 +1,8 @@
-import { Image, TableProps } from 'antd';
+import { TableProps } from 'antd';
+import { formatCurrency } from '~/utils/formatCurrrency';
 import CartDetailQuantityItem from './CartDetailQuantityItem';
 import RemoveCartItem from './DeleteCartItem';
-import { formatCurrency } from '~/utils/formatCurrrency';
+import ThumbnailImage from './ThumbnailImage';
 
 export interface CartTableType {
     thumbnail: string;
@@ -20,13 +21,7 @@ export const columns: TableProps<CartTableType>['columns'] = [
         title: '',
         dataIndex: 'thumbnail',
         key: 'thumbnail',
-        render: (_, record, index) => {
-            return (
-                <div className='w-30 min-w-10 rounded-md p-2'>
-                    <img src={record.thumbnail} alt={`cart thumbnail`} className='w-full object-contain' />
-                </div>
-            );
-        },
+        render: (_, record) => <ThumbnailImage productId={record.productId} thumbnail={record.thumbnail} />,
     },
     {
         title: 'Sản phẩm',
@@ -37,6 +32,15 @@ export const columns: TableProps<CartTableType>['columns'] = [
                 <div className='flex'>
                     <div>
                         <span className='block text-base font-medium'>{record.name}</span>
+                        <div className='my-1 flex items-center gap-4'>
+                            <span className='text-sm'>
+                                Kích cỡ: <span className='font-medium'>{record.size}</span>
+                            </span>
+                            <button
+                                style={{ backgroundColor: `${record.color}` }}
+                                className={`relative overflow-hidden rounded-full border px-2 py-2 text-sm transition-all`}
+                            ></button>
+                        </div>
                         <span className='mt-1 block text-base font-medium'>{formatCurrency(record.price)}</span>
                     </div>
                 </div>
@@ -75,6 +79,6 @@ export const columns: TableProps<CartTableType>['columns'] = [
         title: '',
         key: 'action',
         width: '50px',
-        render: (_, record) => <RemoveCartItem productId={record.productId} />,
+        render: (_, record) => <RemoveCartItem variantId={record.variantId} />,
     },
 ];

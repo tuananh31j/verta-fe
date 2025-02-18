@@ -7,7 +7,9 @@ import { useDispatch } from 'react-redux';
 import { openCart } from '~/store/slice/cartSlice';
 import CartModal from '~/components/CartModal/CartModal';
 import useAddCart from '~/hooks/mutations/cart/useAddCart';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useTypedSelector } from '~/store/store';
+import { useToast } from '~/context/ToastProvider';
 
 type IProps = {
     variants: IVariantDetail[];
@@ -26,9 +28,15 @@ export default function ActionProductDetail({
     const { id } = useParams();
     const [quantity, setQuantity] = useState<number>(1);
     const { mutate: addToCart, isPending } = useAddCart();
+    const user = useTypedSelector((state) => state.auth.user);
+    const navigate = useNavigate();
+    const toast = useToast();
 
     const handleAddToCart = () => {
-        console.log(id);
+        if (!user) {
+            toast('info', 'Bạn cần phải đăng nhập trước');
+            navigate('/auth');
+        }
         if (!isPending && id) {
             addToCart({ productId: id, quantity, variantId: selectedSize._id });
         }
