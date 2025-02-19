@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DeleteOutlined, PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
+import { CloseOutlined, DeleteOutlined, PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, message, Modal, Select, Tooltip, TreeSelect, Upload } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { RcFile } from 'antd/es/upload';
@@ -12,12 +12,12 @@ import useGetAllColors from '~/hooks/Colors/Queries/useGetAllColors';
 import { useCreatePro } from '~/hooks/mutations/products/useCreatePro';
 import { useGetAllCate } from '~/hooks/queries/catrgories/useGetAllCate';
 import useGetAllSizes from '~/hooks/Sizes/Queries/useGetAllSizes';
-import WrapperPageAdmin from '~/pages/Admins/_common/WrapperPageAdmin';
 import { productServices } from '~/services/product.service';
 import { uploadService } from '~/services/upload.service';
 import { SizeEnum } from '~/types/enum';
 import { ICreateProductPayload } from '~/types/Product';
 import { ICreateVariant } from '~/types/Variant';
+import WrapperPageAdmin from '../_common/WrapperPageAdmin';
 
 const getBase64 = (file: RcFile): Promise<string> =>
     new Promise((resolve, reject) => {

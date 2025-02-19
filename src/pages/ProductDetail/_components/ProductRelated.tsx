@@ -15,7 +15,10 @@ type Props = {
 };
 
 const ProductRelated = ({ data }: Props) => {
-    const { data: relatedData, isPending } = useGetRelatedProductDetail(data._id, data.categories[0] as string);
+    const { data: relatedData, isPending } = useGetRelatedProductDetail(
+        data._id,
+        data.categories.at(-1)?._id as string
+    );
 
     const swiperRef = useRef<SwiperRef>(null);
 

@@ -2,7 +2,6 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Space, Tooltip, Tag, Badge } from 'antd';
 import { Link } from 'react-router-dom';
 import { ADMIN_ROUTES } from '~/constants/router';
-import WrapperPageAdmin from '~/pages/Admins/_common/WrapperPageAdmin';
 import useTable from '~/hooks/_common/useTable';
 import TableDisplay from '~/components/_common/TableDisplay';
 import { TableProps } from 'antd/lib';
@@ -10,6 +9,7 @@ import { useGetAllProductForAdmin } from '~/hooks/queries/products/useGetAllProd
 import { IProduct } from '~/types/Product';
 import { IVariant } from '~/types/Variant';
 import { Currency } from '~/utils';
+import WrapperPageAdmin from '../_common/WrapperPageAdmin';
 
 const ProductList = () => {
     const { onSelectPaginateChange, query, onFilter, getColumnSearchProps } = useTable<IProduct>();

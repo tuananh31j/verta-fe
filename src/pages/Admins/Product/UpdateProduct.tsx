@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
+import { CloseOutlined, DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, message, Modal, Select, TreeSelect, Upload } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { RcFile } from 'antd/es/upload';
@@ -14,10 +14,10 @@ import { useUpdatePro } from '~/hooks/mutations/products/useUpdatePro';
 import { useGetAllCate } from '~/hooks/queries/catrgories/useGetAllCate';
 import { useGetProductDetailsForAdmin } from '~/hooks/queries/products/useGetProductDetailsForAdmin';
 import useGetAllSizes from '~/hooks/Sizes/Queries/useGetAllSizes';
-import WrapperPageAdmin from '~/pages/Admins/_common/WrapperPageAdmin';
 import { uploadService } from '~/services/upload.service';
 import { SizeEnum } from '~/types/enum';
 import { ICreateVariant } from '~/types/Variant';
+import WrapperPageAdmin from '../_common/WrapperPageAdmin';
 
 const getBase64 = (file: RcFile): Promise<string> =>
     new Promise((resolve, reject) => {
@@ -395,6 +395,7 @@ const UpdateProduct = () => {
                                                                 <Button
                                                                     danger
                                                                     htmlType='button'
+                                                                    icon={<CloseOutlined />}
                                                                     onClick={() => removeProperty(property.name)}
                                                                     className='mb-2'
                                                                 >
@@ -405,12 +406,13 @@ const UpdateProduct = () => {
 
                                                         <Button
                                                             type='dashed'
-                                                            style={{ width: 300, display: 'block' }}
+                                                            style={{ width: 300 }}
                                                             onClick={() => addProperty()}
                                                             className='my-4'
                                                             icon={<PlusOutlined />}
                                                             block
                                                             htmlType='button'
+                                                            disabled={properties.length >= 8}
                                                         >
                                                             Thêm thuộc tính
                                                         </Button>
@@ -418,14 +420,17 @@ const UpdateProduct = () => {
                                                 )}
                                             </Form.List>
 
-                                            <Button
-                                                htmlType='button'
-                                                danger
-                                                onClick={() => removeVariant(variant.name)}
-                                                className='mt-2'
-                                            >
-                                                Xóa biến thể
-                                            </Button>
+                                            <div className='flex justify-end'>
+                                                <Button
+                                                    htmlType='button'
+                                                    danger
+                                                    icon={<DeleteOutlined />}
+                                                    onClick={() => removeVariant(variant.name)}
+                                                    className='text mt-2'
+                                                >
+                                                    Xóa biến thể
+                                                </Button>
+                                            </div>
                                         </div>
                                     ))}
 
@@ -447,7 +452,7 @@ const UpdateProduct = () => {
                     <Button
                         type='primary'
                         htmlType='submit'
-                        icon={<PlusSquareOutlined />}
+                        icon={<EditOutlined />}
                         className='mr-3 px-5'
                         loading={isLoading}
                         disabled={isLoading}

@@ -17,7 +17,7 @@ const Header = (props: { sidebarOpen: boolean; setSidebarOpen: (arg0: boolean) =
                         <MenuOutlined className='text-xl' />
                     </button>
 
-                    <Link to='/admin' className='flex items-center gap-2'>
+                    <Link to='/' className='flex items-center gap-2'>
                         <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#da291c] to-[#a81c12]'>
                             <img src={logo} alt='Admin Logo' className='h-8 w-8 object-contain' />
                         </div>
