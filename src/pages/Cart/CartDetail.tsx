@@ -4,7 +4,7 @@ import { CartTableType, columns } from './components/CartDetailColumns';
 // import { formatCurrency } from '~/utils/formatCurrency';
 import TextArea from 'antd/es/input/TextArea';
 import { useCallback } from 'react';
-import useGetAllCart from '~/hooks/queries/products/cart/useGetAllCart';
+import useGetAllCart from '~/hooks/queries/cart/useGetAllCart';
 import { formatCurrency } from '~/utils/formatCurrrency';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '~/context/ToastProvider';

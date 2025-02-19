@@ -1,9 +1,18 @@
-import ErrorPage from '~/pages/Error/ErrorPage';
-import MainLayout from '../layouts/client/MainLayout';
-import { AuthPage, CartDetail, HomePage, ProductDetailPage, Suspense, VerifyAccountPage } from './LazyRoutes';
-import ProtectedLogged from '~/layouts/protected/ProtectedLogged';
 import { Navigate } from 'react-router-dom';
+import ProtectedLogged from '~/layouts/protected/ProtectedLogged';
+import ErrorPage from '~/pages/Error/ErrorPage';
 import NotFoundPage from '~/pages/NotFound/NotFoundPage';
+import MainLayout from '../layouts/client/MainLayout';
+import {
+    AuthPage,
+    CartDetail,
+    HomePage,
+    MyOrders,
+    ProductDetailPage,
+    Profile,
+    Suspense,
+    VerifyAccountPage,
+} from './LazyRoutes';
 
 const PublicRoutes = [
     {
@@ -51,6 +60,26 @@ const PublicRoutes = [
                     <Suspense>
                         <ProtectedLogged>
                             <CartDetail />
+                        </ProtectedLogged>
+                    </Suspense>
+                ),
+            },
+            {
+                path: '/account/profile',
+                element: (
+                    <Suspense>
+                        <ProtectedLogged>
+                            <Profile />
+                        </ProtectedLogged>
+                    </Suspense>
+                ),
+            },
+            {
+                path: '/account/my-orders',
+                element: (
+                    <Suspense>
+                        <ProtectedLogged>
+                            <MyOrders />
                         </ProtectedLogged>
                     </Suspense>
                 ),
