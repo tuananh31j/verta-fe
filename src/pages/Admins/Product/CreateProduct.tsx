@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
+import { CloseOutlined, DeleteOutlined, PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, message, Modal, Select, TreeSelect, Upload } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { RcFile } from 'antd/es/upload';
@@ -283,7 +283,7 @@ const CreateProduct = () => {
                                     {variants.map((variant, variantIndex) => (
                                         <div
                                             key={variant.key}
-                                            className='mb-4 rounded border p-4'
+                                            className='relative mb-4 rounded border p-4'
                                             style={{ border: '1px solid #e8e8e8' }}
                                         >
                                             <Form.Item
@@ -372,6 +372,7 @@ const CreateProduct = () => {
                                                                 <Button
                                                                     danger
                                                                     htmlType='button'
+                                                                    icon={<CloseOutlined />}
                                                                     onClick={() => removeProperty(property.name)}
                                                                     className='mb-2'
                                                                 >
@@ -382,7 +383,7 @@ const CreateProduct = () => {
 
                                                         <Button
                                                             type='dashed'
-                                                            style={{ width: 300, display: 'block' }}
+                                                            style={{ width: 300 }}
                                                             onClick={() => addProperty()}
                                                             className='my-4'
                                                             icon={<PlusOutlined />}
@@ -396,14 +397,17 @@ const CreateProduct = () => {
                                                 )}
                                             </Form.List>
 
-                                            <Button
-                                                htmlType='button'
-                                                danger
-                                                onClick={() => removeVariant(variant.name)}
-                                                className='mt-2'
-                                            >
-                                                Xóa biến thể
-                                            </Button>
+                                            <div className='flex justify-end'>
+                                                <Button
+                                                    htmlType='button'
+                                                    danger
+                                                    icon={<DeleteOutlined />}
+                                                    onClick={() => removeVariant(variant.name)}
+                                                    className='text mt-2'
+                                                >
+                                                    Xóa biến thể
+                                                </Button>
+                                            </div>
                                         </div>
                                     ))}
 

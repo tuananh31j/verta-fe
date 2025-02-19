@@ -19,10 +19,12 @@ export const PrivateRoutes = [
         path: ADMIN_ROUTES.DASHBOARD,
         element: <AdminLayout />,
         children: [
+            // @Product
             { path: ADMIN_ROUTES.PRODUCTS, element: <Suspense><ProductsList/></Suspense> },
             { path: ADMIN_ROUTES.PRODUCTS_CREATE, element: <Suspense><CreateProduct/></Suspense> },
             { path: ADMIN_ROUTES.PRODUCTS_EDIT + '/:productId', element: <Suspense><UpdateProduct/></Suspense> },
             { index: true,element: <Suspense><DashboardPage /></Suspense>,  },
+
             // @Color
             { path: ADMIN_ROUTES.COLORS, element: <Suspense><Outlet /> </Suspense>,
                 children: [
@@ -32,6 +34,7 @@ export const PrivateRoutes = [
                     { path: 'edit/:id', element:  <Suspense><UpdateColor /></Suspense>,},
                 ],
             },
+
             // @Size
             { path: ADMIN_ROUTES.SIZES, element: <Suspense><Outlet /></Suspense>,
                 children: [

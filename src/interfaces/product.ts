@@ -30,7 +30,10 @@ export interface IProductDetail {
     thumbnailRef: string;
     sold: number;
     variants: IVariantDetail[];
-    categories: string[];
+    categories: {
+        _id: string;
+        name: string;
+    }[];
     filterSize: string[];
     filterColor: string[];
     createdAt: string;
