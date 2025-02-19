@@ -37,8 +37,8 @@ const OrderSuccessPage: React.FC = () => {
                                 Địa chỉ giao hàng
                             </Title>
                             <Text>
-                                {orderData.shippingAddress.address}, {orderData.shippingAddress.district},{' '}
-                                {orderData.shippingAddress.province}
+                                {orderData.shippingAddress.address},{orderData.shippingAddress.ward},{' '}
+                                {orderData.shippingAddress.district}, {orderData.shippingAddress.province}
                             </Text>
                             <Title level={4} className='mt-4'>
                                 Sản phẩm đã đặt
@@ -75,7 +75,7 @@ const OrderSuccessPage: React.FC = () => {
                                     Về trang chủ
                                 </button>
                             </Link>
-                            <Link to={'/'} className='w-2/3'>
+                            <Link to={`/account/my-orders/${orderData._id}`} className='w-2/3'>
                                 <button className='mt-4 w-full cursor-pointer rounded-md border border-black px-4 py-2 text-black duration-300 hover:bg-black hover:text-white'>
                                     Xem đơn hàng
                                 </button>

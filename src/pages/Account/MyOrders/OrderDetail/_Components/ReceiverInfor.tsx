@@ -8,6 +8,7 @@ interface Props {
         province: string;
         district: string;
         address: string;
+        ward: string;
     };
     description: string;
 }
@@ -37,8 +38,8 @@ export default function ReceiverInfor({ receiverInfo, shippingAddress, descripti
             label: <span className='font-semibold capitalize'>Địa chỉ nhận hàng:</span>,
             children: (
                 <p>
-                    [{shippingAddress?.address}] - {shippingAddress?.district} -{shippingAddress?.province} -{' '}
-                    {shippingAddress?.country}
+                    [{shippingAddress?.address}] - {shippingAddress?.ward} - {shippingAddress?.district} -
+                    {shippingAddress?.province} - {shippingAddress?.country}
                 </p>
             ),
         },
@@ -54,15 +55,15 @@ export default function ReceiverInfor({ receiverInfo, shippingAddress, descripti
             <h3 className='text-lg font-medium text-black'>Thông tin người nhận</h3>
             <div className='grid grid-cols-3'>
                 {receiverItems.map((item, index) => (
-                    <div key={index} className='flex gap-2'>
+                    <div key={index} className='flex flex-col gap-2'>
                         {item.label}
-                        {item.children}
+                        <span className='font-thin'>{item.children}</span>
                     </div>
                 ))}
             </div>
-            <div className='grid grid-cols-2'>
+            <div className='mt-2 grid grid-cols-2'>
                 {shippingAddressItems.map((item, index) => (
-                    <div className='flex gap-2' key={index}>
+                    <div className='flex flex-col gap-2' key={index}>
                         {item.label}
                         {item.children}
                     </div>
