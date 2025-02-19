@@ -14,7 +14,7 @@ import { useUpdatePro } from '~/hooks/mutations/products/useUpdatePro';
 import { useGetAllCate } from '~/hooks/queries/catrgories/useGetAllCate';
 import { useGetProductDetailsForAdmin } from '~/hooks/queries/products/useGetProductDetailsForAdmin';
 import useGetAllSizes from '~/hooks/Sizes/Queries/useGetAllSizes';
-import WrapperPageAdmin from '~/pages/Admins/_common/WrapperPageAdmin';
+import WrapperPageAdmin from '~/pages/Admin/_common/WrapperPageAdmin';
 import { uploadService } from '~/services/upload.service';
 import { SizeEnum } from '~/types/enum';
 import { ICreateVariant } from '~/types/Variant';

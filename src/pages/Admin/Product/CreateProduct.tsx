@@ -12,7 +12,7 @@ import useGetAllColors from '~/hooks/Colors/Queries/useGetAllColors';
 import { useCreatePro } from '~/hooks/mutations/products/useCreatePro';
 import { useGetAllCate } from '~/hooks/queries/catrgories/useGetAllCate';
 import useGetAllSizes from '~/hooks/Sizes/Queries/useGetAllSizes';
-import WrapperPageAdmin from '~/pages/Admins/_common/WrapperPageAdmin';
+import WrapperPageAdmin from '~/pages/Admin/_common/WrapperPageAdmin';
 import { productServices } from '~/services/product.service';
 import { uploadService } from '~/services/upload.service';
 import { SizeEnum } from '~/types/enum';

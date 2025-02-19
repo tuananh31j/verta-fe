@@ -8,7 +8,7 @@ const TitleDisplay = ({
     border,
     onClick,
 }: {
-    title: string;
+    title: React.ReactNode;
     onClick?: () => void;
     border?: boolean;
     option?: ReactNode;

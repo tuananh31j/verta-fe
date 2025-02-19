@@ -5,7 +5,7 @@ import { cn } from '~/utils';
 interface IWrapperListProps {
     children: React.ReactNode;
     hasData?: boolean;
-    title: string;
+    title: React.ReactNode;
     option?: ReactNode;
     className?: string;
     outline?: boolean;

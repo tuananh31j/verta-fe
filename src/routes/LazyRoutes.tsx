@@ -12,9 +12,9 @@ export const ShippingAddressPage = lazy(() => import('~/pages/Checkout/ShippingA
 export const PaymentPage = lazy(() => import('~/pages/Checkout/MethodPayment/MethodPayment'));
 
 // Admin
-export const ProductsList = lazy(() => import('~/pages/Admins/Product/ProductList'));
-export const CreateProduct = lazy(() => import('~/pages/Admins/Product/CreateProduct'));
-export const UpdateProduct = lazy(() => import('~/pages/Auth/UpdateProduct'));
+export const ProductsList = lazy(() => import('~/pages/Admin/Product/ProductList'));
+export const CreateProduct = lazy(() => import('~/pages/Admin/Product/CreateProduct'));
+export const UpdateProduct = lazy(() => import('~/pages/Admin/Product/UpdateProduct'));
 export const Suspense = ({ children }: { children: React.ReactNode }) => {
     return <React.Suspense fallback={<div>Loading</div>}>{children}</React.Suspense>;
 };
