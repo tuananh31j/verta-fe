@@ -33,7 +33,7 @@ export default function ThumbnailProductsDetail({
     };
     useEffect(() => {
         const indexOfColor = variants?.findIndex((variant) => variant.color._id === selectedColor?.color._id) ?? 0;
-        setIndexImage(indexOfColor);
+        setIndexImage(indexOfColor >= 0 ? indexOfColor : 0);
     }, [selectedColor, variants]);
     return (
         <div className='flex gap-5'>

@@ -10,7 +10,7 @@ import { formatCurrency } from '~/utils/formatCurrrency';
 export interface DataType {
     _id: string;
     paymentMethod: PaymentMethod;
-    currentOrderStatus: string;
+    orderStatus: string;
     totalPrice: number;
     createdAt: string;
 }
@@ -123,7 +123,7 @@ export const orderColumns = ({
             title: 'Thao tác',
             render: (value, record) => (
                 <>
-                    <Link to={`/my-orders/${record._id}`}>
+                    <Link to={`/account/my-orders/${record._id}`}>
                         <ConfigProvider
                             theme={{
                                 components: {

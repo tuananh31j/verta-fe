@@ -20,7 +20,7 @@ const Header = () => {
               {
                   key: '1',
                   label: (
-                      <Link className='pr-10 capitalize' to='/profile'>
+                      <Link className='pr-10 capitalize' to='/account/profile'>
                           Tài khoản của tôi
                       </Link>
                   ),
@@ -28,7 +28,7 @@ const Header = () => {
               {
                   key: '2',
                   label: (
-                      <Link className='pr-10 capitalize' to='/orders'>
+                      <Link className='pr-10 capitalize' to='/account/my-orders'>
                           Đơn hàng của tôi
                       </Link>
                   ),

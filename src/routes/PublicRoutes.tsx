@@ -1,18 +1,24 @@
+import ErrorPage from '~/pages/Error/ErrorPage';
+import MainLayout from '../layouts/client/MainLayout';
+
 import { Navigate } from 'react-router-dom';
 import ProtectedLogged from '~/layouts/protected/ProtectedLogged';
-import ErrorPage from '~/pages/Error/ErrorPage';
 import NotFoundPage from '~/pages/NotFound/NotFoundPage';
-import MainLayout from '../layouts/client/MainLayout';
 import {
     AuthPage,
     CartDetail,
     HomePage,
+    MyDetailOrder,
     MyOrders,
+    PaymentPage,
     ProductDetailPage,
     Profile,
+    ShippingAddressPage,
     Suspense,
     VerifyAccountPage,
 } from './LazyRoutes';
+import CheckoutLayout from '~/layouts/checkout/CheckoutLayout';
+import OrderSuccessPage from '~/pages/Checkout/OrderSuccessPage';
 
 const PublicRoutes = [
     {
@@ -40,7 +46,9 @@ const PublicRoutes = [
                 path: '/auth',
                 element: (
                     <Suspense>
-                        <AuthPage />
+                        <ProtectedLogged type='LOGGED'>
+                            <AuthPage />
+                        </ProtectedLogged>
                     </Suspense>
                 ),
             },
@@ -48,7 +56,7 @@ const PublicRoutes = [
                 path: '/verifyAccount',
                 element: (
                     <Suspense>
-                        <ProtectedLogged>
+                        <ProtectedLogged type='LOGGED'>
                             <VerifyAccountPage />
                         </ProtectedLogged>
                     </Suspense>
@@ -58,7 +66,7 @@ const PublicRoutes = [
                 path: '/cart/detail',
                 element: (
                     <Suspense>
-                        <ProtectedLogged>
+                        <ProtectedLogged type='NOTLOG'>
                             <CartDetail />
                         </ProtectedLogged>
                     </Suspense>
@@ -68,7 +76,7 @@ const PublicRoutes = [
                 path: '/account/profile',
                 element: (
                     <Suspense>
-                        <ProtectedLogged>
+                        <ProtectedLogged type='NOTLOG'>
                             <Profile />
                         </ProtectedLogged>
                     </Suspense>
@@ -78,13 +86,53 @@ const PublicRoutes = [
                 path: '/account/my-orders',
                 element: (
                     <Suspense>
-                        <ProtectedLogged>
+                        <ProtectedLogged type='NOTLOG'>
                             <MyOrders />
                         </ProtectedLogged>
                     </Suspense>
                 ),
             },
+            {
+                path: '/account/my-orders/:id',
+                element: (
+                    <Suspense>
+                        <ProtectedLogged type='NOTLOG'>
+                            <MyDetailOrder />
+                        </ProtectedLogged>
+                    </Suspense>
+                ),
+            },
         ],
+    },
+    {
+        path: '/checkout',
+        element: (
+            <ProtectedLogged type='NOTLOG'>
+                <CheckoutLayout />
+            </ProtectedLogged>
+        ),
+        children: [
+            {
+                path: '',
+                element: (
+                    <Suspense>
+                        <ShippingAddressPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'payment',
+                element: (
+                    <Suspense>
+                        <PaymentPage />
+                    </Suspense>
+                ),
+            },
+        ],
+    },
+    {
+        path: '/order/success/:id',
+        element: <OrderSuccessPage />,
     },
     {
         path: '*',

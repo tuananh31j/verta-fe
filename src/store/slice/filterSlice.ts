@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Params } from '~/interfaces/api';
+import { Params } from '~/types/Api';
 
 const initialState: { query: Params; grid: string } = { query: {}, grid: '' };
 const filterSlice = createSlice({

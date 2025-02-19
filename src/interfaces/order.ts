@@ -1,77 +1,76 @@
-import { OrderStatus, PaymentMethod } from '../constants/enum';
-
-export type IShippingAddress = {
-    city: string;
-    country: string;
-    line1: string;
-    line2: string;
-    postal_code: string;
-    state: string;
-};
-export type ICustomerInfo = {
+interface CustomerInfo {
     name: string;
     email: string;
     phone: string;
-};
+}
+interface ShippingAddress {
+    country: string;
+    province: string;
+    district: string;
+    address: string;
+}
 
+// PAYLOAD
+interface ProductItem {
+    productId: string;
+    variantId: string;
+    name: string;
+    size: string;
+    color: string;
+    category: string;
+    quantity: number;
+    price: number;
+    image: string;
+}
+export interface IOrderCreatePayload {
+    items: ProductItem[];
+    totalPrice: number;
+    shippingFee: number;
+    customerInfo: CustomerInfo;
+    shippingAddress: ShippingAddress;
+    description?: string;
+}
 export type IOrderItem = {
     name: string;
     quantity: number;
     price: number;
     image: string;
 };
-export type IOrderDetails = {
-    receiverInfo: {
-        name: string;
-        email: string;
-        phone: string;
-    };
-    note?: string;
-    shippingAddress: IShippingAddress;
-    _id: string;
+// RESPONSE
+interface OrderItem {
+    productId: string;
+    variantId: string;
+    name: string;
+    size: string;
+    color: string;
+    category: string;
+    quantity: number;
+    price: number;
+    image: string;
+    isReviewed: boolean;
+    isReviewDisabled: boolean;
+}
+
+export interface IOrder {
     userId: string;
-    items: IOrderItem[];
+    items: OrderItem[];
     totalPrice: number;
-    tax: number;
     shippingFee: number;
-    paymentMethod: PaymentMethod;
+    customerInfo: CustomerInfo;
+    shippingAddress: ShippingAddress;
+    paymentMethod: string;
     isPaid: boolean;
-    currentOrderStatus: OrderStatus;
-    orderStatusLogs: Array<{
-        orderStatus: OrderStatus;
-        reason: string;
-        _id: string;
-        createdAt: string;
-    }>;
+    canceledBy: string;
+    description: string;
+    orderStatus: string;
+    _id: string;
     createdAt: string;
-};
+    updatedAt: string;
+}
 
 export interface IOrderResponse {
-    orders: Array<{
-        _id: string;
-        totalPrice: number;
-        paymentMethod: PaymentMethod;
-        isPaid: boolean;
-        currentOrderStatus: OrderStatus;
-        createdAt: string;
-    }>;
+    orders: IOrder[];
     page: number;
     totalDocs: number;
     totalPages: number;
 }
-
-export type IOrderParams = {
-    orderStatus: string[] | null;
-    isPaid: string[] | null;
-    paymentMethod: string[] | null;
-};
-
-export type IOrderHead = {
-    _id: string;
-    name: string;
-    totalPrice: number;
-    paymentMethod: string;
-    orderStatus: OrderStatus;
-    isPaid: boolean;
-    createdAt: string;
-};

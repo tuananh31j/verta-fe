@@ -35,8 +35,14 @@ const TableDisplay = <T extends object>({
                 dataSource={dataSource}
                 pagination={false}
             />
-            <Space className='m-5 flex w-full justify-end'>
-                <Pagination onChange={onSelectPaginateChange} pageSize={10} total={totalDocs} current={currentPage} />
+            <Space className='-ml-5 flex w-full justify-end'>
+                <Pagination
+                    onChange={onSelectPaginateChange}
+                    pageSize={10}
+                    showSizeChanger={false}
+                    total={totalDocs}
+                    current={currentPage}
+                />
             </Space>
         </>
     );
