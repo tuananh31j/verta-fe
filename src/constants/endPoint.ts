@@ -14,18 +14,8 @@ export const PRODUCT_ENDPOINT = {
     UPDATE: '/products',
     UPDATE_VARIATIONS: '/products/variation/',
     CREATE_VARIATIONS: '/products/variation/',
-    FILTER: '/products/filter',
-    HIDE: '/products/hide', // @productId
-    SHOW: '/products/show', // @productId
 };
-export const CATEGORY_ENDPOINT = {
-    ALL: '/categories/all',
-    MENU: '/categories/menu',
-    POPULAR: '/categories/popular',
-    CREATE: '/categories',
-    DETAIL: '/categories',
-    UPDATE: '/categories',
-};
+export const CATEGORY_ENDPOINT = {};
 export const CART_ENDPOINT = {
     GET: '/carts',
     ADDCART: '/carts/add',
@@ -45,32 +35,17 @@ export const COLOR_ENDPOINT = {
     CREATE: '/colors',
     UPDATE: '/colors',
 };
-export const TAG_ENDPOINT = {
-    ALL: '/tags/all',
-    DETAIL: '/tags',
-    CREATE: '/tags',
-    UPDATE: '/tags',
-};
 export const AUTH_ENDPOINT = {
     LOGIN: '/auth/login',
     REGISTER: '/auth/register',
     SENDMAIL: '/auth/sendVerify',
     VERIFY: '/auth/verifyEmail',
     RESETPASSWORD: '/auth/resetPassword',
-    REFRESH: '/auth/refresh',
     LOGOUT: '/auth/logout',
-};
-
-export const CHECKOUT_ENDPOINT = {
-    ORDERS: '/orders',
-    VNPAY: '/create-checkout-with-vnpay',
-    SESSION: '/create-checkout-session',
 };
 
 export const ORDER_ENDPOINT = {
     GET_ALL_ORDERS: '/orders',
-    // MY_ORDERS: '/orders/user',
-    VNPAY_RETURN: '/vnpay-return',
     MY_ORDERS: 'orders/my-order',
     CANCEL_ORDER: '/orders/cancel',
     CONFIRM_ORDER: '/orders/confirm',
@@ -81,43 +56,21 @@ export const ORDER_ENDPOINT = {
     DISABLED_REVIEW: '/orders/disabled-review',
 };
 
-export const STATS_ENDPOINT = {
-    TOTAL: '/stats/total',
-    DAILY_STATS: '/stats/daily',
-    MONTHLY_STATS: '/stats/monthly',
-    YEARLY_STATS: '/stats/yearly',
-    DATE_RANGE: 'stats/dateRange',
-    PRODUCTS: '/stats/productStats',
-    TOP_BUYERS: '/stats/topBuyers',
-};
+export const STATS_ENDPOINT = {};
 
 export const USER_ENDPOINT = {
     PROFILE: '/users/profile',
     ALL: '/users/all',
     UPDATE: '/users',
     CHANGE_PASSWORD: '/users/changePassword',
-    UPDATE_ADMIN: '/users',
     DETAIL: '/users',
 };
-export const REVIEW_ENDPOINT = {
-    GETOFPRODUCT: '/reviews',
-    GET_DETAIL: '/reviews',
-    GET_ALL: '/reviews/all',
-    CREATE: '/reviews',
-    STARS_REVIEW: '/reviews/stars-review',
-    DELETE_REVIEW: '/reviews/',
-    CHECK_PURCHASED: '/reviews/purchased',
-    UPDATE_ISREVIEWED: '/reviews/',
-};
+export const REVIEW_ENDPOINT = {};
 export const LOCATION_ENDPOINT = {
     ROOT: '/locations',
     USER: '/locations/user',
 };
-export const WISHLIST_ENDPOINT = {
-    MY_WISHLIST: '/users/private/wish-list',
-    ADD_WISHLIST: '/users/private/wish-list/add',
-    REMOVE_WISHLIST: '/users/private/wish-list/remove',
-};
+export const WISHLIST_ENDPOINT = {};
 
 export const SHIPPING_ENDPOINT = {
     PROVINCES: 'shipping/get-province',

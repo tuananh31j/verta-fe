@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
-import { Button, Form, Input, InputNumber, message, Modal, Select, TreeSelect, Upload } from 'antd';
+import { DeleteOutlined, PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
+import { Button, Form, Input, InputNumber, message, Modal, Select, Tooltip, TreeSelect, Upload } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { RcFile } from 'antd/es/upload';
 import { UploadFile, UploadProps } from 'antd/lib';
@@ -276,148 +276,208 @@ const CreateProduct = () => {
                                 ]}
                             />
                         </Form.Item>
-
                         <Form.List name='variants'>
                             {(variants, { add: addVariant, remove: removeVariant }) => (
-                                <>
+                                <div className='space-y-6'>
                                     {variants.map((variant, variantIndex) => (
                                         <div
                                             key={variant.key}
-                                            className='mb-4 rounded border p-4'
-                                            style={{ border: '1px solid #e8e8e8' }}
+                                            className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-md'
                                         >
-                                            <Form.Item
-                                                label={`Màu sắc biến thể (${variantIndex + 1})`}
-                                                name={[variant.name, 'color']}
-                                                rules={[{ required: true, message: 'Vui lòng chọn màu sắc biến thể' }]}
-                                            >
-                                                <Select
-                                                    placeholder='Chọn màu sắc'
-                                                    size='large'
-                                                    options={colorList?.map((color) => {
-                                                        return {
-                                                            value: color._id,
-                                                            label: <p>{color.name}</p>,
-                                                        };
-                                                    })}
-                                                />
-                                            </Form.Item>
-
-                                            <Form.Item
-                                                label={`Ảnh biến thể (${variantIndex + 1})`}
-                                                name={[variant.name, 'image']}
-                                                valuePropName='fileList'
-                                                getValueFromEvent={normFile}
-                                            >
-                                                <Upload
-                                                    listType='picture-card'
-                                                    beforeUpload={beforeUpload}
-                                                    onPreview={handlePreview}
-                                                    maxCount={1}
+                                            <div className='mb-6 flex items-center justify-between border-b border-gray-100 pb-4'>
+                                                <h3 className='text-lg font-medium text-gray-800'>
+                                                    Biến thể {variantIndex + 1}
+                                                </h3>
+                                                <Button
+                                                    danger
+                                                    onClick={() => removeVariant(variant.name)}
+                                                    className='flex items-center hover:bg-red-50'
+                                                    icon={<DeleteOutlined />}
                                                 >
-                                                    <div>
-                                                        <PlusOutlined />
-                                                        <div style={{ marginTop: 8 }}>Upload</div>
-                                                    </div>
-                                                </Upload>
-                                            </Form.Item>
+                                                    Xóa biến thể
+                                                </Button>
+                                            </div>
 
-                                            {/* Nested List cho các thuộc tính con */}
-                                            <Form.List name={[variant.name, 'properties']}>
-                                                {(properties, { add: addProperty, remove: removeProperty }) => (
-                                                    <>
-                                                        {properties.map((property, propertyIndex) => (
-                                                            <div
-                                                                key={property.key}
-                                                                className='mt-4 ml-4 rounded border p-4'
-                                                                style={{ border: '1px solid #f0f0f0' }}
-                                                            >
-                                                                <Form.Item
-                                                                    label={`Size (${propertyIndex + 1})`}
-                                                                    name={[property.name, 'size']}
-                                                                    rules={[
-                                                                        {
-                                                                            required: true,
-                                                                            message: 'Vui lòng chọn size',
-                                                                        },
-                                                                    ]}
-                                                                >
-                                                                    <Select
-                                                                        placeholder='Chọn kích cỡ'
-                                                                        size='large'
-                                                                        options={sizeList?.map((size) => ({
-                                                                            value: size._id,
-                                                                            label: <p>{size.value}</p>,
-                                                                        }))}
-                                                                    />
-                                                                </Form.Item>
+                                            <div className='grid gap-6 lg:grid-cols-2'>
+                                                <div className='space-y-6'>
+                                                    <Form.Item
+                                                        label={
+                                                            <span className='font-medium text-gray-700'>Màu sắc</span>
+                                                        }
+                                                        name={[variant.name, 'color']}
+                                                        rules={[
+                                                            {
+                                                                required: true,
+                                                                message: 'Vui lòng chọn màu sắc biến thể',
+                                                            },
+                                                        ]}
+                                                    >
+                                                        <Select
+                                                            placeholder='Chọn màu sắc'
+                                                            size='large'
+                                                            className='w-full'
+                                                            options={colorList?.map((color) => ({
+                                                                value: color._id,
+                                                                label: (
+                                                                    <div className='flex items-center gap-3 py-1'>
+                                                                        <Tooltip title={color.hex}>
+                                                                            <div
+                                                                                className='h-6 w-6 rounded-full border border-gray-200 shadow-sm transition-transform hover:scale-110'
+                                                                                style={{ backgroundColor: color.hex }}
+                                                                            />
+                                                                        </Tooltip>
+                                                                        <span className='font-medium'>
+                                                                            {color.name}
+                                                                        </span>
+                                                                    </div>
+                                                                ),
+                                                            }))}
+                                                            optionLabelProp='label'
+                                                        />
+                                                    </Form.Item>
 
-                                                                <Form.Item
-                                                                    label={`Tồn kho (${propertyIndex + 1})`}
-                                                                    name={[property.name, 'stock']}
-                                                                    rules={[
-                                                                        {
-                                                                            required: true,
-                                                                            message: 'Vui lòng nhập số lượng',
-                                                                        },
-                                                                    ]}
-                                                                >
-                                                                    <InputNumber
-                                                                        placeholder='Nhập số lượng...'
-                                                                        size='large'
-                                                                        style={{ width: '100%' }}
-                                                                    />
-                                                                </Form.Item>
+                                                    <Form.Item
+                                                        label={
+                                                            <span className='font-medium text-gray-700'>
+                                                                Ảnh biến thể
+                                                            </span>
+                                                        }
+                                                        name={[variant.name, 'image']}
+                                                        valuePropName='fileList'
+                                                        getValueFromEvent={normFile}
+                                                    >
+                                                        <Upload
+                                                            listType='picture-card'
+                                                            beforeUpload={beforeUpload}
+                                                            onPreview={handlePreview}
+                                                            maxCount={1}
+                                                            className='hover:border-primary/60 rounded-lg border-2 border-dashed border-gray-200 transition-colors'
+                                                        >
+                                                            <div className='flex flex-col items-center p-2'>
+                                                                <PlusOutlined className='text-xl text-gray-400' />
+                                                                <div className='mt-2 text-sm text-gray-500'>
+                                                                    Tải ảnh lên
+                                                                </div>
+                                                            </div>
+                                                        </Upload>
+                                                    </Form.Item>
+                                                </div>
+
+                                                <div className='space-y-4'>
+                                                    <Form.List name={[variant.name, 'properties']}>
+                                                        {(properties, { add: addProperty, remove: removeProperty }) => (
+                                                            <div className='space-y-4'>
+                                                                <div className='max-h-[400px] overflow-y-auto pr-2'>
+                                                                    {properties.map((property, propertyIndex) => (
+                                                                        <div
+                                                                            key={property.key}
+                                                                            className='mb-4 rounded-lg border border-gray-100 bg-gray-50/50 p-4'
+                                                                        >
+                                                                            <div className='mb-4 flex items-center justify-between'>
+                                                                                <h4 className='font-medium text-gray-700'>
+                                                                                    Thuộc tính {propertyIndex + 1}
+                                                                                </h4>
+                                                                                <Button
+                                                                                    type='text'
+                                                                                    danger
+                                                                                    size='small'
+                                                                                    onClick={() =>
+                                                                                        removeProperty(property.name)
+                                                                                    }
+                                                                                    icon={<DeleteOutlined />}
+                                                                                    className='flex items-center hover:bg-red-50'
+                                                                                >
+                                                                                    Xóa
+                                                                                </Button>
+                                                                            </div>
+
+                                                                            <div className='grid gap-4'>
+                                                                                <Form.Item
+                                                                                    label={
+                                                                                        <span className='text-gray-600'>
+                                                                                            Kích cỡ
+                                                                                        </span>
+                                                                                    }
+                                                                                    name={[property.name, 'size']}
+                                                                                    rules={[
+                                                                                        {
+                                                                                            required: true,
+                                                                                            message:
+                                                                                                'Vui lòng chọn size',
+                                                                                        },
+                                                                                    ]}
+                                                                                >
+                                                                                    <Select
+                                                                                        placeholder='Chọn kích cỡ'
+                                                                                        size='large'
+                                                                                        className='w-full'
+                                                                                        options={sizeList?.map(
+                                                                                            (size) => ({
+                                                                                                value: size._id,
+                                                                                                label: (
+                                                                                                    <span className='font-medium'>
+                                                                                                        {size.value}
+                                                                                                    </span>
+                                                                                                ),
+                                                                                            })
+                                                                                        )}
+                                                                                    />
+                                                                                </Form.Item>
+
+                                                                                <Form.Item
+                                                                                    label={
+                                                                                        <span className='text-gray-600'>
+                                                                                            Tồn kho
+                                                                                        </span>
+                                                                                    }
+                                                                                    name={[property.name, 'stock']}
+                                                                                    rules={[
+                                                                                        {
+                                                                                            required: true,
+                                                                                            message:
+                                                                                                'Vui lòng nhập số lượng',
+                                                                                        },
+                                                                                    ]}
+                                                                                >
+                                                                                    <InputNumber
+                                                                                        placeholder='Nhập số lượng...'
+                                                                                        size='large'
+                                                                                        className='w-full'
+                                                                                        min={0}
+                                                                                    />
+                                                                                </Form.Item>
+                                                                            </div>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
 
                                                                 <Button
-                                                                    danger
-                                                                    htmlType='button'
-                                                                    onClick={() => removeProperty(property.name)}
-                                                                    className='mb-2'
+                                                                    type='dashed'
+                                                                    onClick={() => addProperty()}
+                                                                    icon={<PlusOutlined />}
+                                                                    disabled={properties.length >= 8}
+                                                                    className='mt-2 h-10 w-full'
                                                                 >
-                                                                    Xóa thuộc tính
+                                                                    Thêm thuộc tính
                                                                 </Button>
                                                             </div>
-                                                        ))}
-
-                                                        <Button
-                                                            type='dashed'
-                                                            style={{ width: 300, display: 'block' }}
-                                                            onClick={() => addProperty()}
-                                                            className='my-4'
-                                                            icon={<PlusOutlined />}
-                                                            block
-                                                            htmlType='button'
-                                                            disabled={properties.length >= 8}
-                                                        >
-                                                            Thêm thuộc tính
-                                                        </Button>
-                                                    </>
-                                                )}
-                                            </Form.List>
-
-                                            <Button
-                                                htmlType='button'
-                                                danger
-                                                onClick={() => removeVariant(variant.name)}
-                                                className='mt-2'
-                                            >
-                                                Xóa biến thể
-                                            </Button>
+                                                        )}
+                                                    </Form.List>
+                                                </div>
+                                            </div>
                                         </div>
                                     ))}
 
                                     <Button
                                         type='dashed'
-                                        htmlType='button'
                                         onClick={() => addVariant()}
                                         icon={<PlusOutlined />}
                                         disabled={variants.length >= 5}
-                                        block
+                                        className='h-12 w-full text-base'
                                     >
-                                        Thêm biến thể
+                                        Thêm biến thể mới
                                     </Button>
-                                </>
+                                </div>
                             )}
                         </Form.List>
                     </WrapperCard>
