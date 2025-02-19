@@ -31,7 +31,7 @@ const UpdateProduct = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [form] = Form.useForm<any>();
     const { productId } = useParams<{ productId: string }>();
-    const navigater = useNavigate();
+    const navigate = useNavigate();
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
@@ -150,11 +150,14 @@ const UpdateProduct = () => {
                                 imageRef: variantRes.urlRef,
                             }));
                         }
+                        console.log(variant.image, 'variant.image');
                         return variant.properties.map((property: any) => ({
                             _id: property._id || null,
                             size: property.size,
                             stock: property.stock,
                             color: variant.color,
+                            image: variant.image[0].url,
+                            imageRef: variant.image[0].name,
                         }));
                     })
                 )
@@ -175,7 +178,7 @@ const UpdateProduct = () => {
             };
             console.log(updatePayload);
             await updateProduct({ id: productId!, data: updatePayload });
-            navigater(ADMIN_ROUTES.PRODUCTS);
+            navigate(ADMIN_ROUTES.PRODUCTS);
         } catch (err) {
             if (err instanceof Error) {
                 message.error(err.message);
@@ -184,6 +187,7 @@ const UpdateProduct = () => {
             }
         }
     };
+
     useEffect(() => {
         if (productDetails) {
             const { name, price, summary, categories, thumbnail, variants, type } = productDetails;

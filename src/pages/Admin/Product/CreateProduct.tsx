@@ -29,6 +29,8 @@ const getBase64 = (file: RcFile): Promise<string> =>
 
 const CreateProduct = () => {
     const [form] = Form.useForm<any>();
+    const variantsWatch = Form.useWatch('variants', form);
+    console.log(variantsWatch, 'variantsWatch');
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const [previewOpen, setPreviewOpen] = useState(false);
