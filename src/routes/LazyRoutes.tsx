@@ -14,7 +14,7 @@ export const PaymentPage = lazy(() => import('~/pages/Checkout/MethodPayment/Met
 // Admin
 export const ProductsList = lazy(() => import('~/pages/Admins/Product/ProductList'));
 export const CreateProduct = lazy(() => import('~/pages/Admins/Product/CreateProduct'));
-export const UpdateProduct = lazy(() => import('~/pages/Admins/Product/UpdateProduct'));
+export const UpdateProduct = lazy(() => import('~/pages/Auth/UpdateProduct'));
 export const Suspense = ({ children }: { children: React.ReactNode }) => {
     return <React.Suspense fallback={<div>Loading</div>}>{children}</React.Suspense>;
 };
