@@ -1,5 +1,6 @@
 export const QUERY_KEY = {
     CART: 'cart',
+    MY_ORDERS: 'my-orders',
     SIZES: 'sizes',
     COLORS: 'colors',
     PRODUCTS: {

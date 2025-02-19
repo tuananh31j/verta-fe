@@ -2,7 +2,6 @@ import { SearchOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/
 import { Badge, ConfigProvider, Dropdown, MenuProps, Popover } from 'antd';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import logo from '~/assets/logo.png';
 import CartModal from '~/components/CartModal/CartModal';
 import HeaderCart from '~/components/HeaderCart/HeaderCart';
 import { logout } from '~/store/slice/authSlice';
@@ -20,7 +19,7 @@ const Header = () => {
               {
                   key: '1',
                   label: (
-                      <Link className='pr-10 capitalize' to='/profile'>
+                      <Link className='pr-10 capitalize' to='/account/profile'>
                           Tài khoản của tôi
                       </Link>
                   ),
@@ -28,7 +27,7 @@ const Header = () => {
               {
                   key: '2',
                   label: (
-                      <Link className='pr-10 capitalize' to='/orders'>
+                      <Link className='pr-10 capitalize' to='/account/my-orders'>
                           Đơn hàng của tôi
                       </Link>
                   ),
@@ -70,8 +69,8 @@ const Header = () => {
         >
             <div className='mx-2 flex items-center justify-between py-3'>
                 <div className='mx-6 grid w-full max-w-7xl grid-cols-3 items-center justify-between xl:mx-auto'>
-                    <Link to='/' className='w-24'>
-                        <img src={logo} alt='logo' className='w-full' />
+                    <Link to={'/'} className='text-4xl font-semibold'>
+                        VERTA
                     </Link>
                     <div className='flex'>
                         <ul className='flex gap-5'>

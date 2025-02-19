@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import TitleDisplay from '../TitleDisplay';
 import { cn } from '~/utils';
+import TitleDisplay from '../TitleDisplay';
 
 interface IWrapperListProps {
     children: React.ReactNode;

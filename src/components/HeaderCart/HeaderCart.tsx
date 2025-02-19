@@ -2,7 +2,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import { Empty, Popconfirm, Spin, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import useRemoveCartItem from '~/hooks/mutations/cart/useRemoveCartItem';
-import useGetAllCart from '~/hooks/queries/products/cart/useGetAllCart';
+import useGetAllCart from '~/hooks/queries/cart/useGetAllCart';
 import { formatCurrency } from '~/utils/formatCurrrency';
 
 const HeaderCart = () => {

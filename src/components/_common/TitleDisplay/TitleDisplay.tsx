@@ -21,14 +21,8 @@ const TitleDisplay = ({
         }
     };
     return (
-        <div
-            onClick={handleClick}
-            className={clsx(
-                { ['border-b-[1.5px] border-[#da291c]']: border },
-                'mb-5 flex items-center justify-between'
-            )}
-        >
-            <div className='inline-block border-b-[1.5px] border-[#da291c] py-[4px] text-start md:border-b-[2.3px]'>
+        <div onClick={handleClick} className={clsx('mb-5 flex items-center justify-between')}>
+            <div className='inline-block py-[4px] text-start'>
                 <span className='flex items-center gap-3'>
                     {!status && !!onClick && <MinusOutlined />}
                     {status && <PlusOutlined />}

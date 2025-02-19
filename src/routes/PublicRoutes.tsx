@@ -1,18 +1,22 @@
 import ErrorPage from '~/pages/Error/ErrorPage';
 import MainLayout from '../layouts/client/MainLayout';
+
+import { Navigate } from 'react-router-dom';
+import ProtectedLogged from '~/layouts/protected/ProtectedLogged';
+import NotFoundPage from '~/pages/NotFound/NotFoundPage';
 import {
     AuthPage,
     CartDetail,
     HomePage,
+    MyDetailOrder,
+    MyOrders,
     PaymentPage,
     ProductDetailPage,
+    Profile,
     ShippingAddressPage,
     Suspense,
     VerifyAccountPage,
 } from './LazyRoutes';
-import ProtectedLogged from '~/layouts/protected/ProtectedLogged';
-import { Navigate } from 'react-router-dom';
-import NotFoundPage from '~/pages/NotFound/NotFoundPage';
 import CheckoutLayout from '~/layouts/checkout/CheckoutLayout';
 import OrderSuccessPage from '~/pages/Checkout/OrderSuccessPage';
 
@@ -64,6 +68,36 @@ const PublicRoutes = [
                     <Suspense>
                         <ProtectedLogged type='NOTLOG'>
                             <CartDetail />
+                        </ProtectedLogged>
+                    </Suspense>
+                ),
+            },
+            {
+                path: '/account/profile',
+                element: (
+                    <Suspense>
+                        <ProtectedLogged type='NOTLOG'>
+                            <Profile />
+                        </ProtectedLogged>
+                    </Suspense>
+                ),
+            },
+            {
+                path: '/account/my-orders',
+                element: (
+                    <Suspense>
+                        <ProtectedLogged type='NOTLOG'>
+                            <MyOrders />
+                        </ProtectedLogged>
+                    </Suspense>
+                ),
+            },
+            {
+                path: '/account/my-orders/:id',
+                element: (
+                    <Suspense>
+                        <ProtectedLogged type='NOTLOG'>
+                            <MyDetailOrder />
                         </ProtectedLogged>
                     </Suspense>
                 ),

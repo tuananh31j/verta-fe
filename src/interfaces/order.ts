@@ -8,7 +8,9 @@ interface ShippingAddress {
     province: string;
     district: string;
     address: string;
+    ward: string;
 }
+
 // PAYLOAD
 interface ProductItem {
     productId: string;
@@ -29,6 +31,12 @@ export interface IOrderCreatePayload {
     shippingAddress: ShippingAddress;
     description?: string;
 }
+export type IOrderItem = {
+    name: string;
+    quantity: number;
+    price: number;
+    image: string;
+};
 // RESPONSE
 interface OrderItem {
     productId: string;
@@ -59,4 +67,11 @@ export interface IOrder {
     _id: string;
     createdAt: string;
     updatedAt: string;
+}
+
+export interface IOrderResponse {
+    orders: IOrder[];
+    page: number;
+    totalDocs: number;
+    totalPages: number;
 }

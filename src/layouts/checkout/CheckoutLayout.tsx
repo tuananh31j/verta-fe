@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Link, Navigate, Outlet } from 'react-router-dom';
 import { useToast } from '~/context/ToastProvider';
-import useGetAllCart from '~/hooks/queries/products/cart/useGetAllCart';
+import useGetAllCart from '~/hooks/queries/cart/useGetAllCart';
 import { ItemsReduxPayload, setPrice, setProductsItems } from '~/store/slice/checkoutSlice';
 import { useAppDispatch, useTypedSelector } from '~/store/store';
 import { formatCurrency } from '~/utils/formatCurrrency';
