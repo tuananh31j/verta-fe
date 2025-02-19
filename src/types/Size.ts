@@ -12,5 +12,7 @@ export type ISizeResponse = {
 };
 
 export interface ISizeFormData {
-    value: string;
+    name: string;
+    type: SizeType;
 }
+export type SizeType = 'freesize' | 'numericsize';

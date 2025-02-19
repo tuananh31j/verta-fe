@@ -8,6 +8,7 @@ interface ShippingAddress {
     province: string;
     district: string;
     address: string;
+    ward: string;
 }
 
 // PAYLOAD

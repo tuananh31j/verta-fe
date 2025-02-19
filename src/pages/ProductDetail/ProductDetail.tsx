@@ -38,6 +38,7 @@ export default function ProductDetail() {
                         <h3 className='text-lg font-bold text-[#070707] uppercase'>{data.name}</h3>
                         <div className='mt-2 text-sm text-[#070707]'>
                             <p className='capitalize'>Thương hiệu: VERTA</p>
+                            <p className='capitalize'>Danh mục: {data.categories.map((item) => item.name).join('/')}</p>
                             <p className='uppercase'>Mã sản phẩm: {id}</p>
                         </div>
                         <p className='my-4 text-2xl font-bold text-[#070707]'>{formatCurrency(data.price)}</p>

@@ -29,6 +29,7 @@ export default function CashPaymentModal({
                 country: checkOutInfor.shippingAddress.country,
                 district: checkOutInfor.shippingAddress.district,
                 province: checkOutInfor.shippingAddress.province,
+                ward: checkOutInfor.shippingAddress.ward,
             },
             shippingFee: checkOutInfor.shippingFee,
             totalPrice: checkOutInfor.totalPrice,
