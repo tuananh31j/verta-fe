@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import WrapperPageAdmin from '../_common/WrapperPageAdmin';
 import { colorHexValidator } from '~/validations/color/validator';
+import { useToast } from '~/context/ToastProvider';
 
 const UpdateColor = () => {
     const { id } = useParams();
@@ -17,10 +18,25 @@ const UpdateColor = () => {
     const [form] = Form.useForm<IColorFormData>();
     const { mutate: updateCategory, isPending } = useMutationUpdateColor();
     const { token } = theme.useToken();
+    const toast = useToast();
 
     const onFinish: FormProps<IColorFormData>['onFinish'] = (values) => {
         if (id) {
-            updateCategory({ id, payload: values });
+            const trimValues = {
+                ...values,
+                name: values.name.trim(),
+            };
+            updateCategory(
+                { id, payload: trimValues },
+                {
+                    onSuccess: () => {
+                        toast('success', 'Cập nhật thành công');
+                    },
+                    onError: (err: any) => {
+                        toast('error', err?.message);
+                    },
+                }
+            );
         } else {
             showMessage('Không tìm thấy _id màu', 'error');
         }
@@ -38,7 +54,7 @@ const UpdateColor = () => {
         <WrapperPageAdmin
             title='Cập nhật thông tin màu'
             option={
-                <Link to={ADMIN_ROUTES.CATEGORIES} className='underline'>
+                <Link to={ADMIN_ROUTES.SIZES} className='underline'>
                     Quay lại
                 </Link>
             }

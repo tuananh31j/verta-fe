@@ -7,11 +7,14 @@ export const sizeNameValidator = [
     },
     {
         validator(_: any, name: string) {
-            if (name && name.length < 2) {
-                return ErrorMessage('Tên kích cỡ phải lớn hơn 2 kí tự');
+            if (name.length < 0) {
+                return ErrorMessage('Tên kích cỡ phải có ít nhất 2 kí tự');
             }
-            if (name && name.length > 30) {
-                return ErrorMessage('Tên kích cỡ phải nhỏ hơn 30 kí tự');
+            if (name.length > 30) {
+                return ErrorMessage('Tên kích cỡ không được vượt quá 30 kí tự');
+            }
+            if (name.trim() !== name) {
+                return ErrorMessage('Tên kích cỡ không được có khoảng trắng ở đầu hoặc cuối');
             }
             return Promise.resolve();
         },

@@ -6,17 +6,47 @@ import { PlusSquareOutlined } from '@ant-design/icons';
 import { Button, ColorPicker, Form, FormProps, Input, theme } from 'antd';
 import { Link } from 'react-router-dom';
 import WrapperPageAdmin from '../_common/WrapperPageAdmin';
+import { useEffect, useState } from 'react';
+import { useToast } from '~/context/ToastProvider';
 
-const CreateCategory = () => {
+const CreateColors = () => {
     const [form] = Form.useForm<IColorFormData>();
     const { mutate: createColor, isPending } = useMutationCreateColor();
     const { token } = theme.useToken();
+    const toast = useToast();
+
+    const [selectedColor, setSelectedColor] = useState<string>('#ffffff');
+
+    useEffect(() => {
+        const hex = form.getFieldValue('hex');
+        if (hex) {
+            setSelectedColor(hex);
+        }
+    }, [form.getFieldValue('hex')]);
 
     const onFinish: FormProps<IColorFormData>['onFinish'] = (values) => {
-        createColor(values);
+        if (values.hex) {
+            const trimmedValues = {
+                ...values,
+                name: values.name.trim(),
+            };
+            createColor(trimmedValues, {
+                onSuccess: () => {
+                    toast('success', 'Tạo màu mới thành công!');
+                },
+                onError: (error: any) => {
+                    const errorMessage = error?.message || 'Có lỗi xảy ra!';
+                    toast('error', errorMessage);
+                },
+            });
+        }
     };
-    const selectedHex = Form.useWatch('hex', form);
 
+    const handleColorChange = (color: any) => {
+        const hexColor = color.toHexString?.() || color.toString();
+        form.setFieldsValue({ hex: hexColor });
+        setSelectedColor(hexColor);
+    };
     return (
         <WrapperPageAdmin
             title='Tạo mới màu sắc'
@@ -30,13 +60,7 @@ const CreateCategory = () => {
             }
         >
             <div className='rounded-lg border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-800'>
-                <Form
-                    form={form}
-                    layout='vertical'
-                    className='p-6'
-                    onFinish={onFinish}
-                    initialValues={{ hex: '#da291c' }}
-                >
+                <Form form={form} layout='vertical' className='p-6' onFinish={onFinish}>
                     <div className='grid grid-cols-1 gap-6 lg:grid-cols-12'>
                         <div className='space-y-6 lg:col-span-8'>
                             <Form.Item<IColorFormData>
@@ -55,27 +79,35 @@ const CreateCategory = () => {
                             <Form.Item<IColorFormData>
                                 label={<span className='text-[15px] font-medium text-gray-800'>Chọn màu</span>}
                                 name='hex'
-                                getValueFromEvent={(hex) => hex.toHexString()}
                                 rules={colorHexValidator}
+                                getValueFromEvent={(color) => {
+                                    if (typeof color === 'string') {
+                                        return color;
+                                    }
+                                    return color.toHexString?.() || color.toString();
+                                }}
                             >
                                 <div className='flex items-center gap-4'>
                                     <ColorPicker
                                         showText
                                         size='large'
+                                        format='hex'
+                                        onChange={handleColorChange}
+                                        value={selectedColor}
                                         panelRender={(panel) => (
                                             <div className='overflow-hidden rounded-lg shadow-lg'>{panel}</div>
                                         )}
                                     />
-                                    {/* <div className='hidden md:block'>
+                                    <div className='hidden md:block'>
                                         <p className='mb-2 text-sm text-gray-500'>Màu đã chọn:</p>
                                         <div
                                             className='h-20 w-20 rounded-lg border-4 border-white shadow-lg'
                                             style={{
-                                                backgroundColor: form.getFieldValue('hex') || '#da291c',
+                                                backgroundColor: selectedColor,
                                                 transition: 'background-color 0.3s',
                                             }}
                                         />
-                                    </div> */}
+                                    </div>
                                 </div>
                             </Form.Item>
                         </div>
@@ -112,4 +144,4 @@ const CreateCategory = () => {
     );
 };
 
-export default CreateCategory;
+export default CreateColors;
