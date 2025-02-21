@@ -82,7 +82,11 @@ const Profile = (props: Props) => {
                     <div className='pt-20'>
                         <div className='border-l-2 border-l-[#efeff4] pl-10'>
                             <Form form={form} layout='vertical' className='w-[582px]' onFinish={onFinish}>
-                                <Form.Item<FieldType> label='Họ tên' className='mt-1' name='name'>
+                                <Form.Item<FieldType>
+                                    label='Họ tên'
+                                    className='mt-1 text-sm text-[#070707]'
+                                    name='name'
+                                >
                                     <Input
                                         placeholder='Họ tên'
                                         style={{ backgroundColor: '#efeff4', borderRadius: 0 }}
@@ -90,7 +94,11 @@ const Profile = (props: Props) => {
                                     />
                                 </Form.Item>
 
-                                <Form.Item<FieldType> label='Quốc gia' className='mt-1' name='country'>
+                                <Form.Item<FieldType>
+                                    label='Quốc gia'
+                                    className='mt-1 text-sm text-[#070707]'
+                                    name='country'
+                                >
                                     <Input
                                         placeholder='Quốc gia'
                                         style={{ backgroundColor: '#efeff4', borderRadius: 0 }}
@@ -98,7 +106,11 @@ const Profile = (props: Props) => {
                                     />
                                 </Form.Item>
 
-                                <Form.Item<FieldType> label='Số điện thoại' name='phone'>
+                                <Form.Item<FieldType>
+                                    label='Số điện thoại'
+                                    className='mt-1 text-sm text-[#070707]'
+                                    name='phone'
+                                >
                                     <Input
                                         placeholder='Số điện thoại'
                                         style={{ backgroundColor: '#efeff4', borderRadius: 0 }}
