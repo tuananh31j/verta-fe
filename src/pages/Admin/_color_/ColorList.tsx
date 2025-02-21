@@ -6,7 +6,7 @@ import type { TableProps } from 'antd';
 import { Button, Space, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import TableDisplay from '~/components/_common/TableDisplay';
-import WrapperPageAdmin from '../_common/WrapperPageAdmin';
+import WrapperPageAdmin from '../_common';
 import useGetColors from '~/hooks/Colors/Queries/useGetColors';
 
 const ColorList = () => {

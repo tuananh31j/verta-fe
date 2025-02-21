@@ -5,7 +5,7 @@ import { sizeNameValidator } from '~/validations/size/validator';
 import { PlusSquareOutlined, ArrowLeftOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { Button, Form, FormProps, Input, theme, Card, Alert, Radio } from 'antd';
 import { Link } from 'react-router-dom';
-import WrapperPageAdmin from '../_common/WrapperPageAdmin';
+import WrapperPageAdmin from '../_common';
 
 const CreateSize = () => {
     const [form] = Form.useForm<ISizeFormData>();

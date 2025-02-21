@@ -1,15 +1,14 @@
-import { ADMIN_ROUTES } from '~/constants/router';
-import { useMutationUpdateSize } from '~/hooks/Sizes/Mutations/useUpdateSize';
-import useGetDetailSize from '~/hooks/Sizes/Queries/useGetDetailSize';
-import { ICategoryFormData } from '~/types/Category';
-import showMessage from '~/utils/ShowMessage';
-import { sizeNameValidator } from '~/validations/size/validator';
 import { EditOutlined } from '@ant-design/icons';
 import { Button, Form, FormProps, Input } from 'antd';
 import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import WrapperPageAdmin from '../_common/WrapperPageAdmin';
+import { ADMIN_ROUTES } from '~/constants/router';
+import { useMutationUpdateSize } from '~/hooks/Sizes/Mutations/useUpdateSize';
+import useGetDetailSize from '~/hooks/Sizes/Queries/useGetDetailSize';
 import { ISizeFormData } from '~/types/Size';
+import showMessage from '~/utils/ShowMessage';
+import { sizeNameValidator } from '~/validations/size/validator';
+import WrapperPageAdmin from '../_common';
 
 const UpdateSize = () => {
     const { id } = useParams();

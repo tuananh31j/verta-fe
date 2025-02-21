@@ -23,4 +23,8 @@ export const colorHexValidator = [
         required: true,
         message: 'Vui lòng nhập màu!',
     },
+    {
+        pattern: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
+        message: 'Mã màu không hợp lệ',
+    },
 ];

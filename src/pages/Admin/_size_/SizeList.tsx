@@ -7,13 +7,13 @@ import type { TableProps } from 'antd';
 import { Button, Space, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import TableDisplay from '../../../components/_common/TableDisplay';
-import WrapperPageAdmin from '../_common/WrapperPageAdmin';
+import WrapperPageAdmin from '../_common/';
 
 const CategoryList = () => {
     const { query, onFilter, onSelectPaginateChange, getColumnSearchProps } = useTable<ISize>();
     const { data: sizes } = useGetSizes(query);
     const sizeList = sizes;
-    const totalDocs = sizes?.totalDocs;
+    const totalDocs = 1;
     const currentPage = Number(query.page || 1);
 
     const columns: TableProps<ISize>['columns'] = [
