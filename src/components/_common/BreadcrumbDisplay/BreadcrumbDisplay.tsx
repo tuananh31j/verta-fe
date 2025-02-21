@@ -47,7 +47,7 @@ const BreadcrumbDisplay = ({ titleProduct }: { titleProduct?: string }) => {
                     },
                 }}
             >
-                <div className='breadcrumb-container flex h-[60px] w-full items-center font-semibold'>
+                <div className='breadcrumb-container flex h-[60px] w-full items-center border-t-1 border-b-1 border-[#efeff4] font-semibold'>
                     <Breadcrumb
                         separator='/'
                         items={[
