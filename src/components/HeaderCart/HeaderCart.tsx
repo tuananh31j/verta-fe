@@ -1,5 +1,5 @@
 import { CloseOutlined } from '@ant-design/icons';
-import { Empty, Popconfirm, Spin, Typography } from 'antd';
+import { Popconfirm, Spin, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import useRemoveCartItem from '~/hooks/mutations/cart/useRemoveCartItem';
 import useGetAllCart from '~/hooks/queries/cart/useGetAllCart';
@@ -14,21 +14,24 @@ const HeaderCart = () => {
 
     return (
         <>
-            <div className='relative'>
+            <div className={`relative ${isLoading ? 'w-50' : ''}`}>
                 {isLoading && (
-                    <div className='flex w-60 items-center justify-center'>
+                    <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
                         <Spin size='small' />
                     </div>
                 )}
                 <div
-                    className={`${(cartList && cartList.items?.length === 0) || isLoading ? 'h-40' : 'h-96 pb-48'} overflow-y-auto`}
+                    className={`${(cartList && cartList.items?.length === 0) || !cartList ? 'h-40' : 'h-96 pb-48'} overflow-y-auto`}
                 >
                     {!isLoading && cartList && cartList.items?.length === 0 && (
-                        <Empty
-                            image={Empty.PRESENTED_IMAGE_SIMPLE}
-                            className='w-60'
-                            description={<Typography.Text className='text-secondary'>Giỏ hàng trống</Typography.Text>}
-                        />
+                        <Typography.Text className='text-secondary flex h-full items-center justify-center'>
+                            Giỏ hàng trống
+                        </Typography.Text>
+                    )}
+                    {!isLoading && !cartList && (
+                        <Typography.Text className='text-secondary flex h-full items-center justify-center'>
+                            Giỏ hàng trống
+                        </Typography.Text>
                     )}
 
                     {!isLoading &&
