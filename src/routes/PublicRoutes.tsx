@@ -19,6 +19,7 @@ import {
 } from './LazyRoutes';
 import CheckoutLayout from '~/layouts/checkout/CheckoutLayout';
 import OrderSuccessPage from '~/pages/Checkout/OrderSuccessPage';
+import OrderErrorPage from '~/pages/Checkout/OrderErrrorPage';
 
 const PublicRoutes = [
     {
@@ -133,6 +134,10 @@ const PublicRoutes = [
     {
         path: '/order/success/:id',
         element: <OrderSuccessPage />,
+    },
+    {
+        path: '/order/error/:orderId',
+        element: <OrderErrorPage />,
     },
     {
         path: '*',

@@ -7,20 +7,26 @@ import { formatCurrency } from '~/utils/formatCurrrency';
 import codImg from '~/assets/cash.jpg';
 import payosImg from '~/assets/payos.svg';
 import CashPaymentModal from './_components/CashPaymentModal';
+import CardPaymentModal from './_components/CardPaymentModal';
 
 export default function MethodPayment() {
     const [paymentMethod, setPaymentMethod] = useState<'COD' | 'PAYOS'>('COD');
     const [isOpen, setOpen] = useState(false);
+    const [isOpenPayosModal, setOpenPayosModal] = useState(false);
     const onchangeRadioPayment = (type: 'COD' | 'PAYOS') => {
         setPaymentMethod(type);
     };
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(setShippingFee(30000));
+        dispatch(setShippingFee(1000));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const handleCheckOut = () => {
-        setOpen(true);
+        if (paymentMethod === 'COD') {
+            setOpen(true);
+        } else {
+            setOpenPayosModal(true);
+        }
     };
     return (
         <>
@@ -86,6 +92,7 @@ export default function MethodPayment() {
                 </div>
             </div>
             <CashPaymentModal isOpen={isOpen} setOpen={setOpen} paymentMethod={paymentMethod} />
+            <CardPaymentModal isOpen={isOpenPayosModal} setOpen={setOpenPayosModal} paymentMethod={paymentMethod} />
         </>
     );
 }

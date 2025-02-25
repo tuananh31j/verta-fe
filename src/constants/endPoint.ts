@@ -43,4 +43,8 @@ export const SHIPPING_ENDPOINT = {
 export const ORDER_ENDPOINT = {
     CREATEORDERCOD: 'orders/create-order',
     MYORDER: 'orders/my-orders',
+    CREATE_ORDER_PAYOS: 'payos/create',
+};
+export const INVENTORY_ENDPOINT = {
+    UPDATE_STOCK_ON_CANCEL_ORDER: 'payos/update-stock/cancel',
 };

@@ -1,3 +1,5 @@
+import { PaymentMethod } from '~/constants/enum';
+
 interface CustomerInfo {
     name: string;
     email: string;
@@ -30,6 +32,15 @@ export interface IOrderCreatePayload {
     customerInfo: CustomerInfo;
     shippingAddress: ShippingAddress;
     description?: string;
+}
+export interface IOrderPayOsPayLoad extends IOrderCreatePayload {
+    amount: number;
+    returnUrl: string;
+    cancelUrl: string;
+    paymentMethod: PaymentMethod;
+}
+export interface IOrderPayosReponse {
+    checkoutUrl: string;
 }
 export type IOrderItem = {
     name: string;

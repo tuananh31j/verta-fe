@@ -24,12 +24,12 @@ const HeaderCart = () => {
                     className={`${(cartList && cartList.items?.length === 0) || !cartList ? 'h-40' : 'h-96 pb-48'} overflow-y-auto`}
                 >
                     {!isLoading && cartList && cartList.items?.length === 0 && (
-                        <Typography.Text className='text-secondary flex h-full items-center justify-center'>
+                        <Typography.Text className='text-secondary flex h-full items-center justify-center px-20'>
                             Giỏ hàng trống
                         </Typography.Text>
                     )}
                     {!isLoading && !cartList && (
-                        <Typography.Text className='text-secondary flex h-full items-center justify-center'>
+                        <Typography.Text className='text-secondary flex h-full items-center justify-center px-20'>
                             Giỏ hàng trống
                         </Typography.Text>
                     )}

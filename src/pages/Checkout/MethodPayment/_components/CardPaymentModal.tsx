@@ -1,11 +1,13 @@
 import { Modal, Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { useCreateCodOrder } from '~/hooks/mutations/order/useCreateCodOrder';
-import { IOrderCreatePayload } from '~/interfaces/order';
+import { PaymentMethod } from '~/constants/enum';
+import { MAIN_ROUTES } from '~/constants/router';
+import useCreatePayosOrder from '~/hooks/mutations/order/useCreatePayosOrder';
+import { IOrderCreatePayload, IOrderPayOsPayLoad } from '~/interfaces/order';
 import { useTypedSelector } from '~/store/store';
 import { formatCurrency } from '~/utils/formatCurrrency';
 
-export default function CashPaymentModal({
+export default function CardPaymentModal({
     isOpen,
     setOpen,
     paymentMethod,
@@ -14,14 +16,14 @@ export default function CashPaymentModal({
     setOpen: (e: boolean) => void;
     paymentMethod: 'COD' | 'PAYOS';
 }) {
-    const { mutate, isPending } = useCreateCodOrder();
+    const { mutate, isPending } = useCreatePayosOrder();
+    const checkOutInfor = useTypedSelector((state) => state.checkOut);
+
     const handleCancel = () => {
         setOpen(false);
     };
-    const navigate = useNavigate();
-    const checkOutInfor = useTypedSelector((state) => state.checkOut);
     const handleConfirm = () => {
-        const payload: IOrderCreatePayload = {
+        const payload: IOrderPayOsPayLoad = {
             items: checkOutInfor.items ? [...checkOutInfor.items] : [],
             customerInfo: checkOutInfor.customerInfor,
             shippingAddress: {
@@ -33,15 +35,14 @@ export default function CashPaymentModal({
             },
             shippingFee: checkOutInfor.shippingFee,
             totalPrice: checkOutInfor.totalPrice,
+            amount: checkOutInfor.totalPrice,
             description: checkOutInfor.description,
+            returnUrl: `${window.location.origin}${MAIN_ROUTES.ORDER_SUCCESS}`,
+            cancelUrl: `${window.location.origin}${MAIN_ROUTES.ORDER_ERROR}`,
+            paymentMethod: PaymentMethod.card,
         };
         console.log(payload);
-        mutate(payload, {
-            onSuccess: (data) => {
-                setOpen(false);
-                navigate(`/order/success/${data._id}`);
-            },
-        });
+        mutate(payload);
     };
     return (
         <Modal open={isOpen} width={750} onCancel={handleCancel} footer={<></>} onClose={handleCancel} centered>

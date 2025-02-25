@@ -4,6 +4,8 @@ export const MAIN_ROUTES = {
     PROFILE: '/account/profile',
     MY_ORDERS: 'account/my-orders',
     MY_ORDER_DETAILS: 'account/my-orders/:id',
+    ORDER_SUCCESS: '/order/success',
+    ORDER_ERROR: '/order/error',
 };
 export const ADMIN_ROUTES = {
     DASHBOARD: '/admin',
