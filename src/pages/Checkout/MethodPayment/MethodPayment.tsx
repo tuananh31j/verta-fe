@@ -18,7 +18,7 @@ export default function MethodPayment() {
     };
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(setShippingFee(1000));
+        dispatch(setShippingFee(30000));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const handleCheckOut = () => {
