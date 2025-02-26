@@ -3,14 +3,27 @@ import { useMutationCreateSize } from '~/hooks/Sizes/Mutations/useCreateSize';
 import { ISizeFormData } from '~/types/Size';
 import { sizeNameValidator } from '~/validations/size/validator';
 import { PlusSquareOutlined, ArrowLeftOutlined, InfoCircleOutlined } from '@ant-design/icons';
-import { Button, Form, FormProps, Input, theme, Card, Alert, Radio } from 'antd';
+import { Button, Form, FormProps, Input, theme, Card, Alert, Radio, RadioChangeEvent } from 'antd';
 import { Link } from 'react-router-dom';
 import WrapperPageAdmin from '../_common';
+import { useState } from 'react';
 
 const CreateSize = () => {
     const [form] = Form.useForm<ISizeFormData>();
     const { mutate: createSize, isPending } = useMutationCreateSize();
     const { token } = theme.useToken();
+    const [sizeType, setSizeType] = useState('freesize');
+
+    const handleSizeTypeChange = (e: RadioChangeEvent) => {
+        setSizeType(e.target.value);
+        // Reset field value nếu người dùng chuyển từ freesize sang numericsize và giá trị hiện tại không phải số
+        if (e.target.value === 'numericsize') {
+            const currentValue = form.getFieldValue('value');
+            if (currentValue && !/^\d+$/.test(currentValue)) {
+                form.setFieldValue('value', '');
+            }
+        }
+    };
 
     const onFinish: FormProps<ISizeFormData>['onFinish'] = (values) => {
         createSize(values);
@@ -57,7 +70,7 @@ const CreateSize = () => {
                                         icon: <InfoCircleOutlined className='text-gray-400' />,
                                     }}
                                 >
-                                    <Radio.Group className='w-full'>
+                                    <Radio.Group className='w-full' onChange={handleSizeTypeChange}>
                                         <div className='grid grid-cols-2 gap-4'>
                                             <Radio.Button
                                                 value='freesize'
@@ -92,6 +105,8 @@ const CreateSize = () => {
                                         ...sizeNameValidator,
                                         ({ getFieldValue }) => ({
                                             validator(_, value) {
+                                                if (!value) return Promise.resolve();
+
                                                 const type = getFieldValue('type');
                                                 if (type === 'numericsize') {
                                                     const isNumeric = /^\d+$/.test(value);
@@ -110,7 +125,9 @@ const CreateSize = () => {
                                     }}
                                 >
                                     <Input
-                                        placeholder='Ví dụ: S, M, L hoặc 38, 39, 40...'
+                                        placeholder={
+                                            sizeType === 'freesize' ? 'Ví dụ: S, M, L, XL...' : 'Ví dụ: 38, 39, 40...'
+                                        }
                                         size='large'
                                         className='hover:border-primary/50 focus:border-primary rounded-lg transition-colors'
                                     />
