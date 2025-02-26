@@ -48,3 +48,7 @@ export const ORDER_ENDPOINT = {
 export const INVENTORY_ENDPOINT = {
     UPDATE_STOCK_ON_CANCEL_ORDER: 'payos/update-stock/cancel',
 };
+
+export const USER_ENDPOINT = {
+    PROFILE: 'user/private',
+};

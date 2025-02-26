@@ -2,6 +2,7 @@ import { Button, Divider, Form, FormProps, Input } from 'antd';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BreadcrumbDisplay from '~/components/_common/BreadcrumbDisplay';
+import useGetProfile from '~/hooks/queries/profile/useGetProfile';
 import { useTypedSelector } from '~/store/store';
 
 type Props = {};
@@ -13,12 +14,12 @@ const Profile = (props: Props) => {
 
     const [form] = Form.useForm();
 
-    // const { data } = useGetProfile();
-    // const profile = data?.data;
+    const { data: profile } = useGetProfile();
 
     type FieldType = {
         name: string;
-        country: string;
+        email: string;
+        avatar: string;
         phone: string;
     };
 
@@ -27,22 +28,22 @@ const Profile = (props: Props) => {
         const formDataUpdateProfile = new FormData();
 
         formDataUpdateProfile.append('name', values.name);
-        formDataUpdateProfile.append('email', values.country);
+        formDataUpdateProfile.append('email', values.email);
         formDataUpdateProfile.append('phone', values.phone);
 
         // updateProfile(formDataUpdateProfile);
     };
 
     // Fill thông tin vào form nếu api trả về profile thành công
-    // useEffect(() => {
-    //     if (profile) {
-    //         form.setFieldsValue({
-    //             name: profile.name,
-    //             phone: profile.phone,
-    //             email: profile.email,
-    //         });
-    //     }
-    // }, [profile, form]);
+    useEffect(() => {
+        if (profile) {
+            form.setFieldsValue({
+                name: profile.name,
+                phone: profile.phone,
+                email: profile.email,
+            });
+        }
+    }, [profile, form]);
 
     return (
         <div className='w-full max-w-7xl xl:mx-auto'>
@@ -83,24 +84,25 @@ const Profile = (props: Props) => {
                         <div className='border-l-2 border-l-[#efeff4] pl-10'>
                             <Form form={form} layout='vertical' className='w-[582px]' onFinish={onFinish}>
                                 <Form.Item<FieldType>
+                                    label='Email'
+                                    className='mt-1 text-sm text-[#070707]'
+                                    name='email'
+                                >
+                                    <Input
+                                        placeholder='Quốc gia'
+                                        style={{ backgroundColor: '#efeff4', borderRadius: 0 }}
+                                        className='h-[48px] py-3 text-sm leading-[48px] text-[#070707]'
+                                        disabled
+                                    />
+                                </Form.Item>
+
+                                <Form.Item<FieldType>
                                     label='Họ tên'
                                     className='mt-1 text-sm text-[#070707]'
                                     name='name'
                                 >
                                     <Input
                                         placeholder='Họ tên'
-                                        style={{ backgroundColor: '#efeff4', borderRadius: 0 }}
-                                        className='h-[48px] py-3 text-sm leading-[48px] text-[#070707]'
-                                    />
-                                </Form.Item>
-
-                                <Form.Item<FieldType>
-                                    label='Quốc gia'
-                                    className='mt-1 text-sm text-[#070707]'
-                                    name='country'
-                                >
-                                    <Input
-                                        placeholder='Quốc gia'
                                         style={{ backgroundColor: '#efeff4', borderRadius: 0 }}
                                         className='h-[48px] py-3 text-sm leading-[48px] text-[#070707]'
                                     />
