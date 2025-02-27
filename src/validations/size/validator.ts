@@ -5,7 +5,7 @@ export const sizeNameValidator = [
     },
     {
         validator(_: any, value: string) {
-            if (value.length < 2) {
+            if (value.length < 0) {
                 return Promise.reject('Giá trị kích cỡ phải có ít nhất 2 kí tự');
             }
             if (value.length > 30) {
