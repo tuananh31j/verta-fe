@@ -319,6 +319,7 @@ const UpdateProduct = () => {
                                 defaultValue={SizeEnum.FreeSize}
                                 style={{ width: 140 }}
                                 onChange={(value) => setTypeSize(value)}
+                                disabled
                                 size='large'
                                 options={[
                                     { value: SizeEnum.FreeSize, label: 'Free size' },
