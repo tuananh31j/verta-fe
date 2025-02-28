@@ -20,6 +20,7 @@ import {
 import CheckoutLayout from '~/layouts/checkout/CheckoutLayout';
 import OrderSuccessPage from '~/pages/Checkout/OrderSuccessPage';
 import OrderErrorPage from '~/pages/Checkout/OrderErrrorPage';
+import AccountLayout from '~/layouts/client/AccountLayout';
 
 const PublicRoutes = [
     {
@@ -74,34 +75,47 @@ const PublicRoutes = [
                 ),
             },
             {
-                path: '/account/profile',
+                path: '/account',
                 element: (
-                    <Suspense>
-                        <ProtectedLogged type='NOTLOG'>
-                            <Profile />
-                        </ProtectedLogged>
-                    </Suspense>
+                    <AccountLayout/>
                 ),
-            },
-            {
-                path: '/account/my-orders',
-                element: (
-                    <Suspense>
-                        <ProtectedLogged type='NOTLOG'>
-                            <MyOrders />
-                        </ProtectedLogged>
-                    </Suspense>
-                ),
-            },
-            {
-                path: '/account/my-orders/:id',
-                element: (
-                    <Suspense>
-                        <ProtectedLogged type='NOTLOG'>
-                            <MyDetailOrder />
-                        </ProtectedLogged>
-                    </Suspense>
-                ),
+                errorElement: <ErrorPage />,
+                children: [
+                    {
+                        index: true,
+                        element: <Navigate to={'/account/profile'}/>
+                    },
+                    {
+                        path: 'profile',
+                        element: (
+                            <Suspense>
+                                <ProtectedLogged type='NOTLOG'>
+                                    <Profile />
+                                </ProtectedLogged>
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'my-orders',
+                        element: (
+                            <Suspense>
+                                <ProtectedLogged type='NOTLOG'>
+                                    <MyOrders />
+                                </ProtectedLogged>
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'my-orders/:id',
+                        element: (
+                            <Suspense>
+                                <ProtectedLogged type='NOTLOG'>
+                                    <MyDetailOrder />
+                                </ProtectedLogged>
+                            </Suspense>
+                        ),
+                    },
+                ]
             },
         ],
     },

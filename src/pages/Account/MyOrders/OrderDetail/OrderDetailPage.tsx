@@ -38,17 +38,6 @@ const OrderDetailPage = () => {
         <>
             <div className='mx-auto mt-5 w-full max-w-[1200px] xl:mx-auto xl:max-w-7xl'>
                 {/* BREADCRUMB */}
-                <div className='my-3 flex items-center gap-2 text-base'>
-                    {/* <Link className='text-[#338dbc] duration-300 hover:text-cyan-500' to={'/cart/detail'}>
-                        Giỏ hàng
-                    </Link>
-                    &gt; */}
-                    <Link className='text-[#338dbc] duration-300 hover:text-cyan-500' to={'/account/my-orders'}>
-                        Đơn hàng của tôi
-                    </Link>
-                    &gt;
-                    <span className='text-black'>Chi tiết thanh toán</span>
-                </div>
                 {!isLoading && (
                     <WrapperList
                         title={`Chi tiết đơn hàng #${id}`}

@@ -1,10 +1,7 @@
-import { DeleteOutlined, EyeOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Form, FormProps, GetProp, Image, Input, Upload, UploadFile, UploadProps } from 'antd';
+import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { Form, FormProps, GetProp, Image, Input, Upload, UploadFile, UploadProps } from 'antd';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import BreadcrumbDisplay from '~/components/_common/BreadcrumbDisplay';
 import useGetProfile from '~/hooks/queries/profile/useGetProfile';
-import { useTypedSelector } from '~/store/store';
 import { IAntdImageFiles } from '~/types/Antd';
 import convertApiResponseToFileList from '~/utils/convertImageUrlToFileList';
 import { ErrorMessage } from '~/validations/Message';
@@ -12,8 +9,6 @@ import { ErrorMessage } from '~/validations/Message';
 type Props = {};
 
 const Profile = (props: Props) => {
-    const username = useTypedSelector((state) => state.auth.user?.name);
-
     // const { mutate: updateProfile, isPending } = useMutationUpdateProfle();
 
     const [form] = Form.useForm();
@@ -142,122 +137,86 @@ const Profile = (props: Props) => {
     };
 
     return (
-        <div className='w-full max-w-7xl xl:mx-auto'>
-            {/* BREADCRUMB */}
-            <BreadcrumbDisplay />
-
-            {/* SIDE BAR */}
-            <div className='flex flex-col justify-between lg:flex-row'>
-                <div className='relative h-[100vh] basis-[25%] p-3'>
-                    <h3 className='my-4 text-3xl'>
-                        Xin chào, <span className='text-3xl font-bold uppercase'>{username}</span>
-                    </h3>
-
-                    <ul>
-                        <li>
-                            <Link to='/account/profile' className='text-sm leading-7'>
-                                Thông tin tài khoản
-                            </Link>
-                        </li>
-
-                        <li>
-                            <Link to='/account/my-orders' className='text-sm leading-7'>
-                                Quản lý đơn hàng
-                            </Link>
-                        </li>
-
-                        <li>
-                            <Link to='/' className='text-sm leading-7'>
-                                Thông tin giao hàng
-                            </Link>
-                        </li>
-                    </ul>
-                </div>
-
-                <div className='basis-[75%]'>
-                    {/* PROFILE FORM */}
-                    <div className='pt-20'>
-                        <div className='w-full border-l-2 border-l-[#efeff4] pl-10'>
-                            <Form form={form} layout='vertical' className='w-[582px]' onFinish={onFinish}>
-                                {/* FORM INPUTS */}
-                                <div className='flex items-center'>
-                                    <Form.Item<FieldType>
-                                        label='Avatar'
-                                        name='avatar'
-                                        className='mt-1 w-1/5 text-sm text-[#070707]'
-                                        dependencies={['thumbnail']}
-                                        rules={[
-                                            {
-                                                validator: thumbnailValidator,
-                                            },
-                                        ]}
-                                    >
-                                        <Upload
-                                            beforeUpload={() => false}
-                                            listType='picture-card'
-                                            itemRender={customItemRender}
-                                            fileList={thumbnailFile}
-                                            onPreview={(file) => handlePreview(file)}
-                                            onChange={handleChangeThumbnail}
-                                            maxCount={1}
-                                        >
-                                            {thumbnailFile.length >= 1 ? null : uploadButton}
-                                        </Upload>
-                                    </Form.Item>
-
-                                    {previewImage && (
-                                        <Image
-                                            wrapperStyle={{ display: 'none' }}
-                                            preview={{
-                                                visible: previewOpen,
-                                                onVisibleChange: (visible) => setPreviewOpen(visible),
-                                                afterOpenChange: (visible) => !visible && setPreviewImage(''),
-                                            }}
-                                            // src={previewThumbnail || StaticImages.userImageDf}
-                                        />
-                                    )}
-
-                                    <Form.Item<FieldType>
-                                        label='Email'
-                                        className='mt-1 w-4/5 text-sm text-[#070707]'
-                                        name='email'
-                                    >
-                                        <Input
-                                            placeholder='Email'
-                                            style={{ backgroundColor: '#efeff4', borderRadius: 0 }}
-                                            className='h-[48px] py-3 text-sm leading-[48px] text-[#070707]'
-                                            disabled
-                                        />
-                                    </Form.Item>
-                                </div>
-
-                                <Form.Item<FieldType>
-                                    label='Họ tên'
-                                    className='mt-1 text-sm text-[#070707]'
-                                    name='name'
+        <div>
+            {/* PROFILE FORM */}
+            <div>
+                <div className='w-full border-l-2 border-l-[#efeff4] pl-10'>
+                    <Form form={form} layout='vertical' className='w-[582px]' onFinish={onFinish}>
+                        {/* FORM INPUTS */}
+                        <div className='flex items-center'>
+                            <Form.Item<FieldType>
+                                label='Avatar'
+                                name='avatar'
+                                className='mt-1 w-1/5 text-sm text-[#070707]'
+                                dependencies={['thumbnail']}
+                                rules={[
+                                    {
+                                        validator: thumbnailValidator,
+                                    },
+                                ]}
+                            >
+                                <Upload
+                                    beforeUpload={() => false}
+                                    listType='picture-card'
+                                    itemRender={customItemRender}
+                                    fileList={thumbnailFile}
+                                    onPreview={(file) => handlePreview(file)}
+                                    onChange={handleChangeThumbnail}
+                                    maxCount={1}
                                 >
-                                    <Input
-                                        placeholder='Họ tên'
-                                        style={{ backgroundColor: '#efeff4', borderRadius: 0 }}
-                                        className='h-[48px] py-3 text-sm leading-[48px] text-[#070707]'
-                                    />
-                                </Form.Item>
+                                    {thumbnailFile.length >= 1 ? null : uploadButton}
+                                </Upload>
+                            </Form.Item>
 
-                                <Form.Item<FieldType>
-                                    label='Số điện thoại'
-                                    className='mt-1 text-sm text-[#070707]'
-                                    name='phone'
-                                >
-                                    <Input
-                                        placeholder='Số điện thoại'
-                                        style={{ backgroundColor: '#efeff4', borderRadius: 0 }}
-                                        className='h-[48px] py-3 text-sm leading-[48px] text-[#070707]'
-                                    />
-                                </Form.Item>
+                            {previewImage && (
+                                <Image
+                                    wrapperStyle={{ display: 'none' }}
+                                    preview={{
+                                        visible: previewOpen,
+                                        onVisibleChange: (visible) => setPreviewOpen(visible),
+                                        afterOpenChange: (visible) => !visible && setPreviewImage(''),
+                                    }}
+                                    // src={previewThumbnail || StaticImages.userImageDf}
+                                />
+                            )}
 
-                                <Form.Item>
-                                    <div className='flex flex-wrap justify-between gap-5 md:flex-nowrap'>
-                                        {/* <Button
+                            <Form.Item<FieldType>
+                                label='Email'
+                                className='mt-1 w-4/5 text-sm text-[#070707]'
+                                name='email'
+                            >
+                                <Input
+                                    placeholder='Email'
+                                    style={{ backgroundColor: '#efeff4', borderRadius: 0 }}
+                                    className='h-[48px] py-3 text-sm leading-[48px] text-[#070707]'
+                                    disabled
+                                />
+                            </Form.Item>
+                        </div>
+
+                        <Form.Item<FieldType> label='Họ tên' className='mt-1 text-sm text-[#070707]' name='name'>
+                            <Input
+                                placeholder='Họ tên'
+                                style={{ backgroundColor: '#efeff4', borderRadius: 0 }}
+                                className='h-[48px] py-3 text-sm leading-[48px] text-[#070707]'
+                            />
+                        </Form.Item>
+
+                        <Form.Item<FieldType>
+                            label='Số điện thoại'
+                            className='mt-1 text-sm text-[#070707]'
+                            name='phone'
+                        >
+                            <Input
+                                placeholder='Số điện thoại'
+                                style={{ backgroundColor: '#efeff4', borderRadius: 0 }}
+                                className='h-[48px] py-3 text-sm leading-[48px] text-[#070707]'
+                            />
+                        </Form.Item>
+
+                        <Form.Item>
+                            <div className='flex flex-wrap justify-between gap-5 md:flex-nowrap'>
+                                {/* <Button
                                             className='block w-full rounded-3xl bg-black text-center text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'
                                             size='large'
                                             htmlType='submit'
@@ -266,7 +225,7 @@ const Profile = (props: Props) => {
                                             Cập nhật thông tin
                                         </Button> */}
 
-                                        {/* {profile && (
+                                {/* {profile && (
                                             <Button
                                                 type='primary'
                                                 size='large'
@@ -279,11 +238,9 @@ const Profile = (props: Props) => {
                                                 Thay đổi mật khẩu
                                             </Button>
                                         )} */}
-                                    </div>
-                                </Form.Item>
-                            </Form>
-                        </div>
-                    </div>
+                            </div>
+                        </Form.Item>
+                    </Form>
                 </div>
             </div>
         </div>
