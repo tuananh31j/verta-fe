@@ -10,16 +10,28 @@ import { IProduct } from '~/types/Product';
 import { IVariant } from '~/types/Variant';
 import { Currency } from '~/utils';
 import WrapperPageAdmin from '../_common';
+import { useGetAllCate } from '~/hooks/queries/catrgories/useGetAllCate';
 
 const ProductList = () => {
-    const { onSelectPaginateChange, query, onFilter, getColumnSearchProps } = useTable<IProduct>();
+    const { onSelectPaginateChange, query, onFilter, getColumnSearchProps, getFilteredValue, getSortedInfo } =
+        useTable<IProduct>();
     const currentPage = Number(query.page || 1);
     const { data } = useGetAllProductForAdmin(query);
+    const { data: categories } = useGetAllCate();
+    const categoriesDataFilter = (categories?.map((el) => [{ name: el.name, _id: el._id }, ...el.items]).flat() || [])
+        .reduce(
+            (acc, curr) => {
+                if (acc.some((item) => item._id === curr._id)) return acc;
+                return [...acc, { name: curr.name, _id: curr._id }];
+            },
+            [] as { _id: string; name: string }[]
+        )
+        .map((el) => ({ text: el.name, value: el._id }));
 
     const getStockStatus = (stock: number) => {
         if (stock === 0) return { color: 'red', text: 'Hết hàng' };
         if (stock < 10) return { color: 'orange', text: 'Sắp hết' };
-        return { color: '', text: 'Còn hàng' };
+        return { color: '', text: 'Sản phẩm' };
     };
 
     const columns: TableProps<IProduct>['columns'] = [
@@ -30,7 +42,7 @@ const ProductList = () => {
             width: '35%',
             ...getColumnSearchProps('name'),
             render: (text, record) => (
-                <div className='rounded-lg bg-white p-4 shadow-sm'>
+                <>
                     <div className='flex items-center gap-3'>
                         <img
                             src={record.thumbnail}
@@ -76,7 +88,7 @@ const ProductList = () => {
                             </div>
                         ))}
                     </div>
-                </div>
+                </>
             ),
         },
         {
@@ -84,17 +96,17 @@ const ProductList = () => {
             key: 'sold',
             dataIndex: 'sold',
             width: '10%',
-            render: (sold) => (
-                <div className='text-center'>
-                    <Badge count={sold} showZero color={sold > 100 ? 'green' : 'blue'} className='text-lg' />
-                </div>
-            ),
+            sortOrder: getSortedInfo('sold'),
+            sorter: (a: any, b: any) => a.sold - b.sold,
+            render: (sold) => <div className='text-center'>{sold.toLocaleString('de-DE')}</div>,
             responsive: ['md'],
         },
         {
             title: 'Giá tiền',
             key: 'price',
             dataIndex: 'price',
+            sortOrder: getSortedInfo('price'),
+            sorter: (a: any, b: any) => a.sold - b.sold,
             width: '15%',
             render: (price) => (
                 <div className='text-right'>
@@ -117,26 +129,36 @@ const ProductList = () => {
 
                 return (
                     <div>
-                        <div className='mb-2'>
-                            <Tag color={status.color} className='w-full py-1 text-center'>
-                                <span className='text-sm font-medium'>
-                                    {totalStock || 0} - {status.text}
-                                </span>
-                            </Tag>
+                        <div className='flex items-center gap-3'>
+                            <div className='flex-1'>
+                                {totalStock || 0} - {status.text}
+                            </div>
                         </div>
-                        <div className='space-y-2'>
+
+                        <div className='mt-4 space-y-3'>
                             {variants.map((el: IVariant) => {
                                 const stockColor = el.items.reduce((accSub, currSub) => accSub + currSub.stock, 0);
                                 const colorStatus = getStockStatus(stockColor);
                                 return (
-                                    <div key={el.color._id} className='flex items-center gap-2'>
-                                        <div
-                                            className='h-3 w-3 rounded-full'
-                                            style={{ backgroundColor: el.color.hex }}
-                                        />
-                                        <span className={`text-${colorStatus.color}-600 text-sm`}>
-                                            {stockColor || 0}
-                                        </span>
+                                    <div
+                                        className='flex items-center gap-3 rounded-md bg-gray-50 p-5'
+                                        key={el.color._id}
+                                    >
+                                        <div className='relative'>
+                                            <div className='flex items-center gap-2'>
+                                                <div
+                                                    className='h-3 w-3 rounded-full'
+                                                    style={{ backgroundColor: el.color.hex }}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className='flex-1'>
+                                            <div className='mt-1 flex flex-wrap gap-1'>
+                                                <span className={`text-${colorStatus.color}-600 text-sm`}>
+                                                    {stockColor || 0}
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                 );
                             })}
@@ -147,19 +169,14 @@ const ProductList = () => {
         },
         {
             title: 'Danh mục',
-            key: 'categoryId',
+            key: 'categories',
             width: '15%',
-            render: (value, record) => (
-                <div className='space-y-1'>
-                    {record.categories
-                        .filter((item) => item !== null)
-                        .map((item, index) => (
-                            <Tag key={index} color='purple' className='mr-0 mb-1'>
-                                {item.name}
-                            </Tag>
-                        ))}
-                </div>
-            ),
+            filteredValue: getFilteredValue('categories'),
+            filters: categoriesDataFilter,
+            render: (value, record) => {
+                console.log(record.categories);
+                return <h4>{record.categories.map((item) => item.name).join(' / ')}</h4>;
+            },
         },
         {
             title: 'Thao tác',
@@ -191,16 +208,14 @@ const ProductList = () => {
                 </Link>
             }
         >
-            <div className='rounded-lg bg-white p-6 shadow-sm'>
-                <TableDisplay<IProduct>
-                    onFilter={onFilter}
-                    columns={columns}
-                    currentPage={currentPage}
-                    dataSource={data?.data || []}
-                    onSelectPaginateChange={onSelectPaginateChange}
-                    totalDocs={2}
-                />
-            </div>
+            <TableDisplay<IProduct>
+                onFilter={onFilter}
+                columns={columns}
+                currentPage={currentPage}
+                dataSource={data?.data || []}
+                onSelectPaginateChange={onSelectPaginateChange}
+                totalDocs={2}
+            />
         </WrapperPageAdmin>
     );
 };

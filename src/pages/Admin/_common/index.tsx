@@ -16,7 +16,6 @@ const WrapperPageAdmin = ({ title, option, children }: { title: string; option?:
                 </div>
             }
             lineButtonBox
-            className='rounded-lg border border-gray-100 bg-gray-50/50 shadow-sm dark:border-gray-800'
             option={
                 <div className='flex items-center gap-3'>
                     {!option ? (
@@ -34,7 +33,7 @@ const WrapperPageAdmin = ({ title, option, children }: { title: string; option?:
                 </div>
             }
         >
-            <div className='min-h-[200px] rounded-lg bg-white p-6 shadow-sm'>{children}</div>
+            {children}
         </WrapperList>
     );
 };
