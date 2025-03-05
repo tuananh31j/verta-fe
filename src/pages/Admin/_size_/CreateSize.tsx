@@ -7,12 +7,14 @@ import { Button, Form, FormProps, Input, theme, Card, Alert, Radio, RadioChangeE
 import { Link } from 'react-router-dom';
 import WrapperPageAdmin from '../_common';
 import { useState } from 'react';
+import { useToast } from '~/context/ToastProvider';
 
 const CreateSize = () => {
     const [form] = Form.useForm<ISizeFormData>();
     const { mutate: createSize, isPending } = useMutationCreateSize();
     const { token } = theme.useToken();
     const [sizeType, setSizeType] = useState('freesize');
+    const toast = useToast();
 
     const handleSizeTypeChange = (e: RadioChangeEvent) => {
         setSizeType(e.target.value);
@@ -38,7 +40,15 @@ const CreateSize = () => {
             ...values,
             value: values.value.trim().toUpperCase(),
         };
-        createSize(formattedValues);
+        createSize(formattedValues, {
+            onSuccess: () => {
+                toast('success', 'Tạo màu mới thành công!');
+            },
+            onError: (error: any) => {
+                const errorMessage = error?.message || 'Có lỗi xảy ra!';
+                toast('error', errorMessage);
+            },
+        });
     };
 
     const onFinishFailed: FormProps<ISizeFormData>['onFinishFailed'] = (errorInfo) => {
