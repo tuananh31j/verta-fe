@@ -1,6 +1,6 @@
 import { EditOutlined } from '@ant-design/icons';
 import { Button, Form, FormProps, Input } from 'antd';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ADMIN_ROUTES } from '~/constants/router';
 import { useMutationUpdateSize } from '~/hooks/Sizes/Mutations/useUpdateSize';
@@ -15,32 +15,75 @@ const UpdateSize = () => {
     const { data: sizeRes } = useGetDetailSize(id as string);
     const [form] = Form.useForm<ISizeFormData>();
     const { mutate: updateCategory, isPending } = useMutationUpdateSize();
+    const [sizeType, setSizeType] = useState('');
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        const formattedValue = value.trim();
+        const finalValue = sizeType === 'numericsize' ? formattedValue : formattedValue.toUpperCase();
+
+        if (finalValue !== value) {
+            form.setFieldValue('value', finalValue);
+        }
+    };
 
     const onFinish: FormProps<ISizeFormData>['onFinish'] = (values) => {
         if (id) {
-            updateCategory({ id, payload: values });
+            const formattedValues = {
+                ...values,
+                value: sizeType === 'numericsize' ? values.value.trim() : values.value.trim().toUpperCase(),
+            };
+            updateCategory({ id, payload: formattedValues });
         } else {
             showMessage('Không tìm thấy _id size', 'error');
         }
     };
+
     const onFinishFailed: FormProps<ISizeFormData>['onFinishFailed'] = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
 
     useEffect(() => {
-        form.setFieldValue('value', sizeRes?.value);
-    }, [sizeRes]);
+        if (sizeRes) {
+            form.setFieldValue('value', sizeRes.value);
+            setSizeType(/^\d+$/.test(sizeRes.value) ? 'numericsize' : 'freesize');
+        }
+    }, [sizeRes, form]);
+
+    const extendedSizeValidator = [
+        ...sizeNameValidator,
+        {
+            validator: (_: any, value: any) => {
+                if (!value) return Promise.resolve();
+
+                if (value !== value.trim()) {
+                    return Promise.reject('Giá trị không được chứa khoảng trắng ở đầu hoặc cuối!');
+                }
+
+                if (sizeType === 'numericsize') {
+                    const isNumeric = /^\d+$/.test(value);
+                    if (!isNumeric) {
+                        return Promise.reject('Kích cỡ số phải là một số!');
+                    }
+                } else {
+                    if (value.includes(' ')) {
+                        return Promise.reject('Giá trị không được chứa khoảng trắng!');
+                    }
+                }
+                return Promise.resolve();
+            },
+        },
+    ];
 
     return (
         <WrapperPageAdmin
             title='Cập nhật thông tin kích cỡ'
             option={
-                <Link to={ADMIN_ROUTES.CATEGORIES} className='underline'>
+                <Link to={ADMIN_ROUTES.SIZES} className='underline'>
                     Quay lại
                 </Link>
             }
         >
-            {' '}
             <Form
                 form={form}
                 layout='vertical'
@@ -54,10 +97,28 @@ const UpdateSize = () => {
                             label='Tên kích cỡ'
                             name='value'
                             className='font-medium text-[#08090F]'
-                            rules={sizeNameValidator}
+                            rules={extendedSizeValidator}
+                            tooltip='Giá trị kích cỡ sẽ tự động chuyển thành chữ in hoa và không được chứa khoảng trắng'
+                            getValueFromEvent={(e) => {
+                                return e.target.value.trim();
+                            }}
+                            normalize={(value) => {
+                                return sizeType === 'numericsize' ? value : value.toUpperCase();
+                            }}
                         >
-                            <Input placeholder='Nhập tên cho kích cỡ...' />
+                            <Input placeholder='Nhập tên cho kích cỡ...' onChange={handleInputChange} />
                         </Form.Item>
+
+                        <div className='mt-2 text-xs text-gray-500'>
+                            <ul className='list-disc space-y-1 pl-4'>
+                                <li>
+                                    Giá trị kích cỡ sẽ tự động chuyển thành chữ in hoa{' '}
+                                    {sizeType !== 'numericsize' && '(ví dụ: s → S)'}
+                                </li>
+                                <li>Không được chứa khoảng trắng trong giá trị kích cỡ</li>
+                                {sizeType === 'numericsize' && <li>Kích cỡ số chỉ được nhập số</li>}
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div className='border-opacity-20 col-span-4 flex flex-col justify-between border-s border-black px-4'>

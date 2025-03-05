@@ -5,6 +5,8 @@ import {
     CreateProduct,
     CreateSize,
     DashboardPage,
+    ManageOrders,
+    OrdersDetails,
     ProductsList,
     SizeList,
     Suspense,
@@ -44,6 +46,24 @@ export const PrivateRoutes = [
                     { path: 'edit/:id', element: <Suspense><UpdateSize /></Suspense>,
                     },
                 ],
+            },
+            // @Order-List
+             {
+                path: ADMIN_ROUTES.ORDERS,
+                element: (
+                    <Suspense>
+                        <ManageOrders />
+                    </Suspense>
+                ),
+            },
+            // @Order-detail
+              {
+                path: `${ADMIN_ROUTES.ORDERS}/:id/detail`,
+                element: (
+                    <Suspense>
+                        <OrdersDetails />
+                    </Suspense>
+                ),
             },
         ],
     },

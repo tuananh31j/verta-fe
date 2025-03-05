@@ -2,6 +2,7 @@ import { Button, Flex, Table, Tooltip } from 'antd';
 import { TableProps } from 'antd/lib';
 import { Link } from 'react-router-dom';
 import { formatCurrency } from '~/utils/formatCurrrency';
+import RateBtn from '../../Components/RateBtn';
 
 interface DataType {
     key?: number;
@@ -14,14 +15,17 @@ interface DataType {
     productId: string;
     total?: number;
     isReviewed: boolean;
+    variantId: string;
 }
 
 interface Props {
     orderItems: DataType[];
     status: string;
+    orderId: string;
+    showModal: (variantId: string) => void;
 }
 
-const TableDetailOrder = ({ orderItems, status }: Props) => {
+const TableDetailOrder = ({ orderItems, status, orderId, showModal }: Props) => {
     const columns: TableProps<DataType>['columns'] = [
         {
             title: 'No.',
@@ -97,13 +101,7 @@ const TableDetailOrder = ({ orderItems, status }: Props) => {
                           console.log(record);
                           return (
                               <>
-                                  {/* {!record.isReviewed && (
-                                      <RateBtn
-                                          handleRate={handleRateProduct}
-                                          productId={record.productId}
-                                          orderId={id!}
-                                      />
-                                  )} */}
+                                  {!record.isReviewed && <RateBtn showModal={() => showModal(record.variantId)} />}
                                   {record.isReviewed && (
                                       <Button type='default' disabled>
                                           Đã đánh giá
@@ -127,6 +125,7 @@ const TableDetailOrder = ({ orderItems, status }: Props) => {
         quantity: item.quantity,
         productId: item.productId,
         isReviewed: item.isReviewed,
+        variantId: item.variantId,
     }));
 
     return <Table className='mt-5 w-full' columns={columns} dataSource={data} pagination={false} />;

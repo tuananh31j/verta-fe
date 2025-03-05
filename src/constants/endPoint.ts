@@ -44,6 +44,12 @@ export const ORDER_ENDPOINT = {
     CREATEORDERCOD: 'orders/create-order',
     MYORDER: 'orders/my-orders',
     CREATE_ORDER_PAYOS: 'payos/create',
+    CANCEL_ORDER: '/orders/cancel',
+    CONFIRM_ORDER: '/orders/confirm',
+    SHIPPING_ORDER: '/orders/shipping',
+    DELIVERED_ORDER: '/orders/delivered',
+    FINISH_ORDER: '/orders/done',
+    GET_ALL_ORDERS: '/orders',
 };
 export const INVENTORY_ENDPOINT = {
     UPDATE_STOCK_ON_CANCEL_ORDER: 'payos/update-stock/cancel',
@@ -51,4 +57,9 @@ export const INVENTORY_ENDPOINT = {
 
 export const USER_ENDPOINT = {
     PROFILE: 'user/private',
+};
+export const REVIEWS_ENDPOINT = {
+    ALL_REVIEWS_PRODUCT: 'review',
+    ALL_REVIEWS_STARS: 'review/rating',
+    CREATE_REVIEW: 'review/create',
 };

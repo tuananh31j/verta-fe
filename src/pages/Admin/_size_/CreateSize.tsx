@@ -16,7 +16,6 @@ const CreateSize = () => {
 
     const handleSizeTypeChange = (e: RadioChangeEvent) => {
         setSizeType(e.target.value);
-        // Reset field value nếu người dùng chuyển từ freesize sang numericsize và giá trị hiện tại không phải số
         if (e.target.value === 'numericsize') {
             const currentValue = form.getFieldValue('value');
             if (currentValue && !/^\d+$/.test(currentValue)) {
@@ -25,8 +24,21 @@ const CreateSize = () => {
         }
     };
 
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        const formattedValue = value.trim().toUpperCase();
+
+        if (formattedValue !== value) {
+            form.setFieldValue('value', formattedValue);
+        }
+    };
+
     const onFinish: FormProps<ISizeFormData>['onFinish'] = (values) => {
-        createSize(values);
+        const formattedValues = {
+            ...values,
+            value: values.value.trim().toUpperCase(),
+        };
+        createSize(formattedValues);
     };
 
     const onFinishFailed: FormProps<ISizeFormData>['onFinishFailed'] = (errorInfo) => {
@@ -106,12 +118,21 @@ const CreateSize = () => {
                                         ({ getFieldValue }) => ({
                                             validator(_, value) {
                                                 if (!value) return Promise.resolve();
+                                                if (value !== value.trim()) {
+                                                    return Promise.reject(
+                                                        'Giá trị không được chứa khoảng trắng ở đầu hoặc cuối!'
+                                                    );
+                                                }
 
                                                 const type = getFieldValue('type');
                                                 if (type === 'numericsize') {
                                                     const isNumeric = /^\d+$/.test(value);
                                                     if (!isNumeric) {
                                                         return Promise.reject('Kích cỡ số phải là một số!');
+                                                    }
+                                                } else {
+                                                    if (value.includes(' ')) {
+                                                        return Promise.reject('Giá trị không được chứa khoảng trắng!');
                                                     }
                                                 }
                                                 return Promise.resolve();
@@ -120,8 +141,14 @@ const CreateSize = () => {
                                     ]}
                                     validateFirst
                                     tooltip={{
-                                        title: 'Giá trị kích cỡ sẽ hiển thị trong danh sách sản phẩm',
+                                        title: 'Giá trị kích cỡ sẽ hiển thị trong danh sách sản phẩm và được tự động chuyển thành chữ in hoa',
                                         icon: <InfoCircleOutlined className='text-gray-400' />,
+                                    }}
+                                    getValueFromEvent={(e) => {
+                                        return e.target.value.trim();
+                                    }}
+                                    normalize={(value) => {
+                                        return sizeType === 'numericsize' ? value : value.toUpperCase();
                                     }}
                                 >
                                     <Input
@@ -130,6 +157,7 @@ const CreateSize = () => {
                                         }
                                         size='large'
                                         className='hover:border-primary/50 focus:border-primary rounded-lg transition-colors'
+                                        onChange={handleInputChange}
                                     />
                                 </Form.Item>
                             </Card>
@@ -145,7 +173,8 @@ const CreateSize = () => {
                                             <li>Giá trị kích cỡ nên ngắn gọn, dễ hiểu</li>
                                             <li>Với kích cỡ số, chỉ được nhập số</li>
                                             <li>Đảm bảo giá trị không trùng với kích cỡ đã có</li>
-                                            <li>Có thể chỉnh sửa sau khi tạo</li>
+                                            <li>Giá trị sẽ tự động chuyển thành chữ in hoa</li>
+                                            <li>Không được chứa khoảng trắng trong giá trị kích cỡ</li>
                                         </ul>
                                     }
                                     type='info'

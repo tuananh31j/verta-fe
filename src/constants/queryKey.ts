@@ -1,6 +1,5 @@
 export const QUERY_KEY = {
     CART: 'cart',
-
     USERS: 'users',
     PROFILE: 'profile',
     MY_ORDERS: 'my-orders',
@@ -25,4 +24,11 @@ export const QUERY_KEY = {
     ORDERS: {
         ROOT: 'ORDERS',
     },
+
+    ADDRESS: {
+        ROOT: 'ADDRESS',
+    },
+
+    GET_ALL_REVIEWS_PRODUCT: 'reviews',
+    GET_ALL_REVIEWS_STARS: 'reviewsRating',
 };

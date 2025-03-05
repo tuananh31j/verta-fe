@@ -49,7 +49,7 @@ export type IOrderItem = {
     image: string;
 };
 // RESPONSE
-interface OrderItem {
+export interface OrderItem {
     productId: string;
     variantId: string;
     name: string;

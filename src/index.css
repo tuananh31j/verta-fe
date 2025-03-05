@@ -3,6 +3,7 @@
 @import './theme.css' layer(theme);
 
 @theme {
+    --container-standard: 1200px;
     --breakpoint-xl: 1330px;
     --container-7xl: 1330px;
 }

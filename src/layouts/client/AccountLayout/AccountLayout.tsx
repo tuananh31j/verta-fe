@@ -6,7 +6,7 @@ const AccountLayout = () => {
     const username = useTypedSelector((state) => state.auth.user?.name);
 
     return (
-        <div className='w-full max-w-7xl xl:mx-auto'>
+        <div className='md:max-w-standard mx-6 w-full xl:mx-auto xl:max-w-7xl'>
             {/* BREADCRUMB */}
             <BreadcrumbDisplay />
 
@@ -31,7 +31,7 @@ const AccountLayout = () => {
                         </li>
 
                         <li>
-                            <Link to='/' className='text-sm leading-7'>
+                            <Link to='/account/my-address' className='text-sm leading-7'>
                                 Thông tin giao hàng
                             </Link>
                         </li>

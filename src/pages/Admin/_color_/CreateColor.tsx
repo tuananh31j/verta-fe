@@ -24,13 +24,18 @@ const CreateColors = () => {
         }
     }, [form.getFieldValue('hex')]);
 
+    const normalizeColorName = (colorName: string): string => {
+        return colorName.trim().toLowerCase();
+    };
+
     const onFinish: FormProps<IColorFormData>['onFinish'] = (values) => {
         if (values.hex) {
-            const trimmedValues = {
+            const normalizedValues = {
                 ...values,
-                name: values.name.trim(),
+                name: normalizeColorName(values.name),
             };
-            createColor(trimmedValues, {
+
+            createColor(normalizedValues, {
                 onSuccess: () => {
                     toast('success', 'Tạo màu mới thành công!');
                 },
@@ -47,6 +52,15 @@ const CreateColors = () => {
         form.setFieldsValue({ hex: hexColor });
         setSelectedColor(hexColor);
     };
+
+    const handleNameBlur = () => {
+        const currentName = form.getFieldValue('name');
+        if (currentName) {
+            const normalizedName = normalizeColorName(currentName);
+            form.setFieldsValue({ name: normalizedName });
+        }
+    };
+
     return (
         <WrapperPageAdmin
             title='Tạo mới màu sắc'
@@ -68,11 +82,13 @@ const CreateColors = () => {
                                 name='name'
                                 rules={colorNameValidator}
                                 validateFirst
+                                tooltip='Tên màu sẽ tự động được chuyển thành chữ thường để tránh trùng lặp'
                             >
                                 <Input
-                                    placeholder='Ví dụ: Đỏ cờ, Xanh dương đậm...'
+                                    placeholder='Ví dụ: đỏ cờ, xanh dương đậm...'
                                     size='large'
                                     className='hover:border-primary/50 focus:border-primary rounded-lg'
+                                    onBlur={handleNameBlur}
                                 />
                             </Form.Item>
 
@@ -116,7 +132,8 @@ const CreateColors = () => {
                                 <div className='rounded-lg border border-blue-100 bg-blue-50/50 p-4'>
                                     <h4 className='mb-2 text-sm font-semibold text-blue-800'>Mẹo:</h4>
                                     <p className='text-sm text-blue-700'>
-                                        Sử dụng tên màu mô tả rõ ràng và chọn mã màu phù hợp
+                                        Sử dụng tên màu mô tả rõ ràng và chọn mã màu phù hợp. Tên màu sẽ tự động được
+                                        chuyển thành chữ thường để tránh trùng lặp.
                                     </p>
                                 </div>
                                 <Button
