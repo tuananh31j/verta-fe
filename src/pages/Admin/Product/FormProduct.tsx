@@ -211,7 +211,6 @@ const FormProduct = (props: {
                 open={open}
                 extra={
                     <Space>
-                        <Button onClick={onClose}>Cancel</Button>
                         <Button type='primary' onClick={onClose}>
                             OK
                         </Button>

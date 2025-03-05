@@ -4,10 +4,12 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CartModal from '~/components/CartModal/CartModal';
 import HeaderCart from '~/components/HeaderCart/HeaderCart';
+import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import { logout } from '~/store/slice/authSlice';
 import { useTypedSelector } from '~/store/store';
 
 const Header = () => {
+    useDocumentTitle('VERTA');
     const user = useTypedSelector((state) => state.auth.user);
     const dispatch = useDispatch();
     const handleLogout = () => {

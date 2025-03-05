@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Space, Tooltip, Tag, Badge } from 'antd';
+import { Button, Space, Tooltip, Tag } from 'antd';
 import { Link } from 'react-router-dom';
 import { ADMIN_ROUTES } from '~/constants/router';
 import useTable from '~/hooks/_common/useTable';

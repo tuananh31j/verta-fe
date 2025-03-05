@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Editor, EditorContent } from '@tiptap/react';
 import { Image as ImageAntd } from 'antd';
-import { Button, Space, Modal, Input, Upload, Skeleton, message } from 'antd';
+import { Button, Space, Modal, Upload, Skeleton, message } from 'antd';
 import {
     BoldOutlined,
     ItalicOutlined,
@@ -9,7 +9,6 @@ import {
     AlignLeftOutlined,
     AlignCenterOutlined,
     AlignRightOutlined,
-    LinkOutlined,
     PictureOutlined,
     UploadOutlined,
 } from '@ant-design/icons';
@@ -26,22 +25,12 @@ const ImageSkeleton = () => {
 };
 
 const EditorComp = ({ editor }: { editor: Editor | null }) => {
-    const [isModalOpenLink, setIsModalOpenLink] = useState(false);
     const [isModalOpenImage, setIsModalOpenImage] = useState(false);
     const [images, setImages] = useState<string[]>([]);
-    const [url, setUrl] = useState('');
     const [loadingImages, setLoadingImages] = useState(false);
     const [loadingModalImage, setLoadingModalImage] = useState(false);
 
     if (!editor) return null;
-
-    const addLink = () => {
-        if (url) {
-            editor.chain().focus().setLink({ href: url }).run();
-            setIsModalOpenLink(false);
-            setUrl('');
-        }
-    };
 
     const handleOpenModalImage = async () => {
         setIsModalOpenImage(true);
@@ -113,7 +102,6 @@ const EditorComp = ({ editor }: { editor: Editor | null }) => {
                     onClick={() => editor.chain().focus().setTextAlign('right').run()}
                     type={editor.isActive({ textAlign: 'right' }) ? 'primary' : 'default'}
                 />
-                <Button icon={<LinkOutlined />} onClick={() => setIsModalOpenLink(true)} />
                 <Button icon={<PictureOutlined />} onClick={handleOpenModalImage} />
             </Space>
 
@@ -124,15 +112,6 @@ const EditorComp = ({ editor }: { editor: Editor | null }) => {
                     style={{ border: 'none', outline: 'none' }}
                 />
             </div>
-
-            <Modal
-                title='Thêm liên kết'
-                open={isModalOpenLink}
-                onOk={addLink}
-                onCancel={() => setIsModalOpenLink(false)}
-            >
-                <Input placeholder='Nhập URL...' value={url} onChange={(e) => setUrl(e.target.value)} />
-            </Modal>
 
             <Modal
                 title='Chọn ảnh'
