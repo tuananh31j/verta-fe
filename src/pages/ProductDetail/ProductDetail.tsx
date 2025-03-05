@@ -49,14 +49,10 @@ export default function ProductDetail() {
                             setColorVariant={setSelectedColor}
                             setSizeSelect={setSelectedSize}
                         />
-                        <div className='mt-4 text-sm'>
-                            {/* DESCRIPTION ĐÂY NHÉ */}
-                            <p className='font-semibold'>Mô tả: </p>
-                            {data.summary}
-                        </div>
                     </div>
                 </div>
             </div>
+            <article className='mx-6 max-w-7xl xl:mx-auto' dangerouslySetInnerHTML={{ __html: data.summary }} />
             <div className='h-[1px] w-full bg-[#8f8f8f]' />
             <div className='mx-6 mt-20 mb-16 max-w-7xl xl:mx-auto'>
                 <ProductRelated data={data} />

@@ -9,4 +9,8 @@ export const uploadService = {
         const { data } = await instance.post<FormData, AxiosResponse<Res>>('/uploads/image', body);
         return data;
     },
+    async getImages() {
+        const { data } = await instance.get<FormData, AxiosResponse<{ url: string; ref: string }[]>>('/uploads/images');
+        return data;
+    },
 };

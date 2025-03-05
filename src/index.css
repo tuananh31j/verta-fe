@@ -23,3 +23,8 @@
 .quantity--input .ant-input-number-input {
     text-align: center;
 }
+
+.ProseMirror {
+    border: none !important;
+    outline: none;
+}

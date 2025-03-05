@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { useEditor } from '@tiptap/react';
 import {
     Button,
+    Drawer,
+    DrawerProps,
     Form,
     FormInstance,
     Input,
@@ -9,6 +12,7 @@ import {
     message,
     Modal,
     Select,
+    Space,
     Tooltip,
     TreeSelect,
     Upload,
@@ -18,7 +22,7 @@ import { RcFile, UploadProps } from 'antd/es/upload';
 import { UploadFile } from 'antd/lib';
 import { UploadChangeParam } from 'antd/lib/upload';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link as LinkReact, useNavigate } from 'react-router-dom';
 import WrapperCard from '~/components/_common/WrapperCard';
 import { ADMIN_ROUTES } from '~/constants/router';
 import useGetAllColors from '~/hooks/Colors/Queries/useGetAllColors';
@@ -26,7 +30,13 @@ import { useGetAllCate } from '~/hooks/queries/catrgories/useGetAllCate';
 import { useGetProductDetailsForAdmin } from '~/hooks/queries/products/useGetProductDetailsForAdmin';
 import useGetAllSizes from '~/hooks/Sizes/Queries/useGetAllSizes';
 import WrapperPageAdmin from '~/pages/Admin/_common';
+import Editor from '~/pages/Admin/Product/Editor';
 import { SizeEnum } from '~/types/enum';
+import StarterKit from '@tiptap/starter-kit';
+import Underline from '@tiptap/extension-underline';
+import TextAlign from '@tiptap/extension-text-align';
+import Link from '@tiptap/extension-link';
+import Image from '@tiptap/extension-image';
 
 const getBase64 = (file: RcFile): Promise<string> =>
     new Promise((resolve, reject) => {
@@ -48,7 +58,30 @@ const FormProduct = (props: {
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [open, setOpen] = useState(false);
+
+    const onClose = () => {
+        setOpen(false);
+    };
     const navigate = useNavigate();
+
+    const editorInstance = useEditor({
+        extensions: [
+            StarterKit,
+            Underline,
+            TextAlign.configure({ types: ['heading', 'paragraph'] }),
+            Link.configure({ openOnClick: false }),
+            Image,
+        ],
+        content: '',
+        onUpdate: ({ editor }) => {
+            handleSetSummary(String(editor.getHTML()));
+        },
+    });
+
+    const handleSetSummary = (text: string) => {
+        form.setFieldsValue({ summary: text });
+    };
 
     const variantsWatch = Form.useWatch('variants', form);
 
@@ -108,6 +141,7 @@ const FormProduct = (props: {
     const handleCancel = () => setPreviewOpen(false);
 
     const onFinish = async (values: any) => {
+        console.log(values);
         setIsLoading(true);
 
         try {
@@ -139,6 +173,7 @@ const FormProduct = (props: {
         if (productDetails) {
             setTypeSize(productDetails.type.sizeType as SizeEnum);
             const { name, price, summary, categories, thumbnail, variants, type } = productDetails;
+            editorInstance?.commands.setContent(summary);
             form.setFieldsValue({
                 name,
                 price,
@@ -149,17 +184,42 @@ const FormProduct = (props: {
                 variants,
             });
         }
-    }, [productDetails, form]);
+    }, [productDetails, form, editorInstance]);
+
+    useEffect(() => {
+        if (editorInstance) {
+            form.setFieldsValue({ summary: String(editorInstance.getHTML()) });
+            console.log(String(editorInstance.getHTML()));
+        }
+    }, [editorInstance, form]);
 
     return (
         <WrapperPageAdmin
             title={productId ? 'Chỉnh sửa sản phẩm' : 'Thêm sản phẩm'}
             option={
-                <Link to={ADMIN_ROUTES.PRODUCTS} className='underline'>
+                <LinkReact to={ADMIN_ROUTES.PRODUCTS} className='underline'>
                     Quay lại
-                </Link>
+                </LinkReact>
             }
         >
+            <Drawer
+                title={`Mô tả`}
+                placement='right'
+                size={'large' as DrawerProps['size']}
+                width={'90vw'}
+                onClose={onClose}
+                open={open}
+                extra={
+                    <Space>
+                        <Button onClick={onClose}>Cancel</Button>
+                        <Button type='primary' onClick={onClose}>
+                            OK
+                        </Button>
+                    </Space>
+                }
+            >
+                <Editor editor={editorInstance} />
+            </Drawer>
             <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
                 <img alt='Preview' style={{ width: '100%' }} src={previewImage} />
             </Modal>
@@ -270,11 +330,26 @@ const FormProduct = (props: {
                                     required: true,
                                     message: 'Vui lòng nhập mô tả sản phẩm',
                                 },
+                                {
+                                    validator: (_, value) =>
+                                        value && value.length <= 7
+                                            ? Promise.reject('Vui lòng nhập mô tả sản phẩm')
+                                            : Promise.resolve(),
+                                },
                             ]}
                             name='summary'
                             className='font-medium text-[#08090F]'
                         >
-                            <TextArea placeholder='Nhập mô tả sản phẩm...' rows={4} className='w-full' />
+                            <TextArea
+                                value={String(editorInstance?.getHTML())}
+                                placeholder='Nhập mô tả sản phẩm...'
+                                rows={4}
+                                className='hidden w-full'
+                                hidden
+                            />
+                            <Button htmlType='button' type='dashed' onClick={() => setOpen(true)} className='mb-4'>
+                                Mở trình soạn thảo
+                            </Button>
                         </Form.Item>
                     </WrapperCard>
 
