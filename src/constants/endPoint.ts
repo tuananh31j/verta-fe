@@ -63,3 +63,7 @@ export const REVIEWS_ENDPOINT = {
     ALL_REVIEWS_STARS: 'review/rating',
     CREATE_REVIEW: 'review/create',
 };
+
+export const CATEGORY_ENDPONT = {
+    ALL: '/cate',
+};

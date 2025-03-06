@@ -7,6 +7,10 @@ export interface ICategoryPopular {
 export interface ICategory {
     _id: string;
     name: string;
+    items: {
+        _id: string;
+        name: string;
+    }[];
 }
 
 export type ICategoryResponse = {
@@ -21,13 +25,3 @@ export interface ICategoryFormData {
 }
 
 export type IMenu = { name: string; _id: string };
-export type ICate = {
-    _id: string;
-    name: string;
-    items: {
-        _id: string;
-        name: string;
-    }[];
-    createdAt: string;
-    updatedAt: string;
-};
