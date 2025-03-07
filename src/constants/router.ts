@@ -24,7 +24,7 @@ export const ADMIN_ROUTES = {
     ORDERS_LIST: '/admin/orders/list',
     ORDERS_CANCELLATION: '/admin/orders/cancellation',
 
-    CATEGORIES: '/admin/categories/list',
+    CATEGORIES: '/admin/categories',
     CATEGORIES_CREATE: '/admin/categories/create',
     CATEGORIES_EDIT: '/admin/categories/edit', // @id
 

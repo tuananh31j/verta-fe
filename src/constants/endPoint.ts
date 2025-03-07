@@ -66,4 +66,5 @@ export const REVIEWS_ENDPOINT = {
 
 export const CATEGORY_ENDPONT = {
     ALL: '/cate',
+    CREATE: '/cate',
 };

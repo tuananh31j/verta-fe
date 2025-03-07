@@ -2,6 +2,7 @@ import AdminLayout from '../layouts/Admin';
 import {
     CategoryList,
     ColorList,
+    CreateCategory,
     CreateColor,
     CreateProduct,
     CreateSize,
@@ -11,6 +12,7 @@ import {
     ProductsList,
     SizeList,
     Suspense,
+    UpdateCategory,
     UpdateColor,
     UpdateProduct,
     UpdateSize,
@@ -48,14 +50,15 @@ export const PrivateRoutes = [
                     },
                 ],
             },
+
             // @Category
             {
                 path: ADMIN_ROUTES.CATEGORIES, element: <Suspense><Outlet /></Suspense>,
                 children: [
-                    {index: true, element: <Suspense><CategoryList /></Suspense>},
-                    {path: 'list', element: <Suspense><CategoryList /></Suspense>},
-                    // { path: 'create', element: <Suspense><CreateSize /></Suspense>,},
-                    // { path: 'edit/:id', element: <Suspense><UpdateSize /></Suspense>,},
+                    { index: true, element: <Suspense><CategoryList /></Suspense>},
+                    { path: 'list', element: <Suspense><CategoryList /></Suspense>},
+                    { path: 'create', element: <Suspense><CreateCategory /></Suspense>},
+                    { path: 'edit/:id', element: <Suspense><UpdateCategory /></Suspense>,},
                 ]
             },
             // @Order-List

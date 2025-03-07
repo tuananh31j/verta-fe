@@ -1,29 +1,28 @@
-import { ADMIN_ROUTES } from '~/constants/router';
-import useTable from '~/hooks/_common/useTable';
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import type { TableProps } from 'antd';
 import { Button, Space, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import TableDisplay from '~/components/_common/TableDisplay';
+import { ADMIN_ROUTES } from '~/constants/router';
+import useTable from '~/hooks/_common/useTable';
+import { useGetAllCate } from '~/hooks/queries/categories/useGetAllCate';
+import { ICate } from '~/types/Category';
 import WrapperPageAdmin from '../_common';
-import { useGetAllCate } from '~/hooks/queries/catrgories/useGetAllCate';
-import { ICategory } from '~/types/Category';
 
 const CategoryList = () => {
-    const { query, onFilter, onSelectPaginateChange, getColumnSearchProps } = useTable<ICategory>();
-    const { data } = useGetAllCate(query);
+    const { query, onFilter, onSelectPaginateChange } = useTable<ICate>();
+    const { data } = useGetAllCate();
+    const totalDocs = data ? data?.length : 1;
+    const currentPage = Number(query.page || 1);
 
     const categoryList = data || [];
-    const totalDocs = data?.totalDocs || 0;
-    const currentPage = data?.page || 1;
 
-    const columns: TableProps<ICategory>['columns'] = [
+    const columns: TableProps<ICate>['columns'] = [
         {
             title: 'Tên danh mục',
             dataIndex: 'name',
             key: 'search',
             render: (text) => <h4>{text}</h4>,
-            ...getColumnSearchProps('name'),
             width: '20%',
         },
         {
@@ -31,21 +30,8 @@ const CategoryList = () => {
             dataIndex: 'items',
             key: 'items',
             render: (_, record) => {
-                console.log(record);
                 return (
                     <>
-                        {/* {record.items.map((item) => {
-                            if (item.name) {
-                                return (
-                                    <h4 key={item._id} className='inline-block rounded bg-slate-50 px-3 py-1'>
-                                        {item.name}
-                                    </h4>
-                                );
-                            } else {
-                                return <span>Danh mục này không có danh mục phụ!</span>;
-                            }
-                        })} */}
-
                         {record.items.length != 0 &&
                             record.items.map((item) => {
                                 return (
@@ -71,7 +57,7 @@ const CategoryList = () => {
             render: (_, record) => (
                 <Space size={'middle'}>
                     <Tooltip title='Cập nhật danh mục'>
-                        <Link to={`${ADMIN_ROUTES.COLOR_EDIT}/${record._id}`} className='text-blue-500'>
+                        <Link to={`${ADMIN_ROUTES.CATEGORIES_EDIT}/${record._id}`} className='text-blue-500'>
                             <EditOutlined className='rounded-full bg-blue-100 p-2' style={{ fontSize: '1rem' }} />
                         </Link>
                     </Tooltip>
@@ -84,18 +70,18 @@ const CategoryList = () => {
         <WrapperPageAdmin
             title='Quản lý danh mục'
             option={
-                <Link to={ADMIN_ROUTES.COLOR_CREATE}>
+                <Link to={ADMIN_ROUTES.CATEGORIES_CREATE}>
                     <Button icon={<PlusOutlined />} type='primary'>
                         Thêm mới danh mục
                     </Button>
                 </Link>
             }
         >
-            <TableDisplay<ICategory>
-                onFilter={onFilter}
+            <TableDisplay<ICate>
                 columns={columns}
+                onFilter={onFilter}
                 currentPage={currentPage}
-                dataSource={categoryList}
+                dataSource={categoryList || []}
                 onSelectPaginateChange={onSelectPaginateChange}
                 totalDocs={totalDocs}
             />

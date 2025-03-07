@@ -26,7 +26,7 @@ import { Link as LinkReact, useNavigate } from 'react-router-dom';
 import WrapperCard from '~/components/_common/WrapperCard';
 import { ADMIN_ROUTES } from '~/constants/router';
 import useGetAllColors from '~/hooks/Colors/Queries/useGetAllColors';
-import { useGetAllCate } from '~/hooks/queries/catrgories/useGetAllCate';
+import { useGetAllCate } from '~/hooks/queries/categories/useGetAllCate';
 import { useGetProductDetailsForAdmin } from '~/hooks/queries/products/useGetProductDetailsForAdmin';
 import useGetAllSizes from '~/hooks/Sizes/Queries/useGetAllSizes';
 import WrapperPageAdmin from '~/pages/Admin/_common';
