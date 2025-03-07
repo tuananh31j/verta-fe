@@ -1,5 +1,5 @@
 import { Pagination, Rate, Spin } from 'antd';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import useFilter from '~/hooks/common/useFilter';
@@ -9,7 +9,6 @@ import { setScrollTo } from '~/store/slice/scrollToTopSlice';
 import { Params } from '~/types/Api';
 import ReviewItem from './ReviewItem';
 import ReviewStars from './ReviewStars';
-import { IReviewStarResponse } from '~/interfaces/review';
 
 const ProductReviews = () => {
     const { id } = useParams();
@@ -30,14 +29,14 @@ const ProductReviews = () => {
                 <div className='flex justify-between gap-16 rounded-sm border border-gray-100 bg-gray-50 p-8'>
                     <div className='basis-[25%]'>
                         <div className='text-lg'>
-                            <span className='text-2xl font-bold'>{reviewStarData?.everage}</span> trên 5
+                            <span className='text-2xl font-bold'>{reviewStarData?.everage || 0}</span> trên 5
                         </div>
                         <div className='mt-2'>
                             <Rate
                                 allowHalf
                                 disabled
-                                defaultValue={5}
-                                value={reviewData?.data.everage}
+                                defaultValue={reviewStarData?.everage || 0}
+                                value={reviewStarData?.everage}
                                 style={{
                                     fontSize: 18,
                                 }}

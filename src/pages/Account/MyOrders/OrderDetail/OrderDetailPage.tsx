@@ -18,7 +18,7 @@ import ReviewModal from './_Components/ReviewModal';
 const OrderDetailPage = () => {
     const { id } = useParams();
     const { data, isLoading } = useOrderDetails(id!);
-    const [variantId, setVariantId] = useState('');
+    const [productId, setProductId] = useState('');
 
     const orderStatus = data?.orderStatus as OrderStatus;
 
@@ -35,9 +35,9 @@ const OrderDetailPage = () => {
     const orderItems = data?.items || [];
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const showModal = (variantIdParams: string) => {
+    const showModal = (productIdParams: string) => {
         setIsModalOpen(true);
-        setVariantId(variantIdParams);
+        setProductId(productIdParams);
     };
 
     const handleOk = () => {
@@ -88,8 +88,7 @@ const OrderDetailPage = () => {
                 <ReviewModal
                     isModalOpen={isModalOpen}
                     orderId={id || ''}
-                    variantId={variantId}
-                    orderItems={orderItems}
+                    productId={productId}
                     handleCancel={handleCancel}
                     handleOk={handleOk}
                 />

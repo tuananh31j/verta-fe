@@ -13,7 +13,6 @@ type Props = {
 
 const ReviewStars = ({ reviews, reset, handleUpdateQueryParams, query }: Props) => {
     const dispatch = useDispatch();
-    console.log(reviews);
 
     const handleShowStar = (star: number) => {
         return reviews.filter((item) => item.rating === star).length;

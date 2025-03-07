@@ -18,6 +18,7 @@ const useCreateReview = () => {
         },
         onError(error) {
             console.log(error);
+            toast('error', error.message);
         },
     });
 };

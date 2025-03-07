@@ -2,14 +2,12 @@ import { Button, Form, Modal, Rate } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { FormProps } from 'antd/lib';
 import useCreateReview from '~/hooks/mutations/review/useCreateReview';
-import { IOrderItem, OrderItem } from '~/interfaces/order';
 
 type Props = {
     isModalOpen: boolean;
     handleOk: () => void;
     handleCancel: () => void;
-    orderItems: OrderItem[];
-    variantId: string;
+    productId: string;
     orderId: string;
 };
 
@@ -18,21 +16,18 @@ type FieldType = {
     content?: string;
 };
 
-const ReviewModal = ({ isModalOpen, handleOk, handleCancel, variantId, orderItems, orderId }: Props) => {
+const ReviewModal = ({ isModalOpen, handleOk, handleCancel, productId, orderId }: Props) => {
     const [form] = Form.useForm();
     const { mutate: createReview, isPending } = useCreateReview();
 
     const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-        const orderItem = orderItems.find((item) => item.variantId === variantId);
-
-        if (orderItem) {
+        if (productId) {
             createReview(
                 {
                     content: values.content || '',
                     rating: values.rating,
                     orderId,
-                    productId: orderItem?.productId,
-                    variantId,
+                    productId: productId,
                 },
                 {
                     onSuccess() {

@@ -2,7 +2,11 @@ import ErrorPage from '~/pages/Error/ErrorPage';
 import MainLayout from '../layouts/client/MainLayout';
 
 import { Navigate } from 'react-router-dom';
+import CheckoutLayout from '~/layouts/checkout/CheckoutLayout';
+import AccountLayout from '~/layouts/client/AccountLayout';
 import ProtectedLogged from '~/layouts/protected/ProtectedLogged';
+import OrderErrorPage from '~/pages/Checkout/OrderErrrorPage';
+import OrderSuccessPage from '~/pages/Checkout/OrderSuccessPage';
 import NotFoundPage from '~/pages/NotFound/NotFoundPage';
 import {
     AuthPage,
@@ -16,12 +20,8 @@ import {
     Profile,
     ShippingAddressPage,
     Suspense,
-    VerifyAccountPage,
+    VerifyAccountPage
 } from './LazyRoutes';
-import CheckoutLayout from '~/layouts/checkout/CheckoutLayout';
-import OrderSuccessPage from '~/pages/Checkout/OrderSuccessPage';
-import OrderErrorPage from '~/pages/Checkout/OrderErrrorPage';
-import AccountLayout from '~/layouts/client/AccountLayout';
 
 const PublicRoutes = [
     {
@@ -120,6 +120,7 @@ const PublicRoutes = [
                             </Suspense>
                         ),
                     },
+                    
                 ]
             },
         ],
