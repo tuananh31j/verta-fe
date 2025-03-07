@@ -10,7 +10,7 @@ import { IProduct } from '~/types/Product';
 import { IVariant } from '~/types/Variant';
 import { Currency } from '~/utils';
 import WrapperPageAdmin from '../_common';
-import { useGetAllCate } from '~/hooks/queries/catrgories/useGetAllCate';
+import { useGetAllCate } from '~/hooks/queries/categories/useGetAllCate';
 
 const ProductList = () => {
     const { onSelectPaginateChange, query, onFilter, getColumnSearchProps, getFilteredValue, getSortedInfo } =
@@ -97,6 +97,7 @@ const ProductList = () => {
             dataIndex: 'sold',
             width: '10%',
             sortOrder: getSortedInfo('sold'),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             sorter: (a: any, b: any) => a.sold - b.sold,
             render: (sold) => <div className='text-center'>{sold.toLocaleString('de-DE')}</div>,
             responsive: ['md'],
@@ -106,6 +107,7 @@ const ProductList = () => {
             key: 'price',
             dataIndex: 'price',
             sortOrder: getSortedInfo('price'),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             sorter: (a: any, b: any) => a.sold - b.sold,
             width: '15%',
             render: (price) => (

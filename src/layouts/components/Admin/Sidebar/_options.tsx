@@ -46,24 +46,20 @@ export const menuGroups: IMenuItem[] = [
     //     label: 'Quản lý người dùng',
     //     children: [{ label: 'Tất cả người dùng', route: ADMIN_ROUTES.USERS }],
     // },
-
-    // {
-    //     icon: <ProductOutlined />,
-    //     label: 'Quản lý danh mục',
-    //     children: [
-    //         { label: 'Tất cả danh mục', route: ADMIN_ROUTES.CATEGORIES },
-    //         {
-    //             label: 'Thêm mới danh mục',
-    //             route: ADMIN_ROUTES.CATEGORIES_CREATE,
-    //         },
-    //     ],
-    // },
     {
         icon: <BgColorsOutlined />,
         label: 'Quản lý thuộc tính',
         children: [
             { label: 'Màu sắc', route: ADMIN_ROUTES.COLORS },
             { label: 'Kích cỡ', route: ADMIN_ROUTES.SIZES },
+        ],
+    },
+    {
+        icon: <ProductOutlined />,
+        label: 'Quản lý danh mục',
+        children: [
+            { label: 'Tất cả danh muc', route: ADMIN_ROUTES.CATEGORIES },
+            { label: 'Tạo mới danh mục', route: ADMIN_ROUTES.CATEGORIES_CREATE },
         ],
     },
 ];
