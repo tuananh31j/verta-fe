@@ -9,6 +9,7 @@ import { ISizeFormData } from '~/types/Size';
 import showMessage from '~/utils/ShowMessage';
 import { sizeNameValidator } from '~/validations/size/validator';
 import WrapperPageAdmin from '../_common';
+import { useToast } from '~/context/ToastProvider';
 
 const UpdateSize = () => {
     const { id } = useParams();
@@ -16,6 +17,7 @@ const UpdateSize = () => {
     const [form] = Form.useForm<ISizeFormData>();
     const { mutate: updateCategory, isPending } = useMutationUpdateSize();
     const [sizeType, setSizeType] = useState('');
+    const toast = useToast();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
@@ -33,7 +35,17 @@ const UpdateSize = () => {
                 ...values,
                 value: sizeType === 'numericsize' ? values.value.trim() : values.value.trim().toUpperCase(),
             };
-            updateCategory({ id, payload: formattedValues });
+            updateCategory(
+                { id, payload: formattedValues },
+                {
+                    onSuccess: () => {
+                        toast('success', 'Cập nhật thành công');
+                    },
+                    onError: (err: any) => {
+                        toast('error', err?.message);
+                    },
+                }
+            );
         } else {
             showMessage('Không tìm thấy _id size', 'error');
         }
