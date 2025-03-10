@@ -25,6 +25,10 @@ export const UpdateColor = lazy(() => import('~/pages/Admin/_color_/UpdateColor'
 export const SizeList = lazy(() => import('~/pages/Admin/_size_/'));
 export const CreateSize = lazy(() => import('~/pages/Admin/_size_/CreateSize'));
 export const UpdateSize = lazy(() => import('~/pages/Admin/_size_/UpdateSize'));
+export const CategoryList = lazy(() => import('~/pages/Admin/_category_'));
+export const CreateCategory = lazy(() => import('~/pages/Admin/_category_/CreateCategory'))
+export const UpdateCategory = lazy(() => import('~/pages/Admin/_category_/UpdateCategory'))
+
 export const ManageOrders = lazy(
     () => import('~/pages/Admin/_order_/ManageOrder'),
 );

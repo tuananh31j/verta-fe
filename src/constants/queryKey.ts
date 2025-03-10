@@ -6,6 +6,8 @@ export const QUERY_KEY = {
 
     SIZES: 'sizes',
 
+    CATEGORIES: 'categories',
+
     COLORS: 'colors',
 
     PRODUCTS: {

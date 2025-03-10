@@ -1,3 +1,3 @@
 export const SCROLL_TO = {
-    REVIEWS: 1066,
+    REVIEWS: 1056,
 };

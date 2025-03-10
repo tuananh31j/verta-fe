@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import TableDisplay from '../../../components/_common/TableDisplay';
 import WrapperPageAdmin from '../_common/';
 
-const CategoryList = () => {
+const SizeList = () => {
     const { query, onFilter, onSelectPaginateChange, getColumnSearchProps } = useTable<ISize>();
     const { data: sizes } = useGetSizes(query);
     const sizeList = sizes;
@@ -64,4 +64,4 @@ const CategoryList = () => {
     );
 };
 
-export default CategoryList;
+export default SizeList;

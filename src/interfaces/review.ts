@@ -1,3 +1,10 @@
+interface IReviewVariant {
+    variantId: string;
+    size: string;
+    color: string;
+    name: string;
+}
+
 export interface IReviewItem {
     _id: string;
     productId: string;
@@ -8,11 +15,7 @@ export interface IReviewItem {
         name: string;
         avatar: string;
     };
-    variant: {
-        size: string;
-        color: string;
-        name: string;
-    };
+    variants: IReviewVariant[];
     createdAt: string;
     updatedAt: string;
 }
@@ -25,13 +28,11 @@ export interface IReviewStarResponse {
 }
 
 export interface IReviewResponse {
-    everage: number;
     data: IReviewItem[];
 }
 
 export interface ICreateReviewPayload {
     productId: string;
-    variantId: string;
     content: string;
     rating: number;
     orderId: string;
