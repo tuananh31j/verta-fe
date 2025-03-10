@@ -50,6 +50,7 @@ export const ORDER_ENDPOINT = {
     DELIVERED_ORDER: '/orders/delivered',
     FINISH_ORDER: '/orders/done',
     GET_ALL_ORDERS: '/orders',
+    GET_HISTORY_ORDER: '/orders/history',
 };
 export const INVENTORY_ENDPOINT = {
     UPDATE_STOCK_ON_CANCEL_ORDER: 'payos/update-stock/cancel',

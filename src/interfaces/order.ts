@@ -80,6 +80,22 @@ export interface IOrder {
     updatedAt: string;
 }
 
+interface IUser {
+    _id: string;
+    name: string;
+    email: string;
+}
+
+export interface HistoryOrder {
+    status: 'pending' | 'confirmed' | 'shipping' | 'delivered' | 'cancelled';
+    updatedBy: IUser;
+    updatedByName: string;
+    updatedByRole: string;
+    description: string;
+    updatedAt: string;
+}
+export interface IHistoryOrder extends Array<HistoryOrder> {}
+
 export interface IOrderResponse {
     orders: IOrder[];
     page: number;

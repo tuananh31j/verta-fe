@@ -6,6 +6,7 @@ import OrderStatusBar from './OrderStatusBar';
 import ServiceInfo from './ServiceInfo';
 import TableOrderItems from './TableOrderItems';
 import OrderDetailNavbar from './OrderDetailNavbar';
+import OrderHistoryTimeline from './OrderHistoryTimeline';
 
 const OrderDetail = () => {
     const { id } = useParams();
@@ -56,6 +57,9 @@ const OrderDetail = () => {
             <ServiceInfo serviceInfo={serviceInfo} description={description || ''} />
 
             <CustomerInfo customerInfo={customerInfo} shippingAddress={shippingAddress} />
+            <div className='mt-6'>
+                <OrderHistoryTimeline orderId={id} />
+            </div>
 
             <TableOrderItems serviceInfo={serviceInfo} orderItems={items} />
         </>
