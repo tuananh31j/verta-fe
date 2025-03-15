@@ -202,23 +202,6 @@ const FormProduct = (props: {
                 </LinkReact>
             }
         >
-            <Drawer
-                title={`Mô tả`}
-                placement='right'
-                size={'large' as DrawerProps['size']}
-                width={'90vw'}
-                onClose={onClose}
-                open={open}
-                extra={
-                    <Space>
-                        <Button type='primary' onClick={onClose}>
-                            OK
-                        </Button>
-                    </Space>
-                }
-            >
-                <Editor editor={editorInstance} />
-            </Drawer>
             <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
                 <img alt='Preview' style={{ width: '100%' }} src={previewImage} />
             </Modal>
@@ -346,9 +329,7 @@ const FormProduct = (props: {
                                 className='hidden w-full'
                                 hidden
                             />
-                            <Button htmlType='button' type='dashed' onClick={() => setOpen(true)} className='mb-4'>
-                                Mở trình soạn thảo
-                            </Button>
+                            <Editor editor={editorInstance} />
                         </Form.Item>
                     </WrapperCard>
 

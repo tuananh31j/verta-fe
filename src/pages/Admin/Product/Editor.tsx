@@ -70,7 +70,7 @@ const EditorComp = ({ editor }: { editor: Editor | null }) => {
     };
 
     return (
-        <div className='flex h-screen flex-col'>
+        <div className='flex h-[40vh] flex-col'>
             <Space className='border-b border-gray-300 bg-gray-100 p-2'>
                 <Button
                     icon={<BoldOutlined />}
@@ -105,7 +105,7 @@ const EditorComp = ({ editor }: { editor: Editor | null }) => {
                 <Button icon={<PictureOutlined />} onClick={handleOpenModalImage} />
             </Space>
 
-            <div className='h-screen flex-1 overflow-auto p-2'>
+            <div className='flex-1 overflow-auto p-2'>
                 <EditorContent
                     className='border-transparent'
                     editor={editor}
