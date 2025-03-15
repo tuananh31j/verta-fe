@@ -18,6 +18,7 @@ const ProductList = () => {
     const currentPage = Number(query.page || 1);
     const { data } = useGetAllProductForAdmin(query);
     const { data: categories } = useGetAllCate();
+    const totalDocs = data?.totalDocs || 0;
     const categoriesDataFilter = (categories?.map((el) => [{ name: el.name, _id: el._id }, ...el.items]).flat() || [])
         .reduce(
             (acc, curr) => {
@@ -51,7 +52,7 @@ const ProductList = () => {
                         />
                         <div className='flex-1'>
                             <h4 className='max-w-[300px] truncate text-lg font-medium text-gray-800'>{text}</h4>
-                            <p className='text-xs text-gray-500'>ID: {record._id}</p>
+                            <p className='text-xs text-gray-500'>ID: {record.code}</p>
                         </div>
                     </div>
 
@@ -214,7 +215,7 @@ const ProductList = () => {
                 currentPage={currentPage}
                 dataSource={data?.data || []}
                 onSelectPaginateChange={onSelectPaginateChange}
-                totalDocs={2}
+                totalDocs={totalDocs}
             />
         </WrapperPageAdmin>
     );

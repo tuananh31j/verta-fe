@@ -22,6 +22,7 @@ export interface IVariantDetail {
 }
 
 export interface IProductDetail {
+    code: string;
     _id: string;
     name: string;
     price: number;

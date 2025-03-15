@@ -9,6 +9,7 @@ export type IProductResponse = {
 
 export type IProduct = {
     _id: string;
+    code: string;
     name: string;
     price: number;
     summary: string;
@@ -68,6 +69,7 @@ export type ProductType = {
 
 export type IProductDetailsForAdmin = {
     _id: string;
+    code: string;
     name: string;
     price: number;
     summary: string;
