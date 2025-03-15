@@ -43,7 +43,6 @@ export default function ActionProductDetail({
     };
 
     useEffect(() => {
-        // Tìm màu đầu tiên có stock > 0
         const firstAvailableColor = variants.find((variant) => variant.items.some((item) => item.stock > 0));
         if (firstAvailableColor) {
             if (outOfStock) {
@@ -76,26 +75,36 @@ export default function ActionProductDetail({
                         <div className='mt-2 flex items-center gap-2'>
                             {variants.map((item, index) => {
                                 const totalStock = item.items.reduce((acc, curr) => acc + curr.stock, 0);
+                                const isSelected = selectedColor === item;
+                                const isDisabled = totalStock === 0;
+
                                 return (
-                                    <button
-                                        key={index}
-                                        onClick={() => {
-                                            if (totalStock > 0) {
-                                                setColorVariant(item);
-                                            }
-                                        }}
-                                        disabled={totalStock === 0}
-                                        style={{ backgroundColor: `${item.color.hex}` }}
-                                        className={`relative cursor-pointer overflow-hidden rounded-full border px-4 py-4 text-sm transition-all ${selectedColor === item ? `border-black` : 'border-[#8f8f8f]'} ${totalStock === 0 ? 'cursor-not-allowed opacity-50' : ''} `}
-                                    >
-                                        {totalStock === 0 && (
-                                            <img
-                                                src={soldOut}
-                                                className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'
-                                                alt=''
-                                            />
-                                        )}
-                                    </button>
+                                    <div key={index} className='relative'>
+                                        <button
+                                            onClick={() => {
+                                                if (totalStock > 0) {
+                                                    setColorVariant(item);
+                                                }
+                                            }}
+                                            disabled={isDisabled}
+                                            style={{ backgroundColor: `${item.color.hex}` }}
+                                            className={`relative cursor-pointer overflow-hidden rounded-full border px-4 py-4 text-sm transition-all duration-300 ${
+                                                isSelected
+                                                    ? 'z-10 border-2 border-black'
+                                                    : 'border-[#8f8f8f] opacity-50'
+                                            } ${isDisabled ? 'cursor-not-allowed opacity-30' : ''} hover:opacity-90`}
+                                        >
+                                            {isDisabled && (
+                                                <img
+                                                    src={soldOut}
+                                                    className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'
+                                                    alt=''
+                                                />
+                                            )}
+                                        </button>
+
+                                        {isSelected && <div className=''></div>}
+                                    </div>
                                 );
                             })}
                         </div>

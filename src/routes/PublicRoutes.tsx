@@ -2,12 +2,17 @@ import ErrorPage from '~/pages/Error/ErrorPage';
 import MainLayout from '../layouts/client/MainLayout';
 
 import { Navigate } from 'react-router-dom';
+import CheckoutLayout from '~/layouts/checkout/CheckoutLayout';
+import AccountLayout from '~/layouts/client/AccountLayout';
 import ProtectedLogged from '~/layouts/protected/ProtectedLogged';
+import OrderErrorPage from '~/pages/Checkout/OrderErrrorPage';
+import OrderSuccessPage from '~/pages/Checkout/OrderSuccessPage';
 import NotFoundPage from '~/pages/NotFound/NotFoundPage';
 import {
     AuthPage,
     CartDetail,
     HomePage,
+    MyAddressPage,
     MyDetailOrder,
     MyOrders,
     PaymentPage,
@@ -15,12 +20,8 @@ import {
     Profile,
     ShippingAddressPage,
     Suspense,
-    VerifyAccountPage,
+    VerifyAccountPage
 } from './LazyRoutes';
-import CheckoutLayout from '~/layouts/checkout/CheckoutLayout';
-import OrderSuccessPage from '~/pages/Checkout/OrderSuccessPage';
-import OrderErrorPage from '~/pages/Checkout/OrderErrrorPage';
-import AccountLayout from '~/layouts/client/AccountLayout';
 
 const PublicRoutes = [
     {
@@ -77,7 +78,9 @@ const PublicRoutes = [
             {
                 path: '/account',
                 element: (
-                    <AccountLayout/>
+                    <ProtectedLogged type='NOTLOG'>
+                        <AccountLayout/>
+                    </ProtectedLogged>
                 ),
                 errorElement: <ErrorPage />,
                 children: [
@@ -89,9 +92,7 @@ const PublicRoutes = [
                         path: 'profile',
                         element: (
                             <Suspense>
-                                <ProtectedLogged type='NOTLOG'>
                                     <Profile />
-                                </ProtectedLogged>
                             </Suspense>
                         ),
                     },
@@ -99,9 +100,7 @@ const PublicRoutes = [
                         path: 'my-orders',
                         element: (
                             <Suspense>
-                                <ProtectedLogged type='NOTLOG'>
                                     <MyOrders />
-                                </ProtectedLogged>
                             </Suspense>
                         ),
                     },
@@ -109,12 +108,19 @@ const PublicRoutes = [
                         path: 'my-orders/:id',
                         element: (
                             <Suspense>
-                                <ProtectedLogged type='NOTLOG'>
                                     <MyDetailOrder />
-                                </ProtectedLogged>
                             </Suspense>
                         ),
                     },
+                    {
+                        path: 'my-address',
+                        element: (
+                            <Suspense>
+                                    <MyAddressPage />
+                            </Suspense>
+                        ),
+                    },
+                    
                 ]
             },
         ],

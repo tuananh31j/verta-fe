@@ -2,6 +2,7 @@ import { ORDER_ENDPOINT } from '~/constants/endPoint';
 import { Params } from '~/interfaces/api';
 import instance from '~/utils/api/axiosInstance';
 import {
+    IHistoryOrder,
     IOrder,
     IOrderCreatePayload,
     IOrderPayOsPayLoad,
@@ -27,6 +28,10 @@ export const orderService = {
 
     async getDetailOrder(id: string) {
         const { data } = await instance.get<IOrder>(`${ORDER_ENDPOINT.MYORDER}/${id}`);
+        return data;
+    },
+    async getHistoryOrder(id: string) {
+        const { data } = await instance.get<IHistoryOrder>(`${ORDER_ENDPOINT.GET_HISTORY_ORDER}/${id}`);
         return data;
     },
 };

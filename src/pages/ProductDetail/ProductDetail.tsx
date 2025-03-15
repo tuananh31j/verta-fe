@@ -1,5 +1,5 @@
 import { Spin } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useGetDetailProduct } from '~/hooks/queries/products/useGetDetailProduct';
 import { ISizeInColor, IVariantDetail } from '~/interfaces/product';
@@ -7,6 +7,7 @@ import { formatCurrency } from '~/utils/formatCurrrency';
 import ActionProductDetail from './_components/ActionProductDetail';
 import ProductRelated from './_components/ProductRelated';
 import ThumbnailProductsDetail from './_components/ThumbnailProductsDetail';
+import ProductReviews from './_components/ProductReviews';
 
 export default function ProductDetail() {
     const { id } = useParams();
@@ -33,6 +34,7 @@ export default function ProductDetail() {
                             selectedColor={selectedColor as IVariantDetail}
                             variants={data.variants}
                         />
+                        <ProductReviews />
                     </div>
                     <div>
                         <h3 className='text-lg font-bold text-[#070707] uppercase'>{data.name}</h3>
