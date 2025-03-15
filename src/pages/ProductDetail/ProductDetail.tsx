@@ -1,6 +1,6 @@
 import { Spin } from 'antd';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useGetDetailProduct } from '~/hooks/queries/products/useGetDetailProduct';
 import { ISizeInColor, IVariantDetail } from '~/interfaces/product';
 import { formatCurrency } from '~/utils/formatCurrrency';
@@ -8,13 +8,29 @@ import ActionProductDetail from './_components/ActionProductDetail';
 import ProductRelated from './_components/ProductRelated';
 import ThumbnailProductsDetail from './_components/ThumbnailProductsDetail';
 import ProductReviews from './_components/ProductReviews';
+import { useQueryClient } from '@tanstack/react-query';
+import { QUERY_KEY } from '~/constants/queryKey';
 
 export default function ProductDetail() {
     const { id } = useParams();
-    const { data, isPending } = useGetDetailProduct(id as string);
+    const { data, isPending, isError } = useGetDetailProduct(id as string);
     const imagesProducts = data?.variants.map((item) => item.color.image);
     const [selectedSize, setSelectedSize] = useState<ISizeInColor | null>();
     const [selectedColor, setSelectedColor] = useState<IVariantDetail>();
+    const queryClient = useQueryClient();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isError) {
+            queryClient.refetchQueries({
+                predicate: (query) =>
+                    query.queryKey.includes(QUERY_KEY.PRODUCTS.ROOT) ||
+                    query.queryKey.includes(QUERY_KEY.CART) ||
+                    query.queryKey.includes(QUERY_KEY.ORDERS.ROOT),
+            });
+            navigate('/', { replace: true });
+        }
+    }, [data, isError, navigate, queryClient]);
 
     return data && !isPending ? (
         <div className='mt-4'>
