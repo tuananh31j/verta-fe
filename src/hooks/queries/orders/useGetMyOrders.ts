@@ -5,7 +5,7 @@ import { orderService } from '~/services/order.service';
 
 export const useGetMyOrders = (params: Params) => {
     return useQuery({
-        queryKey: [QUERY_KEY.MY_ORDERS, ...Object.keys(params)],
+        queryKey: [QUERY_KEY.MY_ORDERS, ...Object.values(params)],
         queryFn: () => orderService.getAllOrder(params),
     });
 };

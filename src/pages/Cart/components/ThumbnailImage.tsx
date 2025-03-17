@@ -10,7 +10,7 @@ type Props = {
 
 const ThumbnailImage = ({ productId, thumbnail, stock }: Props) => {
     const dispatch = useDispatch();
-
+    console.log(thumbnail);
     return (
         <Link
             onClick={() => dispatch(closeCart())}

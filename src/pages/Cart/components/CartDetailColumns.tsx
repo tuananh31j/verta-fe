@@ -13,7 +13,7 @@ export interface CartTableType {
     stock: number;
     color: string;
     size: string;
-    variantId: string;
+    variant: ICartItem['variant'];
 }
 
 export const columns: TableProps<CartTableType>['columns'] = [
@@ -22,7 +22,7 @@ export const columns: TableProps<CartTableType>['columns'] = [
         dataIndex: 'thumbnail',
         key: 'thumbnail',
         render: (_, record) => (
-            <ThumbnailImage stock={record.stock} productId={record.productId} thumbnail={record.thumbnail} />
+            <ThumbnailImage stock={record.stock} productId={record.productId} thumbnail={record.variant.image} />
         ),
     },
     {
@@ -58,7 +58,7 @@ export const columns: TableProps<CartTableType>['columns'] = [
                 productId={record.productId}
                 quantityValue={record.quantity}
                 stock={record.stock}
-                variantId={record.variantId}
+                variantId={record.variant._id}
             />
         ),
     },
@@ -89,6 +89,6 @@ export const columns: TableProps<CartTableType>['columns'] = [
         title: '',
         key: 'action',
         width: '50px',
-        render: (_, record) => <RemoveCartItem variantId={record.variantId} />,
+        render: (_, record) => <RemoveCartItem variantId={record.variant._id} />,
     },
 ];

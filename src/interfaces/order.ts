@@ -65,6 +65,7 @@ export interface OrderItem {
 
 export interface IOrder {
     userId: string;
+    orderCode: number;
     items: OrderItem[];
     totalPrice: number;
     shippingFee: number;
