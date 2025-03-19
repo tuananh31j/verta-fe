@@ -36,7 +36,6 @@ interface ICartItem {
     variant: {
         _id: string;
         image: string;
-        imageRef: string;
         size: CartSize;
         stock: number;
         color: CartColor;

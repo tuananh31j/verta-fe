@@ -58,7 +58,7 @@ const OrderDetailPage = () => {
                 {/* BREADCRUMB */}
                 {!isLoading && (
                     <WrapperList
-                        title={`Chi tiết đơn hàng #${id}`}
+                        title={`Chi tiết đơn hàng #${data?.orderCode}`}
                         option={
                             <Link to={`/${MAIN_ROUTES.MY_ORDERS}`}>
                                 <LeftOutlined /> Quay Trở Về Danh Sach

@@ -1,24 +1,42 @@
-interface IReviewVariant {
-    variantId: string;
-    size: string;
-    color: string;
-    name: string;
-}
-
 export interface IReviewItem {
     _id: string;
     productId: string;
     rating: number;
     content: string;
+    name: string;
+    variants: {
+        name: string;
+        variantId: string;
+        color: string;
+        size: string;
+        _id: string;
+    }[];
     userId: {
         _id: string;
         name: string;
         avatar: string;
     };
-    variants: IReviewVariant[];
+    isHided: boolean;
     createdAt: string;
     updatedAt: string;
 }
+export interface IReviewItemTable {
+    _id: string;
+    productId: string;
+    rating: number;
+    content: string;
+    userId: string;
+    userName: string;
+    isHided: boolean;
+    variants: {
+        name: string;
+        variantId: string;
+        color: string;
+        size: string;
+        _id: string;
+    }[];
+}
+
 export interface IReviewStarResponse {
     reviewsStar: {
         _id: string;

@@ -14,10 +14,12 @@ const CreateCategory = () => {
     const onFinish: FormProps<ICategoryFormData>['onFinish'] = (values) => {
         if (!values.items) {
             values.items = [];
+        } else {
+            values.items = values.items.map((item) => item.toLowerCase());
         }
 
         const payload = {
-            name: values.name,
+            name: values.name.toLowerCase(),
             items: values.items,
         };
 
@@ -61,7 +63,7 @@ const CreateCategory = () => {
                                     {(fields, { add, remove }, { errors }) => (
                                         <>
                                             {fields.map((field, index) => (
-                                                <Form.Item label='Tên danh mục phụ' required={false} key={field.key}>
+                                                <Form.Item label='Tên danh mục con' required={false} key={field.key}>
                                                     <Form.Item
                                                         {...field}
                                                         validateTrigger={['onChange', 'onBlur']}
@@ -69,13 +71,13 @@ const CreateCategory = () => {
                                                             {
                                                                 required: true,
                                                                 whitespace: true,
-                                                                message: 'Nhập tên danh mục phụ hoặc xóa trường này!',
+                                                                message: 'Nhập tên danh mục con hoặc xóa trường này!',
                                                             },
                                                         ]}
                                                         noStyle
                                                     >
                                                         <Input
-                                                            placeholder='Nhập tên danh mục phụ tại đây'
+                                                            placeholder='Nhập tên danh mục con tại đây'
                                                             style={{ width: '80%' }}
                                                         />
                                                     </Form.Item>
@@ -96,7 +98,7 @@ const CreateCategory = () => {
                                                     style={{ width: '60%' }}
                                                     icon={<PlusOutlined />}
                                                 >
-                                                    Thêm danh mục phụ
+                                                    Thêm danh mục con
                                                 </Button>
 
                                                 <Form.ErrorList errors={errors} />
@@ -114,7 +116,11 @@ const CreateCategory = () => {
                                     description={
                                         <ul className='list-disc space-y-1 pl-4 text-sm'>
                                             <li>Tên danh mục sẽ trở thành chữ in thường khi được gửi đi</li>
-                                            <li>Danh mục phụ không bắt buộc</li>
+                                            <li>Danh mục con không bắt buộc</li>
+                                            <li>
+                                                Tên danh mục con không được trùng nhau ở trong cùng một danh mục hoặc ở
+                                                trong danh mục khác
+                                            </li>
                                         </ul>
                                     }
                                     type='info'

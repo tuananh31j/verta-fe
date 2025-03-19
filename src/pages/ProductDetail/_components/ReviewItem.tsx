@@ -8,7 +8,6 @@ type Props = {
 };
 
 const ReviewItem = ({ item }: Props) => {
-    console.log(item.variants);
     return (
         <div className='mt-4 border-b border-gray-200 pb-4'>
             <div className='flex gap-3'>

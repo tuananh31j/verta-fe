@@ -33,7 +33,7 @@ const CartDetail = () => {
             stock: item.variant.stock,
             color: item.variant.color.hex,
             size: item.variant.size.value,
-            variantId: item.variant._id,
+            variant: item.variant,
         };
     });
     const navigateCheckout = () => {

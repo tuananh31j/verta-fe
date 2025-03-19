@@ -35,6 +35,8 @@ export const ManageOrders = lazy(
 export const OrdersDetails = lazy(
     () => import('~/pages/Admin/_order_/OrderDetails'),
 );
+export const ReviewList = lazy(() => import('~/pages/Admin/_review_/ReviewList'));
+
 
 export const Suspense = ({ children }: { children: React.ReactNode }) => {
     return <React.Suspense fallback={<Loader />}>{children}</React.Suspense>;

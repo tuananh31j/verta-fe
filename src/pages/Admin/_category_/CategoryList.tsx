@@ -26,7 +26,7 @@ const CategoryList = () => {
             width: '20%',
         },
         {
-            title: 'Danh mục phụ',
+            title: 'Danh mục con',
             dataIndex: 'items',
             key: 'items',
             render: (_, record) => {
@@ -43,7 +43,7 @@ const CategoryList = () => {
 
                         {record.items.length == 0 && (
                             <h4 className='inline-block rounded bg-slate-50 px-3 py-1'>
-                                Danh mục này không có danh mục phụ!
+                                Danh mục này không có danh mục con!
                             </h4>
                         )}
                     </>

@@ -1,4 +1,4 @@
-import AdminLayout from '../layouts/Admin';
+import AdminLayout from '~/layouts/admin';
 import {
     CategoryList,
     ColorList,
@@ -10,6 +10,7 @@ import {
     ManageOrders,
     OrdersDetails,
     ProductsList,
+    ReviewList,
     SizeList,
     Suspense,
     UpdateCategory,
@@ -59,6 +60,15 @@ export const PrivateRoutes = [
                     { path: 'list', element: <Suspense><CategoryList /></Suspense>},
                     { path: 'create', element: <Suspense><CreateCategory /></Suspense>},
                     { path: 'edit/:id', element: <Suspense><UpdateCategory /></Suspense>,},
+                ]
+            },
+            // @Reviews
+            {
+                path: ADMIN_ROUTES.REVIEWS, element: <Suspense><Outlet /></Suspense>,
+                children: [
+                    { index: true, element: <Suspense><ReviewList /></Suspense>},
+                    { path: 'list', element: <Suspense><ReviewList /></Suspense>},
+                    { path: 'edit/:id', element: <Suspense><ReviewList /></Suspense>,},
                 ]
             },
             // @Order-List
