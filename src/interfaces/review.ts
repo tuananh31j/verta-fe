@@ -4,6 +4,13 @@ export interface IReviewItem {
     rating: number;
     content: string;
     name: string;
+    variants: {
+        name: string;
+        variantId: string;
+        color: string;
+        size: string;
+        _id: string;
+    }[];
     userId: {
         _id: string;
         name: string;
@@ -21,6 +28,13 @@ export interface IReviewItemTable {
     userId: string;
     userName: string;
     isHided: boolean;
+    variants: {
+        name: string;
+        variantId: string;
+        color: string;
+        size: string;
+        _id: string;
+    }[];
 }
 
 export interface IReviewStarResponse {

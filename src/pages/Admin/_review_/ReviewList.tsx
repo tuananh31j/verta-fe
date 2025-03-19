@@ -2,13 +2,12 @@ import { EditOutlined } from '@ant-design/icons';
 import type { TableProps } from 'antd';
 import { Popconfirm, Rate, Space, Tag, Tooltip } from 'antd';
 import useTable from '~/hooks/_common/useTable';
+import useActiveReview from '~/hooks/mutations/review/useActiveReview';
+import useHiddenReview from '~/hooks/mutations/review/useHiddenReview';
 import useGetAllReviews from '~/hooks/queries/reviews/useGetAllReviews';
-import { IReviewItem, IReviewItemTable } from '~/interfaces/review';
+import { IReviewItemTable } from '~/interfaces/review';
 import TableDisplay from '../../../components/_common/TableDisplay';
 import WrapperPageAdmin from '../_common';
-import { PopconfirmProps } from 'antd/lib';
-import useHiddenReview from '~/hooks/mutations/review/useHiddenReview';
-import useActiveReview from '~/hooks/mutations/review/useActiveReview';
 
 const SizeList = () => {
     const { query, onFilter, onSelectPaginateChange, getColumnSearchProps } = useTable<IReviewItemTable>();
@@ -24,6 +23,7 @@ const SizeList = () => {
             _id: review._id,
             productId: review.productId,
             isHided: review.isHided,
+            variants: review.variants,
         };
     });
 
@@ -36,18 +36,41 @@ const SizeList = () => {
             dataIndex: 'userName',
             key: 'search',
             render: (_, record) => {
-                console.log(record);
                 return <h4>{record.userName}</h4>;
             },
             ...getColumnSearchProps('userName'),
-            width: '20%',
+        },
+        {
+            title: 'Sản phẩm',
+            dataIndex: 'content',
+            key: 'content',
+            render: (_, record) => {
+                return (
+                    <div>
+                        <span>{record.variants?.[0]?.name}</span>
+                        {record.variants.map((variant) => (
+                            <div key={variant.variantId} className='inline-block'>
+                                <span className='mx-1 inline-block'>|</span>
+                                <button
+                                    className={`relative top-[-4px] mr-1.5 ml-0.5 overflow-hidden rounded-full border px-2 py-2 text-sm transition-all`}
+                                    style={{
+                                        background: `${variant.color}`,
+                                    }}
+                                ></button>
+                                <span>{variant.size}</span>
+                            </div>
+                        ))}
+                    </div>
+                );
+            },
+
+            width: '350px',
         },
         {
             title: 'Nội dung',
             dataIndex: 'content',
             key: 'content',
             render: (content) => <p>{content}</p>,
-            width: '20%',
         },
         {
             title: 'Số sao',
@@ -55,14 +78,12 @@ const SizeList = () => {
             key: 'rating',
             render: (rate) => <Rate disabled defaultValue={rate}></Rate>,
             sorter: (a, b) => a.rating - b.rating,
-            width: '20%',
         },
         {
-            title: 'Số sao',
+            title: 'Trạng thái',
             dataIndex: 'isHided',
             key: 'isHided',
             render: (isHided) => <Tag color={`${isHided ? 'red' : 'green'}`}>{isHided ? 'Đã ẩn' : 'Hiển thị'}</Tag>,
-            width: '20%',
         },
 
         {
@@ -77,6 +98,7 @@ const SizeList = () => {
                             onConfirm={() => hiddenReview(record._id)}
                             okText='Đồng ý'
                             cancelText='Hủy'
+                            placement='leftTop'
                         >
                             <Tooltip title='Ẩn đánh giá'>
                                 <div className='text-blue-500'>
@@ -91,10 +113,11 @@ const SizeList = () => {
                     {record.isHided && (
                         <Popconfirm
                             title=''
-                            description='Bạn muốn hiển thị  đánh giá này?'
+                            description='Bạn muốn hiển thị đánh giá này?'
                             onConfirm={() => activeReview(record._id)}
                             okText='Đồng ý'
                             cancelText='Hủy'
+                            placement='leftTop'
                         >
                             <Tooltip title='Hiển thị đánh giá'>
                                 <div className='text-blue-500'>
