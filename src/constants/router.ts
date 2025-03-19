@@ -41,7 +41,7 @@ export const ADMIN_ROUTES = {
     COLOR_EDIT: '/admin/colors/edit', // @id
 
     REVIEWS: '/admin/reviews',
-    REVIEWS_REPORT: '/admin/reviews/report',
+    REVIEWS_EDIT: '/admin/reviews',
 
     // SHOP
     SHOP: '/admin/shop',

@@ -72,6 +72,7 @@ const ProductReviews = () => {
                                     updateQueryParam({ ...query, page: page });
                                     dispatch(setScrollTo('reviews'));
                                 }}
+                                pageSize={5}
                                 defaultCurrent={Number(query.page) || 1}
                                 current={Number(query.page) || 1}
                                 total={reviewData?.totalDocs as number}

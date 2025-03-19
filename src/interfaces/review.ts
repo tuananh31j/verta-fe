@@ -9,9 +9,20 @@ export interface IReviewItem {
         name: string;
         avatar: string;
     };
+    isHided: boolean;
     createdAt: string;
     updatedAt: string;
 }
+export interface IReviewItemTable {
+    _id: string;
+    productId: string;
+    rating: number;
+    content: string;
+    userId: string;
+    userName: string;
+    isHided: boolean;
+}
+
 export interface IReviewStarResponse {
     reviewsStar: {
         _id: string;

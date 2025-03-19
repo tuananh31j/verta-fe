@@ -32,6 +32,7 @@ const ReviewModal = ({ isModalOpen, handleOk, handleCancel, productId, orderId }
                 {
                     onSuccess() {
                         handleCancel();
+                        form.resetFields();
                     },
                 }
             );

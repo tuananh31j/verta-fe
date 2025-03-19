@@ -1,13 +1,10 @@
 import {
     BgColorsOutlined,
-    CommentOutlined,
-    CrownOutlined,
     LineChartOutlined,
     ProductOutlined,
     ProfileOutlined,
     ShoppingOutlined,
-    StarOutlined,
-    TagsOutlined,
+    StarFilled,
 } from '@ant-design/icons';
 import { ADMIN_ROUTES } from '~/constants/router';
 
@@ -61,5 +58,10 @@ export const menuGroups: IMenuItem[] = [
             { label: 'Tất cả danh muc', route: ADMIN_ROUTES.CATEGORIES },
             { label: 'Tạo mới danh mục', route: ADMIN_ROUTES.CATEGORIES_CREATE },
         ],
+    },
+    {
+        icon: <StarFilled />,
+        label: 'Quản lý đánh giá',
+        children: [{ label: 'Tất cả đánh giá', route: ADMIN_ROUTES.REVIEWS }],
     },
 ];
