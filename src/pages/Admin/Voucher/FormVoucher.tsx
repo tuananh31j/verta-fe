@@ -17,6 +17,12 @@ const FormVoucher = () => {
     const [isLoading, setIsLoading] = useState(false);
     const { mutateAsync: createVoucher } = useCreateVoucher();
     const { mutateAsync: updateVoucher } = useUpdateVoucher();
+    const [isResetCode, setIsResetCode] = useState(false);
+
+    const handleUpdateAndResetCode = () => {
+        setIsResetCode(true);
+        form.setFieldsValue({ resetCode: true });
+    };
 
     const handleSubmit = async (values: IVoucherDTO) => {
         setIsLoading(true);
@@ -41,7 +47,7 @@ const FormVoucher = () => {
                 name,
                 startDate: moment(voucherDetails.startDate),
                 endDate: moment(voucherDetails.endDate),
-                discountValue: voucherDetails.discountValue,
+                voucherDiscount: voucherDetails.voucherDiscount,
                 minimumOrderPrice: voucherDetails.minimumOrderPrice,
                 status: voucherDetails.status,
                 maxUsage: voucherDetails.maxUsage,
@@ -62,6 +68,9 @@ const FormVoucher = () => {
         >
             <Form form={form} onFinish={handleSubmit} layout='vertical' className='flex flex-col gap-4'>
                 <WrapperCard title='Thông tin voucher'>
+                    <Form.Item name='resetCode' className='hidden' hidden>
+                        <Input type='hidden' />
+                    </Form.Item>
                     <Form.Item<IVoucherDTO>
                         label='Tên Voucher'
                         name='name'
@@ -71,7 +80,7 @@ const FormVoucher = () => {
                     </Form.Item>
                     <Form.Item<IVoucherDTO>
                         label='Giá trị giảm giá'
-                        name='discountValue'
+                        name='voucherDiscount'
                         rules={[{ required: true, message: 'Vui lòng nhập giá trị giảm giá!' }]}
                     >
                         <InputNumber size='large' style={{ width: '100%' }} placeholder='Nhập giá trị giảm giá' />
@@ -83,7 +92,7 @@ const FormVoucher = () => {
                             { required: true, message: 'Vui lòng nhập giá trị đơn hàng tối thiểu!' },
                             ({ getFieldValue }) => ({
                                 validator(_, value) {
-                                    if (!value || value > getFieldValue('discountValue')) {
+                                    if (!value || value > getFieldValue('voucherDiscount')) {
                                         return Promise.resolve();
                                     }
                                     return Promise.reject('Giá trị đơn hàng tối thiểu phải lớn hơn giá trị giảm giá');
@@ -174,9 +183,27 @@ const FormVoucher = () => {
                     </Form.Item>
                 </WrapperCard>
                 <Form.Item>
-                    <Button loading={isLoading} disabled={isLoading} type='primary' htmlType='submit'>
-                        {`${id}` ? 'Cập nhật' : 'Tạo mới'}
-                    </Button>
+                    <div className='flex gap-2'>
+                        <Button
+                            loading={isLoading && !isResetCode}
+                            disabled={isLoading}
+                            type='primary'
+                            htmlType='submit'
+                        >
+                            {`${id}` ? 'Cập nhật' : 'Tạo mới'}
+                        </Button>
+                        {id && (
+                            <Button
+                                loading={isLoading && isResetCode}
+                                disabled={isLoading}
+                                type='dashed'
+                                htmlType='submit'
+                                onClick={handleUpdateAndResetCode}
+                            >
+                                Cập nhật và reset mã voucher
+                            </Button>
+                        )}
+                    </div>
                 </Form.Item>
             </Form>
         </WrapperPageAdmin>

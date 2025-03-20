@@ -3,7 +3,7 @@ export type IVoucher = {
     name: string;
     code: string;
     maxUsage: number;
-    discountValue: number;
+    voucherDiscount: number;
     status: boolean;
     isOnlyForNewUser: boolean;
     minimumOrderPrice: number;

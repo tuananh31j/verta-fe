@@ -56,9 +56,9 @@ const VoucherList = () => {
         },
         {
             title: 'Giá trị giảm',
-            key: 'discountValue',
-            dataIndex: 'discountValue',
-            sortOrder: getSortedInfo('discountValue'),
+            key: 'voucherDiscount',
+            dataIndex: 'voucherDiscount',
+            sortOrder: getSortedInfo('voucherDiscount'),
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             sorter: (a: any, b: any) => a.sold - b.sold,
             width: '15%',
