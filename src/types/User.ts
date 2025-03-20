@@ -5,4 +5,5 @@ export type IUserProfileResponse = {
     role: string;
     phone: string;
     avatar: string;
+    userIsOldWhen: string;
 };

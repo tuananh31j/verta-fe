@@ -7,7 +7,7 @@ const queryClient = new QueryClient();
 const QueryProvider = ({ children }: { children: React.ReactNode }) => {
     return (
         <QueryClientProvider client={queryClient}>
-            {envProcess.env === 'development' && <ReactQueryDevtools />}
+            {envProcess.env === 'development' && <ReactQueryDevtools buttonPosition='top-left' />}
             {children}
         </QueryClientProvider>
     );
