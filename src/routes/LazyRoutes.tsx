@@ -29,6 +29,10 @@ export const CategoryList = lazy(() => import('~/pages/Admin/_category_'));
 export const CreateCategory = lazy(() => import('~/pages/Admin/_category_/CreateCategory'))
 export const UpdateCategory = lazy(() => import('~/pages/Admin/_category_/UpdateCategory'))
 
+// Vouvher
+export const VoucherList = lazy(() => import('~/pages/Admin/Voucher/List'));
+export const FormVoucher = lazy(() => import('~/pages/Admin/Voucher/FormVoucher'));
+
 export const ManageOrders = lazy(
     () => import('~/pages/Admin/_order_/ManageOrder'),
 );

@@ -1,4 +1,5 @@
 import {
+    BarcodeOutlined,
     BgColorsOutlined,
     LineChartOutlined,
     ProductOutlined,
@@ -38,6 +39,15 @@ export const menuGroups: IMenuItem[] = [
             { label: 'Tạo mới sản phẩm', route: ADMIN_ROUTES.PRODUCTS_CREATE },
         ],
     },
+    {
+        icon: <BarcodeOutlined />,
+        label: 'Quản lý voucher',
+        children: [
+            { label: 'Tất cả voucher', route: ADMIN_ROUTES.VOUCHER },
+            { label: 'Tạo mới voucher', route: ADMIN_ROUTES.VOUCHER_CREATE },
+        ],
+    },
+
     // {
     //     icon: <CommentOutlined />,
     //     label: 'Quản lý người dùng',

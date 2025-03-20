@@ -46,4 +46,9 @@ export const ADMIN_ROUTES = {
     // SHOP
     SHOP: '/admin/shop',
     SHOP_SETTINGS: '/admin/shop',
+
+    // voucher
+    VOUCHER: '/admin/voucher',
+    VOUCHER_CREATE: '/admin/voucher/create',
+    VOUCHER_EDIT: '/admin/voucher/edit', // @id
 };

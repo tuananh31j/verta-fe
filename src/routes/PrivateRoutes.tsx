@@ -1,4 +1,4 @@
-import AdminLayout from '~/layouts/admin';
+import AdminLayout from '~/layouts/Admin';
 import {
     CategoryList,
     ColorList,
@@ -7,6 +7,7 @@ import {
     CreateProduct,
     CreateSize,
     DashboardPage,
+    FormVoucher,
     ManageOrders,
     OrdersDetails,
     ProductsList,
@@ -17,6 +18,7 @@ import {
     UpdateColor,
     UpdateProduct,
     UpdateSize,
+    VoucherList,
 } from './LazyRoutes';
 import { ADMIN_ROUTES } from '~/constants/router';
 import { Outlet } from 'react-router-dom';
@@ -31,6 +33,15 @@ export const PrivateRoutes = [
             { path: ADMIN_ROUTES.PRODUCTS_EDIT + '/:productId', element: <Suspense><UpdateProduct/></Suspense> },
             { index: true,element: <Suspense><DashboardPage /></Suspense>,  },
 
+            // @Voucher
+            { path: ADMIN_ROUTES.VOUCHER, element: <Suspense><Outlet /> </Suspense>,
+                children: [
+                    { index: true, element:  <Suspense><VoucherList /></Suspense>,},
+                    { path: ADMIN_ROUTES.VOUCHER, element:  <Suspense><VoucherList /></Suspense>,},
+                    { path: ADMIN_ROUTES.VOUCHER_CREATE, element:  <Suspense><FormVoucher /></Suspense>,},
+                    { path: `${ADMIN_ROUTES.VOUCHER_EDIT}/:id`, element:  <Suspense><FormVoucher /></Suspense>,},
+                ],
+            },
             // @Color
             { path: ADMIN_ROUTES.COLORS, element: <Suspense><Outlet /> </Suspense>,
                 children: [

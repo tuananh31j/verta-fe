@@ -89,7 +89,10 @@ const useTable = <T extends object>() => {
                         Tìm kiếm
                     </Button>
                     <Button
-                        onClick={() => clearFilters && handleResetSearch(clearFilters)}
+                        onClick={() => {
+                            clearFilters && handleResetSearch(clearFilters);
+                            resetFilter();
+                        }}
                         size='small'
                         style={{ width: 90 }}
                     >
