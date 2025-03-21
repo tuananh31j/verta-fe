@@ -2,13 +2,24 @@ import { MinusCircleOutlined } from '@ant-design/icons';
 import { TinyColor } from '@ctrl/tinycolor';
 import { Button, ConfigProvider, Tag } from 'antd';
 import { OrderStatus } from '~/constants/enum';
-import RateBtn from './RateBtn';
+import useFinishOrderClient from '~/hooks/mutations/order/useFinishOrderClient';
+import { useToast } from '~/context/ToastProvider';
 
 const colorsArr = ['#fc6076', '#ff9a44', '#ef9d43', '#e75516'];
 const getHoverColors = (colors: string[]) => colors.map((color) => new TinyColor(color).lighten(5).toString());
 const getActiveColors = (colors: string[]) => colors.map((color) => new TinyColor(color).darken(5).toString());
 
 const ActionLink = ({ status, orderId }: { status: OrderStatus; orderId: string }) => {
+    const toast = useToast();
+
+    const { mutateAsync: finishOrder, isPending } = useFinishOrderClient();
+    const handleFinishOrder = async () => {
+        const res = await finishOrder(orderId);
+
+        if (res) {
+            toast('success', 'Thank you for confirming!');
+        }
+    };
     switch (status) {
         case OrderStatus.pending:
             return (
@@ -22,7 +33,11 @@ const ActionLink = ({ status, orderId }: { status: OrderStatus; orderId: string 
             return <></>;
 
         case OrderStatus.delivered:
-            return <Button type='primary'>Tôi đã nhận được hàng</Button>;
+            return (
+                <Button onClick={() => handleFinishOrder()} loading={isPending} type='primary'>
+                    Tôi đã nhận được hàng
+                </Button>
+            );
 
         case OrderStatus.cancelled:
             return (
