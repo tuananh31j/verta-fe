@@ -14,6 +14,7 @@ import ActionLink from '../Components/ActionLink';
 import ServicesDetail from './_Components/ServicesDetail';
 import TableDetailOrder from './_Components/TableDetailOrder';
 import ReviewModal from './_Components/ReviewModal';
+import OrderStatusBar from '~/pages/Admin/_order_/OrderDetails/OrderStatusBar';
 
 const OrderDetailPage = () => {
     const { id } = useParams();
@@ -67,16 +68,43 @@ const OrderDetailPage = () => {
                     >
                         <Space className='flex w-full items-center justify-between rounded-lg bg-[#fff] p-4 font-semibold'>
                             <span>Ngày Đặt Đơn Hàng: {formatDate(data?.createdAt as string)} </span>
+
                             <div className='mt-2 ml-4'>
                                 <ActionLink orderId={id as string} status={orderStatus} />
                             </div>
                         </Space>
+
+                        {orderStatus !== 'cancelled' ? (
+                            <>
+                                <OrderStatusBar orderStatus={orderStatus} />
+                            </>
+                        ) : (
+                            <Space className='mt-5 flex w-full flex-col items-center justify-center rounded-lg bg-[#fff] p-4 font-semibold'>
+                                <Space align='center' direction='vertical'>
+                                    <h2 className='text-rose-500'>
+                                        Đơn hàng đã bị hủy bởi{' '}
+                                        {data?.canceledBy === 'admin' ? (
+                                            <span>Quản trị viên</span>
+                                        ) : (
+                                            <span>Khách hàng</span>
+                                        )}
+                                    </h2>
+
+                                    <p className='font-normal'>
+                                        {data?.canceledBy === 'system' ? 'Thanh toán thất bại' : data?.description}
+                                    </p>
+                                </Space>
+                            </Space>
+                        )}
+
                         <ReceiverInfor
                             receiverInfo={receiverInfo as IOrder['customerInfo']}
                             shippingAddress={shippingAddress as IOrder['shippingAddress']}
                             description={data?.description as string}
                         />
+
                         <ServicesDetail services={serviceInfo} totalQuantity={getTotalQuantity(orderItems)} />
+
                         <TableDetailOrder
                             orderItems={orderItems}
                             status={orderStatus}
@@ -85,6 +113,7 @@ const OrderDetailPage = () => {
                         />
                     </WrapperList>
                 )}
+
                 <ReviewModal
                     isModalOpen={isModalOpen}
                     orderId={id || ''}
