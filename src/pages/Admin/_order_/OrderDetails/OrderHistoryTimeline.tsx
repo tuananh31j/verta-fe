@@ -139,7 +139,6 @@ const OrderHistoryTimeline: React.FC<OrderHistoryTimelineProps> = ({ orderId }) 
                                     <div className='mt-1 sm:mt-0'>
                                         <Tooltip title={item.updatedBy?.email}>
                                             <Badge
-                                                count={item.updatedByRole === 'admin' ? 'Admin' : 'User'}
                                                 style={{
                                                     backgroundColor:
                                                         item.updatedByRole === 'admin' ? '#108ee9' : '#52c41a',

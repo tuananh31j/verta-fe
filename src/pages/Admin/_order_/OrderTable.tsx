@@ -1,6 +1,6 @@
 import type { TableColumnsType } from 'antd';
 import { Button, Tooltip } from 'antd';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { Link } from 'react-router-dom';
 import { ORDER_STATUS } from '~/constants/order';
 import useTable from '~/hooks/_common/useTable';
@@ -19,6 +19,7 @@ interface Props {
 }
 
 interface DataType {
+    id: string;
     key: number;
     code: string;
     total: number;
@@ -33,13 +34,13 @@ const OrderTable = ({ ordersList, totalDocs }: Props) => {
     const { getColumnSearchProps, query, onSelectPaginateChange, onFilter, getSortedInfo, getFilteredValue } =
         useTable<any>();
     const currentPage = Number(query.page || 1);
-    console.log(ordersList);
     const dataSource =
         ordersList && ordersList.length
             ? ordersList.map((order: any, index) => {
                   return {
                       key: index,
-                      code: order._id,
+                      code: order.orderCode,
+                      id: order._id,
                       customerName: order?.customerInfo?.name,
                       total: order.totalPrice,
                       paymentMethod: order.paymentMethod,
@@ -133,7 +134,7 @@ const OrderTable = ({ ordersList, totalDocs }: Props) => {
             dataIndex: 'createdAt',
             title: 'Ngày đặt hàng',
             render: (text: string) => {
-                return moment(text).format('DD/MM/YYYY hh:mm:ss');
+                return moment(text).tz('Asia/Ho_Chi_Minh').format('DD/MM/YYYY hh:mm:ss A');
             },
             sortOrder: getSortedInfo('createdAt'),
             sorter: (a: any, b: any) => moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf(),
@@ -143,7 +144,7 @@ const OrderTable = ({ ordersList, totalDocs }: Props) => {
             title: 'Thao tác',
             render: (text, record) => {
                 return (
-                    <Link to={`/admin/orders/${record.code}/detail`}>
+                    <Link to={`/admin/orders/${record.id}/detail`}>
                         <Button type='primary'>Xem chi tiết</Button>
                     </Link>
                 );

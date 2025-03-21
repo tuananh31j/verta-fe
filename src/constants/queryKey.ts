@@ -30,6 +30,13 @@ export const QUERY_KEY = {
     ADDRESS: {
         ROOT: 'ADDRESS',
     },
+    // Stats
+    TOTAL_STATS: 'totalStats',
+    DATE_RANGE: 'dateRange',
+    LOCATION: 'location',
+    PRODUCT_STATS: 'productStats',
+    TOP_BUYERS: 'topBuyers',
+    PENDING_TASK: 'pending-task',
 
     GET_ALL_REVIEWS_PRODUCT: 'reviews',
     GET_ALL_REVIEWS_STARS: 'reviewsRating',

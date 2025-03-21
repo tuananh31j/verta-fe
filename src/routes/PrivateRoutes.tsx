@@ -19,10 +19,15 @@ import {
 } from './LazyRoutes';
 import { ADMIN_ROUTES } from '~/constants/router';
 import { Outlet } from 'react-router-dom';
+import ProtectedRoute from '~/layouts/protected/ProtectedRoute';
 export const PrivateRoutes = [
     {
         path: ADMIN_ROUTES.DASHBOARD,
-        element: <AdminLayout />,
+        element: (
+            <ProtectedRoute>
+              <AdminLayout />
+            </ProtectedRoute>
+        ),
         children: [
             // @Product
             { path: ADMIN_ROUTES.PRODUCTS, element: <Suspense><ProductsList/></Suspense> },

@@ -17,6 +17,7 @@ const OrderDetail = () => {
     }
 
     const {
+        orderCode,
         orderStatus,
         customerInfo,
         shippingAddress,
@@ -39,7 +40,7 @@ const OrderDetail = () => {
 
     return (
         <>
-            <OrderDetailNavbar orderStatus={orderStatus} id={id!} />
+            <OrderDetailNavbar orderStatus={orderStatus} id={id!} orderCode={`${orderCode}`} />
 
             {orderStatus !== 'cancelled' ? (
                 <OrderStatusBar orderStatus={orderStatus} />

@@ -15,6 +15,7 @@ interface ShippingAddress {
 
 // PAYLOAD
 interface ProductItem {
+    id: string;
     productId: string;
     variantId: string;
     name: string;

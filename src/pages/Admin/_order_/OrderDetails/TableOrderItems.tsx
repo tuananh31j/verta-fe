@@ -2,9 +2,11 @@ import { Table, Tag } from 'antd';
 import { TableProps } from 'antd/lib';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
-import { TruckFilled, DollarCircleFilled } from '@ant-design/icons';
+import { DollarCircleFilled } from '@ant-design/icons';
 
 interface OrderItem {
+    _id: string;
+    order_code: string;
     productId: string;
     variantId: string;
     name: string;
@@ -36,20 +38,7 @@ const TableOrderItems: React.FC<Props> = ({ serviceInfo, orderItems }) => {
         }).format(amount);
     };
 
-    const infoCards = [
-        {
-            icon: <TruckFilled className='text-2xl text-green-500' />,
-            label: 'Cước phí vận chuyển',
-            value: formatCurrency(serviceInfo.shippingFee),
-            className: 'from-green-50 to-emerald-50',
-        },
-        {
-            icon: <DollarCircleFilled className='text-2xl text-purple-500' />,
-            label: 'Tổng tiền',
-            value: formatCurrency(serviceInfo.totalPrice),
-            className: 'from-purple-50 to-fuchsia-50',
-        },
-    ];
+    const totalItems = orderItems.reduce((acc, item) => acc + item.quantity, 0);
 
     const columns: TableProps<OrderItem>['columns'] = [
         {
@@ -58,39 +47,40 @@ const TableOrderItems: React.FC<Props> = ({ serviceInfo, orderItems }) => {
             width: '50%',
             render: (_, record) => (
                 <div
-                    className='flex cursor-pointer items-center gap-19 py-3'
+                    className='flex cursor-pointer items-center gap-4 py-3'
                     onClick={() => navigate(`/products/${record.productId}`)}
                 >
                     <div className='group relative'>
-                        <div className='overflow-hidden rounded-2xl'>
+                        <div className='overflow-hidden rounded-lg shadow-sm'>
                             <img
                                 src={record.image}
                                 alt={record.name}
-                                className='h-20 w-20 transform object-cover transition-all duration-500 group-hover:scale-110'
+                                className='h-20 w-20 transform object-cover transition-all duration-300 group-hover:scale-110'
                             />
                         </div>
                         <div className='absolute bottom-2 left-2'>
-                            <Tag color='blue-inverse' className='bg-opacity-90 rounded-full shadow-lg backdrop-blur-sm'>
+                            <Tag color='blue' className='rounded-full text-xs font-medium shadow-sm'>
                                 {record.category}
                             </Tag>
                         </div>
                     </div>
-                    <div className='flex flex-1 flex-col gap-3'>
+                    <div className='flex flex-1 flex-col gap-2'>
                         <div>
-                            <h3 className='mb-1 leading-tight font-semibold text-gray-800'>{record.name}</h3>
-                            <p className='text-sm text-gray-500'>ID: {record.productId.slice(-8)}</p>
+                            <h3 className='mb-1 font-medium text-gray-800 transition-colors hover:text-blue-600'>
+                                {record.name}
+                            </h3>
+                            <p className='text-xs text-gray-500'>ID: {record.productId.slice(-8)}</p>
                         </div>
-                        <div className='flex items-center gap-3'>
-                            <Tag color='purple' className='flex items-center gap-1 rounded-full px-4 py-1 text-sm'>
+                        <div className='flex items-center gap-2'>
+                            <Tag color='purple' className='rounded-full px-3 py-0.5 text-xs'>
                                 Size: {record.size}
                             </Tag>
-                            <Tag
-                                color='orange'
-                                className='flex items-center gap-1 rounded-full px-4 py-1 text-sm'
+                            <div
+                                className='flex items-center rounded-full px-3 py-0.5 text-xs text-white shadow-sm'
                                 style={{ backgroundColor: record.color }}
                             >
                                 {record.color}
-                            </Tag>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -101,13 +91,7 @@ const TableOrderItems: React.FC<Props> = ({ serviceInfo, orderItems }) => {
             key: 'unitPrice',
             width: '15%',
             align: 'center',
-            render: (_, record) => (
-                <div className='flex flex-col items-center gap-2'>
-                    <div className='rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 px-4 py-2 shadow-sm'>
-                        <span className='font-medium text-gray-700'>{formatCurrency(record.price)}</span>
-                    </div>
-                </div>
-            ),
+            render: (_, record) => <div className='font-medium text-gray-700'>{formatCurrency(record.price)}</div>,
         },
         {
             title: 'Số lượng',
@@ -115,12 +99,8 @@ const TableOrderItems: React.FC<Props> = ({ serviceInfo, orderItems }) => {
             width: '15%',
             align: 'center',
             render: (_, record) => (
-                <div className='flex flex-col items-center gap-2'>
-                    <div className='rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 px-4 py-2 shadow-sm'>
-                        <span className='flex items-center gap-2 font-medium text-gray-700'>
-                            <span className=''>{record.quantity}</span>
-                        </span>
-                    </div>
+                <div className='inline-block rounded-lg bg-gray-50 px-4 py-2'>
+                    <span className='font-medium text-gray-700'>{record.quantity}</span>
                 </div>
             ),
         },
@@ -130,19 +110,17 @@ const TableOrderItems: React.FC<Props> = ({ serviceInfo, orderItems }) => {
             width: '20%',
             align: 'center',
             render: (_, record) => (
-                <div className='flex flex-col items-center gap-2'>
-                    <div className='rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 px-4 py-2 shadow-sm'>
-                        <span className='font-medium text-gray-700'>
-                            {formatCurrency(record.price * record.quantity)}
-                        </span>
-                    </div>
-                </div>
+                <div className='font-semibold text-blue-600'>{formatCurrency(record.price * record.quantity)}</div>
             ),
         },
     ];
 
     return (
-        <div className='my-8 overflow-hidden bg-white'>
+        <div className='mb-5 rounded-xl border border-gray-200 bg-white shadow-sm'>
+            <div className='border-b border-gray-100 px-6 py-4'>
+                <h2 className='text-lg font-semibold text-gray-800'>Chi tiết đơn hàng</h2>
+                <p className='text-sm text-gray-500'>{totalItems} sản phẩm</p>
+            </div>
             <Table
                 columns={columns}
                 dataSource={orderItems}
@@ -150,21 +128,18 @@ const TableOrderItems: React.FC<Props> = ({ serviceInfo, orderItems }) => {
                 rowKey='productId'
                 className='modern-table'
             />
-            <div className='grid grid-cols-1 gap-4 px-4 py-3 md:grid-cols-2'>
-                {infoCards.map((info, index) => (
-                    <div
-                        key={index}
-                        className={`rounded-xl bg-gradient-to-r p-4 ${info.className} border border-gray-100`}
-                    >
-                        <div className='flex items-start gap-3'>
-                            <div className='rounded-lg bg-white p-2 shadow-sm'>{info.icon}</div>
-                            <div className='flex-1'>
-                                <p className='mb-1 text-sm text-gray-600'>{info.label}</p>
-                                <p className='text-lg font-semibold text-gray-800'>{info.value}</p>
-                            </div>
-                        </div>
+            <div className='rounded-b-xl border-t border-gray-100 bg-gray-50 px-6 py-4'>
+                <div className='flex items-center justify-between'>
+                    <div>
+                        <span className='font-medium text-gray-700'>Tổng cộng:</span>
                     </div>
-                ))}
+                    <div className='flex items-center gap-3'>
+                        <DollarCircleFilled className='text-xl text-blue-500' />
+                        <span className='text-xl font-bold text-blue-600'>
+                            {formatCurrency(serviceInfo.totalPrice)}
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
     );

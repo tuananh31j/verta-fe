@@ -33,7 +33,13 @@ export const CHECKOUT_ENDPOINT = {
     ORDERS: '/orders/create-order',
 };
 
-export const STATS_ENDPOINT = {};
+export const STATS_ENDPOINT = {
+    TOTAL: '/stats/total',
+    DATE_RANGE: 'stats/dateRange',
+    PRODUCTS: '/stats/productStats',
+    TOP_BUYERS: '/stats/topBuyers',
+    PENDING_TASK: '/stats/pending-task',
+};
 
 export const SHIPPING_ENDPOINT = {
     PROVINCES: 'shipping/get-province',
