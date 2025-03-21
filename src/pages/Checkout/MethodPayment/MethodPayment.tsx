@@ -8,24 +8,43 @@ import codImg from '~/assets/cash.jpg';
 import payosImg from '~/assets/payos.svg';
 import CashPaymentModal from './_components/CashPaymentModal';
 import CardPaymentModal from './_components/CardPaymentModal';
+import ConfirmNewAddressModal from './_components/ConfirmNewAddressModal';
+import { useGetAllAddress } from '~/hooks/queries/address/useGetAllAddress';
+import { useTypedSelector } from '~/store/store';
 
 export default function MethodPayment() {
     const [paymentMethod, setPaymentMethod] = useState<'COD' | 'PAYOS'>('COD');
     const [isOpen, setOpen] = useState(false);
     const [isOpenPayosModal, setOpenPayosModal] = useState(false);
+    const [isAddressModal, setOpenAddressModal] = useState(false);
+    const { data } = useGetAllAddress();
     const onchangeRadioPayment = (type: 'COD' | 'PAYOS') => {
         setPaymentMethod(type);
     };
     const dispatch = useDispatch();
+    const checkOutInfor = useTypedSelector((state) => state.checkOut);
     useEffect(() => {
         dispatch(setShippingFee(30000));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    const handleCheckOut = () => {
-        if (paymentMethod === 'COD') {
-            setOpen(true);
+    const handleClickCheckOut = () => {
+        const isAddressExists = data?.some(
+            (addr) =>
+                addr.address === checkOutInfor.shippingAddress.address &&
+                addr.province === checkOutInfor.shippingAddress.province &&
+                addr.district === checkOutInfor.shippingAddress.district &&
+                addr.ward === checkOutInfor.shippingAddress.ward &&
+                addr.name === checkOutInfor.customerInfor.name &&
+                addr.phone === checkOutInfor.customerInfor.phone
+        );
+        if (data?.length === 0 || !isAddressExists) {
+            setOpenAddressModal(true);
         } else {
-            setOpenPayosModal(true);
+            if (paymentMethod === 'COD') {
+                setOpen(true);
+            } else {
+                setOpenPayosModal(true);
+            }
         }
     };
     return (
@@ -82,7 +101,7 @@ export default function MethodPayment() {
                             Giỏ hàng
                         </Link>
                         <button
-                            onClick={handleCheckOut}
+                            onClick={handleClickCheckOut}
                             type='submit'
                             className='flex cursor-pointer items-center justify-center rounded-md bg-[#338dbc] px-4 py-4 text-xs font-medium text-white uppercase duration-300 hover:bg-cyan-500'
                         >
@@ -91,6 +110,14 @@ export default function MethodPayment() {
                     </div>
                 </div>
             </div>
+            <ConfirmNewAddressModal
+                address={data ? data : []}
+                isOpen={isAddressModal}
+                setOpenCod={setOpen}
+                setOpenPayOs={setOpenPayosModal}
+                setOpen={setOpenAddressModal}
+                paymentMethod={paymentMethod}
+            />
             <CashPaymentModal isOpen={isOpen} setOpen={setOpen} paymentMethod={paymentMethod} />
             <CardPaymentModal isOpen={isOpenPayosModal} setOpen={setOpenPayosModal} paymentMethod={paymentMethod} />
         </>

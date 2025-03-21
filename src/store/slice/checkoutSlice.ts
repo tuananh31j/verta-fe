@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export interface ItemsReduxPayload {
+    id: string;
     productId: string;
     variantId: string;
     name: string;
@@ -9,7 +10,6 @@ export interface ItemsReduxPayload {
     quantity: number;
     price: number;
     image: string;
-    stock?: number;
 }
 
 export type CheckOutReduxType = {
