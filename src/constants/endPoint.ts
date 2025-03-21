@@ -67,8 +67,11 @@ export const USER_ENDPOINT = {
 };
 export const REVIEWS_ENDPOINT = {
     ALL_REVIEWS_PRODUCT: 'review',
+    ALL_REVIEWS_PRODUCT_ADMIN: 'review/all',
     ALL_REVIEWS_STARS: 'review/rating',
     CREATE_REVIEW: 'review/create',
+    HIDDEN_REVIEW: 'review/hidden',
+    ACTIVE_REVIEW: 'review/active',
 };
 
 export const CATEGORY_ENDPONT = {

@@ -40,4 +40,9 @@ export const QUERY_KEY = {
 
     GET_ALL_REVIEWS_PRODUCT: 'reviews',
     GET_ALL_REVIEWS_STARS: 'reviewsRating',
+    GET_ALL_REVIEWS_PRODUCT_ADMIN: 'adminReviews',
+    HIDDEN_REVIEW: 'adminReviews',
+
+    // Voucher
+    VOUCHER: 'vouchers',
 };

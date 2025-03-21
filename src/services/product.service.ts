@@ -20,6 +20,10 @@ export const productServices = {
         const { data } = await instance.get<IProductDetail>(`/products/${id}`);
         return data;
     },
+    async deleteProduct(id: string) {
+        const { data } = await instance.delete(`/products/${id}`);
+        return data;
+    },
     async getProductDetailForAdmin(id: string) {
         const { data } = await instance.get<IProductDetailsForAdmin>(`/products/admin/product-details/${id}`);
         return data;

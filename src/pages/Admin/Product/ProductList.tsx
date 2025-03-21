@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Space, Tooltip, Tag } from 'antd';
+import { Button, Space, Tooltip, Tag, Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
 import { ADMIN_ROUTES } from '~/constants/router';
 import useTable from '~/hooks/_common/useTable';
@@ -11,10 +11,12 @@ import { IVariant } from '~/types/Variant';
 import { Currency } from '~/utils';
 import WrapperPageAdmin from '../_common';
 import { useGetAllCate } from '~/hooks/queries/categories/useGetAllCate';
+import { useDeletePro } from '~/hooks/mutations/products/useDeletePro';
 
 const ProductList = () => {
     const { onSelectPaginateChange, query, onFilter, getColumnSearchProps, getFilteredValue, getSortedInfo } =
         useTable<IProduct>();
+    const { mutate: mutateDeleteProduct } = useDeletePro();
     const currentPage = Number(query.page || 1);
     const { data } = useGetAllProductForAdmin(query);
     const { data: categories } = useGetAllCate();
@@ -186,14 +188,28 @@ const ProductList = () => {
             key: 'action',
             width: '10%',
             render: (value, record) => (
-                <Space className='flex flex-col items-start gap-2'>
-                    <Tooltip title='Cập nhật'>
-                        <Link
-                            to={`${ADMIN_ROUTES.PRODUCTS_EDIT}/${record._id}`}
-                            className='inline-flex items-center rounded-md px-3 py-1 text-sm text-blue-600 transition-colors hover:bg-blue-50 hover:text-blue-700'
+                <Space key={record._id} className='flex flex-col items-start justify-start'>
+                    <Space className='flex flex-col items-start gap-2'>
+                        <Tooltip title='Cập nhật'>
+                            <Link
+                                to={`${ADMIN_ROUTES.PRODUCTS_EDIT}/${record._id}`}
+                                className='inline-flex items-center rounded-md px-3 py-1 text-sm text-blue-600 transition-colors hover:bg-blue-50 hover:text-blue-700'
+                            >
+                                Cập nhật
+                            </Link>
+                        </Tooltip>
+                    </Space>
+                    <Tooltip title='Xóa sản phẩm'>
+                        <Popconfirm
+                            placement='leftBottom'
+                            title='Sản phẩm này sẽ bị xóa vĩnh viễn. Bạn có chắc chắn muốn xóa?'
+                            description='Hành động này không thể hoàn tác'
+                            onConfirm={() => mutateDeleteProduct(record._id)}
+                            okText='Đồng ý'
+                            cancelText='Đóng'
                         >
-                            Cập nhật
-                        </Link>
+                            <p className='text-red-500 transition-colors duration-500 hover:text-blue-400'>Xóa</p>
+                        </Popconfirm>
                     </Tooltip>
                 </Space>
             ),

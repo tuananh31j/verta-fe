@@ -1,13 +1,11 @@
 import {
+    BarcodeOutlined,
     BgColorsOutlined,
-    CommentOutlined,
-    CrownOutlined,
     LineChartOutlined,
     ProductOutlined,
     ProfileOutlined,
     ShoppingOutlined,
-    StarOutlined,
-    TagsOutlined,
+    StarFilled,
 } from '@ant-design/icons';
 import { ADMIN_ROUTES } from '~/constants/router';
 
@@ -41,6 +39,15 @@ export const menuGroups: IMenuItem[] = [
             { label: 'Tạo mới sản phẩm', route: ADMIN_ROUTES.PRODUCTS_CREATE },
         ],
     },
+    {
+        icon: <BarcodeOutlined />,
+        label: 'Quản lý voucher',
+        children: [
+            { label: 'Tất cả voucher', route: ADMIN_ROUTES.VOUCHER },
+            { label: 'Tạo mới voucher', route: ADMIN_ROUTES.VOUCHER_CREATE },
+        ],
+    },
+
     // {
     //     icon: <CommentOutlined />,
     //     label: 'Quản lý người dùng',
@@ -61,5 +68,10 @@ export const menuGroups: IMenuItem[] = [
             { label: 'Tất cả danh muc', route: ADMIN_ROUTES.CATEGORIES },
             { label: 'Tạo mới danh mục', route: ADMIN_ROUTES.CATEGORIES_CREATE },
         ],
+    },
+    {
+        icon: <StarFilled />,
+        label: 'Quản lý đánh giá',
+        children: [{ label: 'Tất cả đánh giá', route: ADMIN_ROUTES.REVIEWS }],
     },
 ];

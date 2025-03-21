@@ -34,6 +34,9 @@ const TableDisplay = <T extends object>({
                 columns={columns}
                 dataSource={dataSource}
                 pagination={false}
+                scroll={{
+                    x: 'horizontal',
+                }}
             />
             <Space className='m-5 flex w-full justify-end'>
                 <Pagination onChange={onSelectPaginateChange} pageSize={10} total={totalDocs} current={currentPage} />

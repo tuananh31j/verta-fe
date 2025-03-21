@@ -29,12 +29,18 @@ export const CategoryList = lazy(() => import('~/pages/Admin/_category_'));
 export const CreateCategory = lazy(() => import('~/pages/Admin/_category_/CreateCategory'))
 export const UpdateCategory = lazy(() => import('~/pages/Admin/_category_/UpdateCategory'))
 
+// Vouvher
+export const VoucherList = lazy(() => import('~/pages/Admin/Voucher/List'));
+export const FormVoucher = lazy(() => import('~/pages/Admin/Voucher/FormVoucher'));
+
 export const ManageOrders = lazy(
     () => import('~/pages/Admin/_order_/ManageOrder'),
 );
 export const OrdersDetails = lazy(
     () => import('~/pages/Admin/_order_/OrderDetails'),
 );
+export const ReviewList = lazy(() => import('~/pages/Admin/_review_/ReviewList'));
+
 
 export const Suspense = ({ children }: { children: React.ReactNode }) => {
     return <React.Suspense fallback={<Loader />}>{children}</React.Suspense>;
