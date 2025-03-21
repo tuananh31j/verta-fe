@@ -12,4 +12,9 @@ export const userService = {
         const res = await instance.get<IAxiosResponse<IUserProfileResponse>>(`${USER_ENDPOINT.PROFILE}`);
         return res.data;
     },
+
+    async updateProfile(payload: FormData) {
+        const res = await instance.put(`${USER_ENDPOINT.UPDATE}`, payload);
+        return res.data;
+    },
 };
