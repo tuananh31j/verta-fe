@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import { IProductDetail } from '~/interfaces/product';
+import { IProduct, IProductDetail } from '~/interfaces/product';
 import { formatCurrency } from '~/utils/formatCurrrency';
 
-export default function ProductCard({ product }: { product: IProductDetail }) {
+export default function ProductCard({ product }: { product: IProductDetail | IProduct }) {
     return (
         <div className='group overflow-hidden select-none'>
             <div className='relative'>

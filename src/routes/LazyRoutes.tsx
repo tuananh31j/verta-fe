@@ -13,6 +13,7 @@ export const MyDetailOrder = lazy(() => import('~/pages/Account/MyOrders/OrderDe
 export const ShippingAddressPage = lazy(() => import('~/pages/Checkout/ShippingAddress/ShippingAddress'));
 export const PaymentPage = lazy(() => import('~/pages/Checkout/MethodPayment/MethodPayment'));
 export const MyAddressPage = lazy(()=> import('~/pages/Account/MyAddress/MyAddress'));
+export const ProductsPage = lazy(()=> import('~/pages/ProductsPage/ProductsPage'));
 
 // Admin
 export const ProductsList = lazy(() => import('~/pages/Admin/Product/ProductList'));
