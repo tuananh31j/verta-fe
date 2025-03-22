@@ -34,4 +34,9 @@ export const orderService = {
         const { data } = await instance.get<IHistoryOrder>(`${ORDER_ENDPOINT.GET_HISTORY_ORDER}/${id}`);
         return data;
     },
+    async finishOrder(id: string) {
+        return instance.patch<void, string>(`${ORDER_ENDPOINT.FINISH_ORDER}`, {
+            orderId: id,
+        });
+    },
 };

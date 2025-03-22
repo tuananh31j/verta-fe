@@ -77,7 +77,7 @@ const Header = () => {
                     <div className='flex'>
                         <ul className='flex gap-5'>
                             <li className='text-sm font-semibold whitespace-nowrap text-[#8e8e8e] uppercase duration-300 hover:text-black'>
-                                <Link to='/'>Sản phẩm</Link>
+                                <Link to='/products'>Sản phẩm</Link>
                             </li>
                             <li className='text-sm font-semibold whitespace-nowrap text-[#8e8e8e] uppercase duration-300 hover:text-black'>
                                 <Link to='/'>Danh mục</Link>
