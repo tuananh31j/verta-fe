@@ -18,6 +18,7 @@ export type IVoucher = {
     usagePerUser: number;
     discountType: DiscountType;
     maxDiscountAmount: number;
+    remainingQuantity: number;
 };
 
 export type IVoucherDTO = Omit<IVoucher, '_id' | 'createdAt' | 'updatedAt'>;

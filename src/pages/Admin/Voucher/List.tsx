@@ -43,7 +43,11 @@ const VoucherList = () => {
             width: '7%',
             sortOrder: getSortedInfo('maxUsage'),
             sorter: (a: any, b: any) => a.maxUsage - b.maxUsage,
-            render: (maxUsage) => <div className='text-center'>{maxUsage.toLocaleString('de-DE')}</div>,
+            render: (maxUsage, record) => (
+                <div className='text-center'>
+                    {record.remainingQuantity.toLocaleString('de-DE')}/{maxUsage.toLocaleString('de-DE')}
+                </div>
+            ),
         },
         {
             title: 'Lượt dùng /user',
@@ -173,7 +177,7 @@ const VoucherList = () => {
                                 okText='Đồng ý'
                                 cancelText='Đóng'
                             >
-                                <p className='text-green-500 transition-colors duration-500 hover:text-blue-400'>
+                                <p className='text-green-800 transition-colors duration-500 hover:text-blue-400'>
                                     Công khai
                                 </p>
                             </Popconfirm>

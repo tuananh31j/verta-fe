@@ -130,7 +130,13 @@ const FormVoucher = () => {
                             name='voucherDiscount'
                             rules={[{ required: true, message: 'Vui lòng nhập giá trị giảm giá!' }]}
                         >
-                            <InputNumber size='large' style={{ width: '100%' }} placeholder={'Nhập giá trị giảm giá'} />
+                            <InputNumber
+                                size='large'
+                                style={{ width: '100%' }}
+                                placeholder={'Nhập giá trị giảm giá'}
+                                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
+                            />
                         </Form.Item>
                     )}
 

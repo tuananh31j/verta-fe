@@ -1,10 +1,11 @@
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import Footer from './Footer/Footer';
 import Header from './Header/Header';
 import HeaderTop from './Header/HeaderTop';
 import { useEffect, useState } from 'react';
 import useGetProfile from '~/hooks/queries/profile/useGetProfile';
 import { months } from 'moment';
+import { MAIN_ROUTES } from '~/constants/router';
 
 export default function MainLayout() {
     const [paddingTopSticky, setPaddingTopSticky] = useState(0);
@@ -35,10 +36,13 @@ export default function MainLayout() {
                 <Outlet />
             </main>
             {isNewUser && (
-                <div className='fixed right-0 bottom-0 z-50 flex max-w-[200px] flex-col items-center justify-center rounded-tl-3xl border-2 bg-red-900 p-4 shadow-lg'>
+                <Link
+                    to={'/products'}
+                    className='fixed right-0 bottom-0 z-50 flex max-w-[200px] flex-col items-center justify-center rounded-tl-3xl border-2 bg-red-900 p-4 shadow-lg'
+                >
                     <img src='/sale-icon.png' alt='' className='h-15 w-15' />
                     <p className='sparkle-text text-[20px] font-extrabold text-white'>Khách hàng mới!</p>
-                </div>
+                </Link>
             )}
 
             <Footer />

@@ -6,5 +6,6 @@ export const useGetDetailProduct = (id: string) => {
     return useQuery({
         queryKey: [QUERY_KEY.PRODUCTS.ROOT, id],
         queryFn: () => productServices.getProductDetail(id),
+        enabled: !!id,
     });
 };
