@@ -70,7 +70,7 @@ const EditorComp = ({ editor }: { editor: Editor | null }) => {
     };
 
     return (
-        <div className='flex h-[40vh] flex-col'>
+        <div className='flex flex-col border-2 border-gray-300 p-2'>
             <Space className='border-b border-gray-300 bg-gray-100 p-2'>
                 <Button
                     icon={<BoldOutlined />}
