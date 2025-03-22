@@ -40,3 +40,19 @@ export interface IProductDetail {
     createdAt: string;
     updatedAt: string;
 }
+export type IProduct = {
+    _id: string;
+    name: string;
+    price: number;
+    summary: string;
+    thumbnail: string;
+    thumbnailRef: string;
+    sold: number;
+    type: {
+        hasColor: boolean;
+        sizeType: string;
+    };
+    variants: IVariantDetail[];
+    categories: string[];
+    code: string;
+};

@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
-import { Form, FormProps, GetProp, Image, Input, Upload, UploadFile, UploadProps } from 'antd';
+import { Button, Form, FormProps, GetProp, Image, Input, Upload, UploadFile, UploadProps } from 'antd';
 import { useEffect, useState } from 'react';
+import { useMutationUpdateProfle } from '~/hooks/mutations/user/useUpdateProfile';
 import useGetProfile from '~/hooks/queries/profile/useGetProfile';
+import { uploadService } from '~/services/upload.service';
 import { IAntdImageFiles } from '~/types/Antd';
 import convertApiResponseToFileList from '~/utils/convertImageUrlToFileList';
 import { ErrorMessage } from '~/validations/Message';
@@ -9,7 +12,7 @@ import { ErrorMessage } from '~/validations/Message';
 type Props = {};
 
 const Profile = (props: Props) => {
-    // const { mutate: updateProfile, isPending } = useMutationUpdateProfle();
+    const { mutate: updateProfile, isPending } = useMutationUpdateProfle();
 
     const [form] = Form.useForm();
 
@@ -19,22 +22,31 @@ const Profile = (props: Props) => {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
 
-    type FieldType = {
-        name: string;
-        email: string;
-        avatar: string;
-        phone: string;
-    };
-
     // Function khi submit form
-    const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-        const formDataUpdateProfile = new FormData();
+    const onFinish: FormProps<any>['onFinish'] = async (values) => {
+        const formDataAvatar = new FormData();
 
-        formDataUpdateProfile.append('name', values.name);
-        formDataUpdateProfile.append('email', values.email);
-        formDataUpdateProfile.append('phone', values.phone);
+        const avatar: any = {
+            avatarSrc: null,
+            avatarRef: null,
+        };
 
-        // updateProfile(formDataUpdateProfile);
+        if (values.avatar && values.avatar.fileList[0].originFileObj) {
+            formDataAvatar.append('image', values.avatar.fileList[0].originFileObj);
+            const avatarRes = await uploadService.uploadImage(formDataAvatar);
+            avatar.avatarSrc = avatarRes.downloadURL;
+            avatar.avatarRef = avatarRes.urlRef;
+        }
+
+        const payload = {
+            name: values.name,
+            email: values.email,
+            phone: values.phone,
+            avatar: avatar.avatarSrc,
+            avatarRef: avatar.avatarRef,
+        };
+
+        updateProfile(payload);
     };
 
     // Fill thông tin vào form nếu api trả về profile thành công
@@ -54,7 +66,6 @@ const Profile = (props: Props) => {
                 url: profile?.avatar,
                 urlRef: profile?.avatar,
                 isArr: true,
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
             }) as UploadFile<any>[];
 
             setThumbnailFile(thumbnailConvert);
@@ -74,13 +85,11 @@ const Profile = (props: Props) => {
             reader.onerror = (error) => reject(error);
         });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const thumbnailValidator = async (_: any, thumbnail: IAntdImageFiles) => {
         if (
             thumbnail &&
             thumbnail.fileList &&
             thumbnail.fileList.length > 0 &&
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (thumbnail.fileList[0] as any).originFileObj
         ) {
             if (thumbnail?.fileList?.length < 1 || !thumbnail) {
@@ -144,7 +153,7 @@ const Profile = (props: Props) => {
                     <Form form={form} layout='vertical' className='w-[582px]' onFinish={onFinish}>
                         {/* FORM INPUTS */}
                         <div className='flex items-center'>
-                            <Form.Item<FieldType>
+                            <Form.Item<any>
                                 label='Avatar'
                                 name='avatar'
                                 className='mt-1 w-1/5 text-sm text-[#070707]'
@@ -180,11 +189,7 @@ const Profile = (props: Props) => {
                                 />
                             )}
 
-                            <Form.Item<FieldType>
-                                label='Email'
-                                className='mt-1 w-4/5 text-sm text-[#070707]'
-                                name='email'
-                            >
+                            <Form.Item<any> label='Email' className='mt-1 w-4/5 text-sm text-[#070707]' name='email'>
                                 <Input
                                     placeholder='Email'
                                     style={{ backgroundColor: '#efeff4', borderRadius: 0 }}
@@ -194,18 +199,25 @@ const Profile = (props: Props) => {
                             </Form.Item>
                         </div>
 
-                        <Form.Item<FieldType> label='Họ tên' className='mt-1 text-sm text-[#070707]' name='name'>
+                        <Form.Item<any>
+                            label='Họ tên'
+                            className='mt-1 text-sm text-[#070707]'
+                            name='name'
+                            rules={[{ required: true, message: 'Vui lòng nhập họ tên!' }]}
+                        >
                             <Input
                                 placeholder='Họ tên'
                                 style={{ backgroundColor: '#efeff4', borderRadius: 0 }}
                                 className='h-[48px] py-3 text-sm leading-[48px] text-[#070707]'
+                                required
                             />
                         </Form.Item>
 
-                        <Form.Item<FieldType>
+                        <Form.Item<any>
                             label='Số điện thoại'
                             className='mt-1 text-sm text-[#070707]'
                             name='phone'
+                            rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' }]}
                         >
                             <Input
                                 placeholder='Số điện thoại'
@@ -216,14 +228,14 @@ const Profile = (props: Props) => {
 
                         <Form.Item>
                             <div className='flex flex-wrap justify-between gap-5 md:flex-nowrap'>
-                                {/* <Button
-                                            className='block w-full rounded-3xl bg-black text-center text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'
-                                            size='large'
-                                            htmlType='submit'
-                                            loading={isPending}
-                                        >
-                                            Cập nhật thông tin
-                                        </Button> */}
+                                <Button
+                                    className='block w-full rounded-3xl bg-black text-center text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'
+                                    size='large'
+                                    htmlType='submit'
+                                    loading={isPending}
+                                >
+                                    Cập nhật thông tin
+                                </Button>
 
                                 {/* {profile && (
                                             <Button

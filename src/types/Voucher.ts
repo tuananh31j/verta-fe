@@ -1,3 +1,7 @@
+enum DiscountType {
+    Percentage = 'percentage',
+    Fixed = 'fixed',
+}
 export type IVoucher = {
     _id: string;
     name: string;
@@ -12,6 +16,8 @@ export type IVoucher = {
     createdAt: string;
     updatedAt: string;
     usagePerUser: number;
+    discountType: DiscountType;
+    maxDiscountAmount: number;
 };
 
 export type IVoucherDTO = Omit<IVoucher, '_id' | 'createdAt' | 'updatedAt'>;

@@ -17,6 +17,7 @@ import {
     MyOrders,
     PaymentPage,
     ProductDetailPage,
+    ProductsPage,
     Profile,
     ShippingAddressPage,
     Suspense,
@@ -123,6 +124,10 @@ const PublicRoutes = [
                     
                 ]
             },
+            {
+                path:"products",
+                element:(<Suspense><ProductsPage/></Suspense>),
+            }
         ],
     },
     {

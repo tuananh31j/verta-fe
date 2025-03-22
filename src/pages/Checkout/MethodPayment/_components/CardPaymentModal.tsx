@@ -40,7 +40,6 @@ export default function CardPaymentModal({
             cancelUrl: `${window.location.origin}${MAIN_ROUTES.ORDER_ERROR}`,
             paymentMethod: PaymentMethod.card,
         };
-        console.log(payload);
         mutate(payload);
     };
     return (

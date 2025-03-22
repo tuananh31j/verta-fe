@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { CloseOutlined, DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { useEditor } from '@tiptap/react';
 import {
     Button,
+    Divider,
     Drawer,
     DrawerProps,
+    Flex,
     Form,
     FormInstance,
     Input,
@@ -208,129 +210,135 @@ const FormProduct = (props: {
             <Form layout='vertical' form={form} onFinish={onFinish}>
                 <div className='grid grid-cols-1 gap-4'>
                     <WrapperCard title='Thông tin cơ bản'>
-                        <Form.Item<any>
-                            label='Ảnh bìa'
-                            name='thumbnail'
-                            required
-                            className='font-medium text-[#08090F]'
-                            dependencies={['images']}
-                        >
-                            {productId ? (
-                                <Upload
-                                    listType='picture-card'
-                                    beforeUpload={beforeUpload}
-                                    maxCount={1}
-                                    onPreview={handlePreview}
-                                    onChange={handleThumbnailChange}
-                                    fileList={form.getFieldValue('thumbnail')}
-                                >
-                                    <div>
-                                        <PlusOutlined />
-                                        <div style={{ marginTop: 8 }}>Upload</div>
-                                    </div>
-                                </Upload>
-                            ) : (
-                                <Upload
-                                    listType='picture-card'
-                                    beforeUpload={beforeUpload}
-                                    maxCount={1}
-                                    onPreview={handlePreview}
-                                >
-                                    <div>
-                                        <PlusOutlined />
-                                        <div style={{ marginTop: 8 }}>Upload</div>
-                                    </div>
-                                </Upload>
-                            )}
-                        </Form.Item>
-                        <Form.Item<any>
-                            label='Tên sản phẩm'
-                            name='name'
-                            required
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập tên sản phẩm',
-                                },
-                            ]}
-                            className='font-medium text-[#08090F]'
-                        >
-                            <Input placeholder='Nhập tên sản phẩm...' size='large' />
-                        </Form.Item>
-                        <Form.Item<any>
-                            label='Danh mục'
-                            name='categories'
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng chọn danh mục sản phẩm',
-                                },
-                            ]}
-                            required
-                            className='font-medium text-[#08090F]'
-                        >
-                            <TreeSelect
-                                treeData={categoriesTreeData}
-                                value={form.getFieldValue('categories')}
-                                className='font-medium text-[#08090F]'
-                                placeholder='Chọn danh mục sản phẩm...'
-                                treeDefaultExpandAll
-                                size='large'
-                                onChange={(value) => form.setFieldsValue({ categories: value })}
-                            />
-                        </Form.Item>
-                        <Form.Item<any>
-                            label='Giá cả'
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập giá thành sản phẩm',
-                                },
-                                {
-                                    type: 'number',
-                                    min: 1,
-                                    message: 'Giá thành phải lớn hơn 0',
-                                },
-                            ]}
-                            name='price'
-                            required
-                            className='font-medium text-[#08090F]'
-                        >
-                            <InputNumber
-                                prefix='đ'
-                                placeholder='Nhập giá thành...'
-                                size='large'
-                                style={{ width: '100%' }}
-                            />
-                        </Form.Item>
+                        <Flex gap={10} justify='space-between'>
+                            <Form.Item<any>
+                                label='Tên sản phẩm'
+                                name='name'
+                                required
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Vui lòng nhập tên sản phẩm',
+                                    },
+                                ]}
+                                className='w-full font-medium text-[#08090F]'
+                            >
+                                <Input placeholder='Nhập tên sản phẩm...' size='large' />
+                            </Form.Item>
 
-                        <Form.Item<any>
-                            required
-                            label='Mô tả'
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập mô tả sản phẩm',
-                                },
-                                {
-                                    validator: (_, value) =>
-                                        value && value.length <= 7
-                                            ? Promise.reject('Vui lòng nhập mô tả sản phẩm')
-                                            : Promise.resolve(),
-                                },
-                            ]}
-                            name='summary'
-                            className='font-medium text-[#08090F]'
-                        >
-                            <TextArea
-                                value={String(editorInstance?.getHTML())}
-                                placeholder='Nhập mô tả sản phẩm...'
-                                rows={4}
-                                className='hidden w-full'
-                                hidden
-                            />
-                            <Editor editor={editorInstance} />
-                        </Form.Item>
+                            <Form.Item<any>
+                                label='Danh mục'
+                                name='categories'
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Vui lòng chọn danh mục sản phẩm',
+                                    },
+                                ]}
+                                required
+                                className='w-full font-medium text-[#08090F]'
+                            >
+                                <TreeSelect
+                                    treeData={categoriesTreeData}
+                                    value={form.getFieldValue('categories')}
+                                    className='font-medium text-[#08090F]'
+                                    placeholder='Chọn danh mục sản phẩm...'
+                                    treeDefaultExpandAll
+                                    size='large'
+                                    onChange={(value) => form.setFieldsValue({ categories: value })}
+                                />
+                            </Form.Item>
+                            <Form.Item<any>
+                                label='Giá cả'
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Vui lòng nhập giá thành sản phẩm',
+                                    },
+                                    {
+                                        type: 'number',
+                                        min: 1,
+                                        message: 'Giá thành phải lớn hơn 0',
+                                    },
+                                ]}
+                                name='price'
+                                required
+                                className='w-full font-medium text-[#08090F]'
+                            >
+                                <InputNumber
+                                    prefix='đ'
+                                    placeholder='Nhập giá thành...'
+                                    size='large'
+                                    style={{ width: '100%' }}
+                                />
+                            </Form.Item>
+                        </Flex>
+                        <Flex gap={10} justify='space-between'>
+                            <Form.Item<any>
+                                label='Ảnh bìa'
+                                name='thumbnail'
+                                required
+                                className='w-[16%] font-medium text-[#08090F]'
+                                dependencies={['images']}
+                            >
+                                {productId ? (
+                                    <Upload
+                                        listType='picture-card'
+                                        beforeUpload={beforeUpload}
+                                        maxCount={1}
+                                        onPreview={handlePreview}
+                                        onChange={handleThumbnailChange}
+                                        fileList={form.getFieldValue('thumbnail')}
+                                    >
+                                        <div>
+                                            <PlusOutlined />
+                                            <div style={{ marginTop: 8 }}>Tải ảnh</div>
+                                        </div>
+                                    </Upload>
+                                ) : (
+                                    <Upload
+                                        listType='picture-card'
+                                        beforeUpload={beforeUpload}
+                                        maxCount={1}
+                                        onPreview={handlePreview}
+                                    >
+                                        <div>
+                                            <PlusOutlined />
+                                            <div style={{ marginTop: 8 }}>Tải ảnh</div>
+                                        </div>
+                                    </Upload>
+                                )}
+                            </Form.Item>
+                            <Form.Item<any>
+                                required
+                                label='Mô tả'
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Vui lòng nhập mô tả sản phẩm',
+                                    },
+                                    {
+                                        validator: (_, value) =>
+                                            value && value.length <= 7
+                                                ? Promise.reject('Vui lòng nhập mô tả sản phẩm')
+                                                : Promise.resolve(),
+                                    },
+                                ]}
+                                name='summary'
+                                className='w-full font-medium text-[#08090F]'
+                            >
+                                <div className='ms-2 w-full border-l-2 border-dashed border-gray-500 ps-3.5 font-medium text-[#08090F]'>
+                                    <TextArea
+                                        value={String(editorInstance?.getHTML())}
+                                        placeholder='Nhập mô tả sản phẩm...'
+                                        rows={4}
+                                        className='hidden w-full'
+                                        hidden
+                                    />
+                                    <Editor editor={editorInstance} />
+                                </div>
+                            </Form.Item>
+                        </Flex>
                     </WrapperCard>
 
                     <WrapperCard title='Thông tin biến thể'>
@@ -342,256 +350,249 @@ const FormProduct = (props: {
                                 disabled={!!productId}
                                 size='large'
                                 options={[
-                                    { value: SizeEnum.FreeSize, label: 'Free size' },
-                                    { value: SizeEnum.NumericSize, label: 'Numeric size' },
+                                    { value: SizeEnum.FreeSize, label: 'Size chữ' },
+                                    { value: SizeEnum.NumericSize, label: 'Size số' },
                                 ]}
                             />
                         </Form.Item>
+                        <Divider />
                         <Form.List name='variants'>
                             {(variants, { add: addVariant, remove: removeVariant }) => (
                                 <div className='space-y-6'>
+                                    {/* Table header */}
+                                    {variants.length > 0 && (
+                                        <div className='grid grid-cols-12 gap-4 border-b-2 border-gray-300 pb-2 font-medium text-gray-700'>
+                                            <div className='col-span-1'>STT</div>
+                                            <div className='col-span-2'>Màu sắc</div>
+                                            <div className='col-span-2'>Ảnh</div>
+                                            <div className='col-span-6'>Kích thước & Số lượng</div>
+                                            <div className='col-span-1'>Thao tác</div>
+                                        </div>
+                                    )}
+
+                                    {/* Variants as table rows */}
                                     {variants.map((variant, variantIndex) => (
                                         <div
                                             key={variant.key}
-                                            className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-md'
+                                            className='grid grid-cols-12 gap-4 rounded-lg border-2 border-gray-300 bg-white p-4 shadow-sm'
                                         >
-                                            <div className='mb-6 flex items-center justify-between border-b border-gray-100 pb-4'>
-                                                <h3 className='text-lg font-medium text-gray-800'>
-                                                    Biến thể {variantIndex + 1}
-                                                </h3>
-                                                <Button
-                                                    danger
-                                                    onClick={() => removeVariant(variant.name)}
-                                                    className='flex items-center hover:bg-red-50'
-                                                    icon={<DeleteOutlined />}
-                                                >
-                                                    Xóa biến thể
-                                                </Button>
+                                            {/* Variant index */}
+                                            <div className='col-span-1 flex items-center justify-center border-r border-gray-200 pr-2'>
+                                                <div className='flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 bg-gray-100 font-medium'>
+                                                    {variantIndex + 1}
+                                                </div>
                                             </div>
 
-                                            <div className='grid gap-6 lg:grid-cols-2'>
-                                                <div className='space-y-6'>
-                                                    <Form.Item
-                                                        label={
-                                                            <span className='font-medium text-gray-700'>Màu sắc</span>
-                                                        }
-                                                        name={[variant.name, 'color']}
-                                                        rules={[
-                                                            {
-                                                                required: true,
-                                                                message: 'Vui lòng chọn màu sắc biến thể',
-                                                            },
-                                                        ]}
-                                                    >
-                                                        <Select
-                                                            placeholder='Chọn màu sắc'
-                                                            size='large'
-                                                            className='w-full'
-                                                            options={colorList
-                                                                ?.filter((color) => {
-                                                                    if (!Array.isArray(variantsWatch)) return true;
+                                            {/* Color selection */}
+                                            <div className='col-span-2 border-r border-gray-200 pr-2'>
+                                                <Form.Item
+                                                    name={[variant.name, 'color']}
+                                                    rules={[{ required: true, message: 'Chọn màu' }]}
+                                                    className='mb-0'
+                                                >
+                                                    <Select
+                                                        placeholder='Chọn màu sắc'
+                                                        size='large'
+                                                        options={colorList
+                                                            ?.filter((color) => {
+                                                                if (!Array.isArray(variantsWatch)) return true;
+                                                                const selectedColors = variantsWatch
+                                                                    ?.filter(
+                                                                        (v: any, idx: number) =>
+                                                                            idx !== variantIndex && v?.color
+                                                                    )
+                                                                    ?.map((v: any) => v.color)
+                                                                    ?.filter(Boolean);
+                                                                return !selectedColors?.includes(color._id);
+                                                            })
+                                                            ?.map((color) => ({
+                                                                value: color._id,
+                                                                label: (
+                                                                    <div className='flex items-center gap-2'>
+                                                                        <Tooltip title={color.hex}>
+                                                                            <div
+                                                                                className='h-5 w-5 rounded-full border'
+                                                                                style={{ backgroundColor: color.hex }}
+                                                                            />
+                                                                        </Tooltip>
+                                                                        <span>{color.name}</span>
+                                                                    </div>
+                                                                ),
+                                                            }))}
+                                                    />
+                                                </Form.Item>
+                                            </div>
 
-                                                                    const selectedColors = variantsWatch
-                                                                        ?.filter(
-                                                                            (v: any, idx: number) =>
-                                                                                idx !== variantIndex && v?.color
-                                                                        )
-                                                                        ?.map((v: any) => v.color)
-                                                                        ?.filter(Boolean);
-                                                                    return !selectedColors?.includes(color._id);
-                                                                })
-                                                                ?.map((color) => ({
-                                                                    value: color._id,
-                                                                    label: (
-                                                                        <div className='flex items-center gap-3 py-1'>
-                                                                            <Tooltip title={color.hex}>
-                                                                                <div
-                                                                                    className='h-6 w-6 rounded-full border border-gray-200 shadow-sm transition-transform hover:scale-110'
-                                                                                    style={{
-                                                                                        backgroundColor: color.hex,
-                                                                                    }}
-                                                                                />
-                                                                            </Tooltip>
-                                                                            <span className='font-medium'>
-                                                                                {color.name}
-                                                                            </span>
-                                                                        </div>
-                                                                    ),
-                                                                }))}
-                                                            optionLabelProp='label'
-                                                        />
-                                                    </Form.Item>
-
-                                                    <Form.Item
-                                                        label={
-                                                            <span className='font-medium text-gray-700'>
-                                                                Ảnh biến thể
-                                                            </span>
-                                                        }
-                                                        name={[variant.name, 'image']}
-                                                        valuePropName='fileList'
-                                                        getValueFromEvent={normFile}
+                                            {/* Image upload */}
+                                            <div className='col-span-2 border-r border-gray-200 pr-2'>
+                                                <Form.Item
+                                                    name={[variant.name, 'image']}
+                                                    valuePropName='fileList'
+                                                    getValueFromEvent={normFile}
+                                                    className='mb-0'
+                                                >
+                                                    <Upload
+                                                        listType='picture-card'
+                                                        beforeUpload={beforeUpload}
+                                                        onPreview={handlePreview}
+                                                        maxCount={1}
                                                     >
-                                                        <Upload
-                                                            listType='picture-card'
-                                                            beforeUpload={beforeUpload}
-                                                            onPreview={handlePreview}
-                                                            maxCount={1}
-                                                            className='hover:border-primary/60 rounded-lg border-2 border-dashed border-gray-200 transition-colors'
-                                                        >
-                                                            <div className='flex flex-col items-center p-2'>
-                                                                <PlusOutlined className='text-xl text-gray-400' />
-                                                                <div className='mt-2 text-sm text-gray-500'>
-                                                                    Tải ảnh lên
+                                                        <div className='flex flex-col items-center'>
+                                                            <PlusOutlined />
+                                                            <div className='mt-1'>Tải ảnh</div>
+                                                        </div>
+                                                    </Upload>
+                                                </Form.Item>
+                                            </div>
+
+                                            {/* Properties table */}
+                                            <div className='col-span-6 border-r border-gray-200 pr-2'>
+                                                <Form.List name={[variant.name, 'properties']}>
+                                                    {(properties, { add: addProperty, remove: removeProperty }) => (
+                                                        <>
+                                                            {/* Properties header */}
+                                                            {properties.length > 0 && (
+                                                                <div className='grid grid-cols-8 gap-2 border-b-2 border-gray-300 pb-2 text-sm font-medium'>
+                                                                    <div className='col-span-3'>Kích cỡ</div>
+                                                                    <div className='col-span-4'>Số lượng</div>
+                                                                    <div className='col-span-1'></div>
                                                                 </div>
-                                                            </div>
-                                                        </Upload>
-                                                    </Form.Item>
-                                                </div>
+                                                            )}
 
-                                                <div className='space-y-4'>
-                                                    <Form.List name={[variant.name, 'properties']}>
-                                                        {(properties, { add: addProperty, remove: removeProperty }) => (
-                                                            <div className='space-y-4'>
-                                                                <div className='max-h-[400px] overflow-y-auto pr-2'>
-                                                                    {properties.map((property, propertyIndex) => (
-                                                                        <div
-                                                                            key={property.key}
-                                                                            className='mb-4 rounded-lg border border-gray-100 bg-gray-50/50 p-4'
-                                                                        >
-                                                                            <div className='mb-4 flex items-center justify-between'>
-                                                                                <h4 className='font-medium text-gray-700'>
-                                                                                    Thuộc tính {propertyIndex + 1}
-                                                                                </h4>
-                                                                                <Button
-                                                                                    type='text'
-                                                                                    danger
-                                                                                    size='small'
-                                                                                    onClick={() =>
-                                                                                        removeProperty(property.name)
-                                                                                    }
-                                                                                    icon={<DeleteOutlined />}
-                                                                                    className='flex items-center hover:bg-red-50'
-                                                                                >
-                                                                                    Xóa
-                                                                                </Button>
-                                                                            </div>
-
-                                                                            <div className='grid gap-4'>
-                                                                                <Form.Item
-                                                                                    label={
-                                                                                        <span className='text-gray-600'>
-                                                                                            Kích cỡ
-                                                                                        </span>
-                                                                                    }
-                                                                                    name={[property.name, 'size']}
-                                                                                    rules={[
-                                                                                        {
-                                                                                            required: true,
-                                                                                            message:
-                                                                                                'Vui lòng chọn size',
-                                                                                        },
-                                                                                    ]}
-                                                                                >
-                                                                                    <Select
-                                                                                        placeholder='Chọn kích cỡ'
-                                                                                        size='large'
-                                                                                        className='w-full'
-                                                                                        options={sizeList
-                                                                                            ?.filter((size) => {
-                                                                                                if (
-                                                                                                    !Array.isArray(
-                                                                                                        variantsWatch
-                                                                                                    )
+                                                            {/* Properties list */}
+                                                            <div className='rounded-md border border-gray-100 pt-2'>
+                                                                {properties.map((property, propertyIndex) => (
+                                                                    <div
+                                                                        key={property.key}
+                                                                        className={`grid grid-cols-8 gap-8 px-2 py-1 ${
+                                                                            propertyIndex !== properties.length - 1
+                                                                                ? 'border-b border-gray-200'
+                                                                                : ''
+                                                                        }`}
+                                                                    >
+                                                                        <div className='col-span-3'>
+                                                                            <Form.Item
+                                                                                name={[property.name, 'size']}
+                                                                                rules={[
+                                                                                    {
+                                                                                        required: true,
+                                                                                        message: 'Chọn size',
+                                                                                    },
+                                                                                ]}
+                                                                                className='mb-0'
+                                                                            >
+                                                                                <Select
+                                                                                    size='large'
+                                                                                    placeholder='Chọn size'
+                                                                                    options={sizeList
+                                                                                        ?.filter((size) => {
+                                                                                            if (
+                                                                                                !Array.isArray(
+                                                                                                    variantsWatch
                                                                                                 )
-                                                                                                    return true;
-
-                                                                                                const selectedSizes =
-                                                                                                    variantsWatch?.[
-                                                                                                        variantIndex
-                                                                                                    ]?.properties
-                                                                                                        ?.filter(
-                                                                                                            (
-                                                                                                                p: any,
-                                                                                                                idx: number
-                                                                                                            ) =>
-                                                                                                                idx !==
-                                                                                                                    propertyIndex &&
-                                                                                                                p?.size
-                                                                                                        )
-                                                                                                        ?.map(
-                                                                                                            (p: any) =>
-                                                                                                                p.size
-                                                                                                        )
-                                                                                                        ?.filter(
-                                                                                                            Boolean
-                                                                                                        );
-                                                                                                return !selectedSizes?.includes(
-                                                                                                    size._id
-                                                                                                );
-                                                                                            })
-                                                                                            ?.map((size) => ({
-                                                                                                value: size._id,
-                                                                                                label: (
-                                                                                                    <span className='font-medium'>
-                                                                                                        {size.value}
-                                                                                                    </span>
-                                                                                                ),
-                                                                                            }))}
-                                                                                    />
-                                                                                </Form.Item>
-
-                                                                                <Form.Item
-                                                                                    label={
-                                                                                        <span className='text-gray-600'>
-                                                                                            Tồn kho
-                                                                                        </span>
-                                                                                    }
-                                                                                    name={[property.name, 'stock']}
-                                                                                    rules={[
-                                                                                        {
-                                                                                            required: true,
-                                                                                            message:
-                                                                                                'Vui lòng nhập số lượng',
-                                                                                        },
-                                                                                    ]}
-                                                                                >
-                                                                                    <InputNumber
-                                                                                        placeholder='Nhập số lượng...'
-                                                                                        size='large'
-                                                                                        className='w-full'
-                                                                                        min={0}
-                                                                                        style={{ width: '100%' }}
-                                                                                    />
-                                                                                </Form.Item>
-                                                                            </div>
+                                                                                            )
+                                                                                                return true;
+                                                                                            const selectedSizes =
+                                                                                                variantsWatch?.[
+                                                                                                    variantIndex
+                                                                                                ]?.properties
+                                                                                                    ?.filter(
+                                                                                                        (
+                                                                                                            p: any,
+                                                                                                            idx: number
+                                                                                                        ) =>
+                                                                                                            idx !==
+                                                                                                                propertyIndex &&
+                                                                                                            p?.size
+                                                                                                    )
+                                                                                                    ?.map(
+                                                                                                        (p: any) =>
+                                                                                                            p.size
+                                                                                                    )
+                                                                                                    ?.filter(Boolean);
+                                                                                            return !selectedSizes?.includes(
+                                                                                                size._id
+                                                                                            );
+                                                                                        })
+                                                                                        ?.map((size) => ({
+                                                                                            value: size._id,
+                                                                                            label: size.value,
+                                                                                        }))}
+                                                                                />
+                                                                            </Form.Item>
                                                                         </div>
-                                                                    ))}
-                                                                </div>
-
-                                                                <Button
-                                                                    type='dashed'
-                                                                    onClick={() => addProperty()}
-                                                                    icon={<PlusOutlined />}
-                                                                    disabled={properties.length >= 8}
-                                                                    className='mt-2 h-10 w-full'
-                                                                >
-                                                                    Thêm thuộc tính
-                                                                </Button>
+                                                                        <div className='col-span-4'>
+                                                                            <Form.Item
+                                                                                name={[property.name, 'stock']}
+                                                                                rules={[
+                                                                                    {
+                                                                                        required: true,
+                                                                                        message: 'Nhập số lượng',
+                                                                                    },
+                                                                                ]}
+                                                                                className='mb-0'
+                                                                            >
+                                                                                <InputNumber
+                                                                                    size='large'
+                                                                                    placeholder='Nhập số lượng'
+                                                                                    min={0}
+                                                                                    style={{ width: '100%' }}
+                                                                                />
+                                                                            </Form.Item>
+                                                                        </div>
+                                                                        <div className='col-span-1 flex items-center justify-center'>
+                                                                            <Button
+                                                                                type='text'
+                                                                                danger
+                                                                                icon={<DeleteOutlined />}
+                                                                                onClick={() =>
+                                                                                    removeProperty(property.name)
+                                                                                }
+                                                                                size='small'
+                                                                                className='border border-gray-200 hover:border-red-400'
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                ))}
                                                             </div>
-                                                        )}
-                                                    </Form.List>
-                                                </div>
+
+                                                            {/* Add property button */}
+                                                            <Button
+                                                                type='dashed'
+                                                                onClick={() => addProperty()}
+                                                                icon={<PlusOutlined />}
+                                                                size='small'
+                                                                className='mt-2 w-full border border-gray-300'
+                                                                disabled={properties.length >= 8}
+                                                            >
+                                                                Thêm kích thước
+                                                            </Button>
+                                                        </>
+                                                    )}
+                                                </Form.List>
+                                            </div>
+
+                                            {/* Actions */}
+                                            <div className='col-span-1 flex items-center justify-center'>
+                                                <Button
+                                                    type='text'
+                                                    danger
+                                                    icon={<CloseOutlined />}
+                                                    onClick={() => removeVariant(variant.name)}
+                                                    title='Xóa biến thể'
+                                                    className='border border-gray-200 hover:border-red-400'
+                                                />
                                             </div>
                                         </div>
                                     ))}
 
+                                    {/* Add variant button */}
                                     <Button
                                         type='dashed'
                                         onClick={() => addVariant()}
                                         icon={<PlusOutlined />}
                                         disabled={variants.length >= 5}
-                                        className='h-12 w-full text-base'
+                                        className='h-10 w-full border-2 border-gray-300'
                                     >
                                         Thêm biến thể mới
                                     </Button>

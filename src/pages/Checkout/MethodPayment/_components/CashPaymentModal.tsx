@@ -35,7 +35,6 @@ export default function CashPaymentModal({
             totalPrice: checkOutInfor.totalPrice,
             description: checkOutInfor.description,
         };
-        console.log(payload);
         mutate(payload, {
             onSuccess: (data) => {
                 setOpen(false);

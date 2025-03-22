@@ -1,5 +1,5 @@
 import { useTypedSelector } from '~/store/store';
-import { Navigate } from 'react-router';
+import { Navigate } from 'react-router-dom';
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
     const isAuth = useTypedSelector((state) => state.auth.authenticate);
     const user = useTypedSelector((state) => state.auth.user);
