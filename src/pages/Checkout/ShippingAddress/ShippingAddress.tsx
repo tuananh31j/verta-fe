@@ -12,7 +12,7 @@ import WardSelectList from './_components/WardSelect';
 export default function ShippingAddress() {
     const { data } = useGetAllAddress();
     const [selectedAddress, setSelectedAddress] = useState<IAddress>();
-    const [tabAddress, setTabAddress] = useState<'MYADDRESS' | 'NEWADDRESS'>();
+    const [tabAddress, setTabAddress] = useState<'MYADDRESS' | 'NEWADDRESS'>('MYADDRESS');
     const customerInfor = useTypedSelector((state) => state.checkOut.customerInfor);
     const shippingAddress = useTypedSelector((state) => state.checkOut.shippingAddress);
     const isValidCustomer = Object.values(customerInfor).every((value) => value.trim() !== '');
@@ -130,9 +130,32 @@ export default function ShippingAddress() {
                 wardCode: '',
                 ward: '',
                 district: '',
+                address: '',
             });
+        } else if (tabAddress === 'MYADDRESS') {
+            const findIndexAddress = data?.find((item) => item.default === true);
+            if (findIndexAddress) {
+                dispatch(
+                    setShippingAddress({
+                        provinceId: findIndexAddress.provinceId,
+                        province: findIndexAddress.province,
+                        district: findIndexAddress.district,
+                        districtId: findIndexAddress.districtId,
+                        ward: findIndexAddress.ward,
+                        address: findIndexAddress.address,
+                    })
+                );
+                dispatch(
+                    setCustomerInfo({
+                        name: findIndexAddress.name,
+                        phone: findIndexAddress.phone,
+                        email: user?.email,
+                    })
+                );
+                setSelectedAddress(findIndexAddress);
+            }
         }
-    }, [dispatch, form, tabAddress]);
+    }, [data, dispatch, form, tabAddress, user]);
     return (
         <div>
             {/* BREADCRUMB */}

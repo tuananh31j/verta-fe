@@ -20,6 +20,15 @@ export default function CashPaymentModal({
     };
     const navigate = useNavigate();
     const checkOutInfor = useTypedSelector((state) => state.checkOut);
+    const discount =
+        checkOutInfor.voucher?.discountType === 'percentage'
+            ? Math.min(
+                  checkOutInfor.totalPrice * ((checkOutInfor.voucher?.voucherDiscount ?? 0) / 100),
+                  checkOutInfor.voucher?.maxDiscountAmount ?? Infinity // Giới hạn tối đa
+              )
+            : (checkOutInfor.voucher?.voucherDiscount ?? 0);
+
+    const calTotalPriceWithVoucher = checkOutInfor.totalPrice - discount;
     const handleConfirm = () => {
         const payload: IOrderCreatePayload = {
             items: checkOutInfor.items ? [...checkOutInfor.items] : [],
@@ -34,6 +43,7 @@ export default function CashPaymentModal({
             shippingFee: checkOutInfor.shippingFee,
             totalPrice: checkOutInfor.totalPrice,
             description: checkOutInfor.description,
+            voucherCode: checkOutInfor.voucher ? checkOutInfor.voucher.code : null,
         };
         mutate(payload, {
             onSuccess: (data) => {
@@ -48,7 +58,7 @@ export default function CashPaymentModal({
                 <h3 className='text-2xl font-bold'>Xác nhận đặt hàng</h3>
                 <p className='mt-3 text-base'>
                     Bạn muốn thanh toán đơn hàng có {checkOutInfor.items?.length} sản phẩm với tổng giá tiền là{' '}
-                    <span className='font-semibold text-green-600'>{formatCurrency(checkOutInfor.totalPrice)}</span>
+                    <span className='font-semibold text-green-600'>{formatCurrency(calTotalPriceWithVoucher)}</span>
                     với phương thức thanh toán là{' '}
                     {paymentMethod === 'COD' ? (
                         <span className='font-semibold text-green-600'>Tiền mặt</span>

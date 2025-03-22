@@ -14,10 +14,11 @@ interface ShippingAddress {
 }
 
 // PAYLOAD
-interface ProductItem {
+export interface ProductItem {
     id: string;
     productId: string;
     variantId: string;
+    stock?: number;
     name: string;
     size: string;
     color: string;
@@ -33,6 +34,7 @@ export interface IOrderCreatePayload {
     customerInfo: CustomerInfo;
     shippingAddress: ShippingAddress;
     description?: string;
+    voucherCode: string | null;
 }
 export interface IOrderPayOsPayLoad extends IOrderCreatePayload {
     amount: number;
