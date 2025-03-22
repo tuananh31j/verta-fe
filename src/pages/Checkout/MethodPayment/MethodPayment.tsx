@@ -33,14 +33,14 @@ export default function MethodPayment() {
     const handleClickCheckOut = () => {
         const isAddressExists = data?.some(
             (addr) =>
-                addr.address === checkOutInfor.shippingAddress.address &&
+                addr.address.toLowerCase().trim() === checkOutInfor.shippingAddress.address.toLowerCase().trim() &&
                 addr.province === checkOutInfor.shippingAddress.province &&
                 addr.district === checkOutInfor.shippingAddress.district &&
                 addr.ward === checkOutInfor.shippingAddress.ward &&
                 addr.name === checkOutInfor.customerInfor.name &&
                 addr.phone === checkOutInfor.customerInfor.phone
         );
-        if (data?.length === 0 || !isAddressExists) {
+        if (data && data.length < 5 && (data?.length === 0 || !isAddressExists)) {
             setOpenAddressModal(true);
         } else {
             if (paymentMethod === 'COD') {

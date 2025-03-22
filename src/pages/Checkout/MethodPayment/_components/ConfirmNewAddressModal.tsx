@@ -20,6 +20,11 @@ export default function ConfirmNewAddressModal({
 }) {
     const handleCancel = () => {
         setOpen(false);
+        if (paymentMethod === 'COD') {
+            setOpenCod(true);
+        } else {
+            setOpenPayOs(true);
+        }
     };
     const { mutate } = useCreateAddress();
     const checkOutInfor = useTypedSelector((state) => state.checkOut);
