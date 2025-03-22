@@ -16,5 +16,10 @@ export const useCreateCodOrder = () => {
                 queryKey: [QUERY_KEY.CART],
             });
         },
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onError: (err: any) => {
+            toast('info', err.message);
+        },
     });
 };

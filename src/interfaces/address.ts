@@ -24,6 +24,6 @@ export type IPayloadCreateAddress = {
     district: string;
     ward: string;
     address: string;
-    default: boolean;
-    type: string;
+    default?: boolean;
+    type?: string;
 };

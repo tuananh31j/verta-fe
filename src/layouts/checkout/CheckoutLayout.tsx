@@ -2,7 +2,8 @@ import { useEffect, useRef } from 'react';
 import { Link, Navigate, Outlet } from 'react-router-dom';
 import { useToast } from '~/context/ToastProvider';
 import useGetAllCart from '~/hooks/queries/cart/useGetAllCart';
-import { ItemsReduxPayload, setPrice, setProductsItems } from '~/store/slice/checkoutSlice';
+import { ProductItem } from '~/interfaces/order';
+import { setPrice, setProductsItems } from '~/store/slice/checkoutSlice';
 import { useAppDispatch, useTypedSelector } from '~/store/store';
 import { formatCurrency } from '~/utils/formatCurrrency';
 
@@ -10,10 +11,12 @@ export default function CheckoutLayout() {
     const { data: cartList } = useGetAllCart();
     const dispatch = useAppDispatch();
     const feeShipping = useTypedSelector((state) => state.checkOut.shippingFee);
+    const voucher = useTypedSelector((state) => state.checkOut.voucher);
     const toast = useToast();
     const isRunned = useRef(false);
 
-    const data = cartList?.items.map((item) => ({
+    const data = cartList?.items.map((item, index) => ({
+        id: index.toString(),
         productId: item.product._id,
         variantId: item.variant._id,
         name: item.product.name as string,
@@ -29,12 +32,22 @@ export default function CheckoutLayout() {
         ? cartList?.items?.reduce((acc, curr) => acc + curr.product.price * curr.quantity, 0)
         : 0;
     const calTotalPrice = feeShipping ? totalPrice + feeShipping : totalPrice;
+    const discount =
+        voucher?.discountType === 'percentage'
+            ? Math.min(
+                  totalPrice * ((voucher?.voucherDiscount ?? 0) / 100),
+                  voucher?.maxDiscountAmount ?? Infinity // Giới hạn tối đa
+              )
+            : (voucher?.voucherDiscount ?? 0);
+
+    const calTotalPriceWithVoucher = totalPrice + feeShipping - discount;
+
     useEffect(() => {
         dispatch(setPrice(calTotalPrice));
     }, [calTotalPrice, dispatch]);
     useEffect(() => {
         if (data) {
-            dispatch(setProductsItems(data as ItemsReduxPayload[]));
+            dispatch(setProductsItems(data as ProductItem[]));
         }
     }, [data, dispatch]);
     // PROTECTED LAYOUT
@@ -114,12 +127,26 @@ export default function CheckoutLayout() {
                                         )}
                                     </span>
                                 </div>
+                                <div className='flex justify-between'>
+                                    <span className='text-sm text-[#717171]'>Phí giao hàng:</span>
+                                    <span className='text-[#4b4b4b]'>
+                                        {feeShipping && '+ '}
+                                        {formatCurrency(feeShipping)}
+                                    </span>
+                                </div>
+                                <div className='flex justify-between'>
+                                    <span className='text-sm text-[#717171]'>Mã giảm giá:</span>
+                                    <span className='text-[#4b4b4b]'>
+                                        {voucher && '- '}
+                                        {formatCurrency(discount)}
+                                    </span>
+                                </div>
                             </div>
                             <div className='flex justify-between py-4'>
                                 <span className='text-base text-[#4b4b4b]'>Tổng tiền:</span>
                                 <span className='flex items-center gap-2 text-2xl font-semibold text-[#4b4b4b]'>
                                     <span className='text-sm font-thin text-[#969696]'>VND</span>
-                                    {formatCurrency(calTotalPrice)}
+                                    {formatCurrency(calTotalPriceWithVoucher)}
                                 </span>
                             </div>
                         </>

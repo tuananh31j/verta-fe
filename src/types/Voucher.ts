@@ -11,11 +11,13 @@ export type IVoucher = {
     status: boolean;
     isOnlyForNewUser: boolean;
     minimumOrderPrice: number;
+    remainingQuantity: number;
     startDate: string;
     endDate: string;
     createdAt: string;
     updatedAt: string;
     usagePerUser: number;
+    usedCount?: number;
     discountType: DiscountType;
     maxDiscountAmount: number;
     remainingQuantity: number;

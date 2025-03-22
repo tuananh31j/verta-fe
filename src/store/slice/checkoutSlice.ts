@@ -1,19 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-export interface ItemsReduxPayload {
-    productId: string;
-    variantId: string;
-    name: string;
-    size: string;
-    color: string;
-    category: string;
-    quantity: number;
-    price: number;
-    image: string;
-    stock?: number;
-}
+import { ProductItem } from '~/interfaces/order';
+import { IVoucher } from '~/types/Voucher';
 
 export type CheckOutReduxType = {
-    items: ItemsReduxPayload[] | null;
+    voucher: IVoucher | null;
+    items: ProductItem[] | null;
     description: string;
     customerInfor: {
         name: string;
@@ -36,6 +27,7 @@ export type CheckOutReduxType = {
 };
 
 const initialState: CheckOutReduxType = {
+    voucher: null,
     items: null,
     description: '', // 🛠 Sửa 'desription' thành 'description'
     customerInfor: {
@@ -62,6 +54,12 @@ const checkoutSlice = createSlice({
     name: 'checkout',
     initialState,
     reducers: {
+        changeVoucher: (state, action: PayloadAction<IVoucher>) => {
+            state.voucher = action.payload;
+        },
+        removeVoucher: (state) => {
+            state.voucher = null;
+        },
         setDescription: (state, action: PayloadAction<string>) => {
             state.description = action.payload;
         },
@@ -77,7 +75,7 @@ const checkoutSlice = createSlice({
         setCustomerInfo: (state, action) => {
             state.customerInfor = { ...state.customerInfor, ...action.payload };
         },
-        setProductsItems: (state, action: PayloadAction<ItemsReduxPayload[]>) => {
+        setProductsItems: (state, action: PayloadAction<ProductItem[]>) => {
             state.items = action.payload;
         },
         reset: () => initialState,
@@ -90,6 +88,8 @@ export const {
     setCustomerInfo,
     setShippingFee,
     setPrice,
+    removeVoucher,
+    changeVoucher,
     reset,
     setShippingAddress,
 } = checkoutSlice.actions;

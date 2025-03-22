@@ -1,32 +1,57 @@
-import { Radio } from 'antd';
+import { CloseOutlined, RightOutlined } from '@ant-design/icons';
+import { Popconfirm, Radio } from 'antd';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setShippingFee } from '~/store/slice/checkoutSlice';
-import { formatCurrency } from '~/utils/formatCurrrency';
 import codImg from '~/assets/cash.jpg';
 import payosImg from '~/assets/payos.svg';
-import CashPaymentModal from './_components/CashPaymentModal';
+import { useGetAllAddress } from '~/hooks/queries/address/useGetAllAddress';
+import { removeVoucher, setShippingFee } from '~/store/slice/checkoutSlice';
+import { useTypedSelector } from '~/store/store';
+import { formatCurrency } from '~/utils/formatCurrrency';
 import CardPaymentModal from './_components/CardPaymentModal';
+import CashPaymentModal from './_components/CashPaymentModal';
+import ConfirmNewAddressModal from './_components/ConfirmNewAddressModal';
+import VoucherModal from './_components/VoucherModal';
 
 export default function MethodPayment() {
     const [paymentMethod, setPaymentMethod] = useState<'COD' | 'PAYOS'>('COD');
     const [isOpen, setOpen] = useState(false);
     const [isOpenPayosModal, setOpenPayosModal] = useState(false);
+    const [isAddressModal, setOpenAddressModal] = useState(false);
+    const selectedVoucher = useTypedSelector((state) => state.checkOut.voucher);
+    const { data } = useGetAllAddress();
     const onchangeRadioPayment = (type: 'COD' | 'PAYOS') => {
         setPaymentMethod(type);
     };
     const dispatch = useDispatch();
+    const checkOutInfor = useTypedSelector((state) => state.checkOut);
     useEffect(() => {
         dispatch(setShippingFee(30000));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    const handleCheckOut = () => {
-        if (paymentMethod === 'COD') {
-            setOpen(true);
+    const handleClickCheckOut = () => {
+        const isAddressExists = data?.some(
+            (addr) =>
+                addr.address.toLowerCase().trim() === checkOutInfor.shippingAddress.address.toLowerCase().trim() &&
+                addr.province === checkOutInfor.shippingAddress.province &&
+                addr.district === checkOutInfor.shippingAddress.district &&
+                addr.ward === checkOutInfor.shippingAddress.ward &&
+                addr.name === checkOutInfor.customerInfor.name &&
+                addr.phone === checkOutInfor.customerInfor.phone
+        );
+        if (data && data.length < 5 && (data?.length === 0 || !isAddressExists)) {
+            setOpenAddressModal(true);
         } else {
-            setOpenPayosModal(true);
+            if (paymentMethod === 'COD') {
+                setOpen(true);
+            } else {
+                setOpenPayosModal(true);
+            }
         }
+    };
+    const handleRemoveVoucher = () => {
+        dispatch(removeVoucher());
     };
     return (
         <>
@@ -77,12 +102,58 @@ export default function MethodPayment() {
                             </div>
                         </div>
                     </Radio.Group>
+                    {selectedVoucher ? (
+                        <div className='mt-4 flex cursor-pointer items-center justify-between gap-5 rounded-md border border-gray-300 px-6 py-2'>
+                            <VoucherModal>
+                                <div className='flex w-full items-center gap-5'>
+                                    <img
+                                        src='https://cdn-icons-png.flaticon.com/512/4649/4649082.png'
+                                        className='w-8'
+                                        alt=''
+                                    />
+                                    {selectedVoucher ? (
+                                        <span className='text-sm text-red-500'>
+                                            {selectedVoucher.discountType === 'percentage'
+                                                ? `${selectedVoucher.name} Giảm tối đa ${formatCurrency(selectedVoucher.maxDiscountAmount)}`
+                                                : selectedVoucher.name}
+                                        </span>
+                                    ) : (
+                                        <span className='text-sm text-[#737373]'>Áp dụng mã giảm giá</span>
+                                    )}
+                                </div>
+                            </VoucherModal>
+                            <Popconfirm
+                                placement='bottom'
+                                title={'Bạn có chắc không muốn sử dụng Voucher này'}
+                                description={'Giá trị đơn hàng sẽ bị thay đổi lại'}
+                                okText='Chắc chắn'
+                                onConfirm={handleRemoveVoucher}
+                                cancelText='Không'
+                            >
+                                <CloseOutlined />
+                            </Popconfirm>
+                        </div>
+                    ) : (
+                        <VoucherModal>
+                            <div className='mt-4 flex cursor-pointer items-center justify-between gap-5 rounded-md border border-gray-300 px-6 py-2'>
+                                <div className='flex w-full items-center gap-5'>
+                                    <img
+                                        src='https://cdn-icons-png.flaticon.com/512/4649/4649082.png'
+                                        className='w-8'
+                                        alt=''
+                                    />
+                                    <span className='text-sm text-[#737373]'>Áp dụng mã giảm giá</span>
+                                </div>
+                                <RightOutlined />
+                            </div>
+                        </VoucherModal>
+                    )}
                     <div className='mt-8 flex justify-between'>
-                        <Link to={'/cart/detail'} className='text-sm text-[#1677ff] duration-300 hover:text-cyan-500'>
-                            Giỏ hàng
+                        <Link to={'/checkout'} className='text-sm text-[#1677ff] duration-300 hover:text-cyan-500'>
+                            Quay trở về
                         </Link>
                         <button
-                            onClick={handleCheckOut}
+                            onClick={handleClickCheckOut}
                             type='submit'
                             className='flex cursor-pointer items-center justify-center rounded-md bg-[#338dbc] px-4 py-4 text-xs font-medium text-white uppercase duration-300 hover:bg-cyan-500'
                         >
@@ -91,6 +162,14 @@ export default function MethodPayment() {
                     </div>
                 </div>
             </div>
+            <ConfirmNewAddressModal
+                address={data ? data : []}
+                isOpen={isAddressModal}
+                setOpenCod={setOpen}
+                setOpenPayOs={setOpenPayosModal}
+                setOpen={setOpenAddressModal}
+                paymentMethod={paymentMethod}
+            />
             <CashPaymentModal isOpen={isOpen} setOpen={setOpen} paymentMethod={paymentMethod} />
             <CardPaymentModal isOpen={isOpenPayosModal} setOpen={setOpenPayosModal} paymentMethod={paymentMethod} />
         </>
