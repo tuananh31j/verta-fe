@@ -3,22 +3,7 @@ import { TableProps } from 'antd/lib';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import { DollarCircleFilled } from '@ant-design/icons';
-
-interface OrderItem {
-    _id: string;
-    order_code: string;
-    productId: string;
-    variantId: string;
-    name: string;
-    size: string;
-    color: string;
-    category: string;
-    quantity: number;
-    price: number;
-    image: string;
-    isReviewed: boolean;
-    isReviewDisabled: boolean;
-}
+import { OrderItem } from '~/interfaces/order';
 
 interface Props {
     serviceInfo: {

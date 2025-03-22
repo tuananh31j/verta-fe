@@ -7,6 +7,7 @@ import ServiceInfo from './ServiceInfo';
 import TableOrderItems from './TableOrderItems';
 import OrderDetailNavbar from './OrderDetailNavbar';
 import OrderHistoryTimeline from './OrderHistoryTimeline';
+import { OrderItem } from '~/interfaces/order';
 
 const OrderDetail = () => {
     const { id } = useParams();
@@ -36,6 +37,9 @@ const OrderDetail = () => {
         totalPrice,
         isPaid,
         tax: 0,
+        voucherName: orderData?.voucherName || '',
+        voucherCode: orderData?.voucherCode || '',
+        voucherDiscount: orderData?.voucherDiscount || 0,
     };
 
     return (
@@ -62,7 +66,7 @@ const OrderDetail = () => {
                 <OrderHistoryTimeline orderId={id} />
             </div>
 
-            <TableOrderItems serviceInfo={serviceInfo} orderItems={items} />
+            <TableOrderItems serviceInfo={serviceInfo} orderItems={items as OrderItem[]} />
         </>
     );
 };

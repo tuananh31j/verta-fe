@@ -75,6 +75,10 @@ export interface IOrder {
     customerInfo: CustomerInfo;
     shippingAddress: ShippingAddress;
     paymentMethod: string;
+    discountType: string;
+    voucherDiscount: number;
+    voucherName: string;
+    voucherCode: string;
     isPaid: boolean;
     canceledBy: string;
     description: string;

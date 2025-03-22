@@ -8,6 +8,9 @@ interface Props {
         shippingFee: number;
         totalPrice: number;
         isPaid: boolean;
+        voucherName: string;
+        voucherDiscount: number;
+        voucherCode: string;
     };
     description: string;
 }
@@ -37,6 +40,12 @@ const ServiceInfo: React.FC<Props> = ({ serviceInfo, description }) => {
             value: `${serviceInfo.shippingFee.toLocaleString()} VNĐ`,
             className: 'from-yellow-50 to-amber-50',
         },
+        {
+            icon: <img src='https://cdn-icons-png.flaticon.com/512/4649/4649082.png' className={`w-7`} alt='' />,
+            label: `Mã giảm giá ${serviceInfo.voucherCode}`,
+            value: `${serviceInfo.voucherDiscount.toLocaleString()} VNĐ`,
+            className: 'from-red-50 to-red-50',
+        },
     ];
 
     return (
@@ -62,7 +71,7 @@ const ServiceInfo: React.FC<Props> = ({ serviceInfo, description }) => {
             }
         >
             <Space direction='vertical' className='w-full' size='large'>
-                <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+                <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
                     {infoCards.map((info, index) => (
                         <div
                             key={index}
