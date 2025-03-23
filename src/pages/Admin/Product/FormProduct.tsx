@@ -374,7 +374,9 @@ const FormProduct = (props: {
                                     {variants.map((variant, variantIndex) => (
                                         <div
                                             key={variant.key}
-                                            className='grid grid-cols-12 gap-4 rounded-lg border-2 border-gray-300 bg-white p-4 shadow-sm'
+                                            className={`grid grid-cols-12 gap-4 rounded-lg border-2 border-gray-300 p-4 shadow-sm ${
+                                                variantIndex % 2 === 0 ? 'bg-white' : 'bg-gray-100'
+                                            }`}
                                         >
                                             {/* Variant index */}
                                             <div className='col-span-1 flex items-center justify-center border-r border-gray-200 pr-2'>
@@ -468,6 +470,10 @@ const FormProduct = (props: {
                                                                             propertyIndex !== properties.length - 1
                                                                                 ? 'border-b border-gray-200'
                                                                                 : ''
+                                                                        } ${
+                                                                            propertyIndex % 2 === 0
+                                                                                ? 'bg-white'
+                                                                                : 'bg-gray-50'
                                                                         }`}
                                                                     >
                                                                         <div className='col-span-3'>
