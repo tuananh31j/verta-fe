@@ -34,7 +34,7 @@ const FilterSideBar = () => {
             <span className='block text-sm font-bold'>Tất cả sản phẩm</span>
             <div className='mt-4'>
                 {categories?.map((category) => (
-                    <div className='mt-2'>
+                    <div key={category._id} className='mt-2'>
                         <span
                             className={`block cursor-pointer text-sm font-bold capitalize`}
                             onClick={() => handleFilter(category._id)}

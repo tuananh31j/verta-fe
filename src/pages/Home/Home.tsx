@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import HomeNewBannerOne from '~/assets/home_new_banner_1_2048x2048.webp';
@@ -12,6 +14,16 @@ import '~/styles/customSwiper.css';
 export default function HomePage() {
     const { data: bestSellingData, isPending: isPendingBestSelling } = useGetProductsBestSelling();
     const { data: newestData, isPending: isPendingNewest } = useGetProductsNewest();
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.hash) {
+            const element = document.getElementById(location.hash.substring(1));
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }, [location]);
     return (
         <>
             <BannerSlider />
@@ -40,7 +52,7 @@ export default function HomePage() {
                         isPending={isPendingBestSelling}
                     />
                 </div>
-                <div className='mt-12'>
+                <div id='selling' className='mt-12'>
                     <ProductWrapper<IProductDetail[]>
                         title='SẢN PHẨM BÁN CHẠY'
                         description='Những sản phẩm được mua nhiều nhất ở trên hệ thống'

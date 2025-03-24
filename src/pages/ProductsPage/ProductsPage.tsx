@@ -19,7 +19,7 @@ const ProductsPage = () => {
     const [isColorOpen, setIsColorOpen] = useState(false);
     const [isPriceOpen, setIsPriceOpen] = useState(false);
     const { windowWidth } = useWindowSize();
-    const { data, isLoading } = useGetAllProducts({ ...query, limit: grid === '3' ? '9' : '10' });
+    const { data, isLoading } = useGetAllProducts({ ...query, limit: grid === '2' ? '10' : '9' });
     const productsList = data?.data;
     const totalDocs = data?.totalDocs;
     const queryKeys = Object.keys(query);

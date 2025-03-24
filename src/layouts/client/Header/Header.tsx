@@ -1,11 +1,17 @@
 import { SearchOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import { Badge, ConfigProvider, Dropdown, MenuProps, Popover } from 'antd';
+import _ from 'lodash';
+import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CartModal from '~/components/CartModal/CartModal';
 import HeaderCart from '~/components/HeaderCart/HeaderCart';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
+import useFilter from '~/hooks/common/useFilter';
+import useGetAllCart from '~/hooks/queries/cart/useGetAllCart';
+import { useGetAllCate } from '~/hooks/queries/categories/useGetAllCate';
 import { logout } from '~/store/slice/authSlice';
+import { setQuantityInCart } from '~/store/slice/cartSlice';
 import { useTypedSelector } from '~/store/store';
 
 const Header = () => {
@@ -16,6 +22,11 @@ const Header = () => {
         dispatch(logout());
     };
     const quantityCart = useTypedSelector((state) => state.cart.quantityInCart);
+    const { data } = useGetAllCart();
+    const { data: categories } = useGetAllCate();
+    const [searchInputValue, setSearchInputValue] = useState('');
+    const navigate = useNavigate();
+
     const dropDownItems: MenuProps['items'] = user
         ? [
               {
@@ -65,6 +76,69 @@ const Header = () => {
         return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
     };
 
+    const { query, updateQueryParam } = useFilter();
+
+    const handleFilter = useCallback(
+        (id: string) => {
+            let queryValue = '';
+            if (query['categories']?.includes(id)) {
+                queryValue = query['categories']
+                    .split(',')
+                    .filter((item: string) => item !== id)
+                    .join(',');
+            } else {
+                queryValue = query['categories'] ? `${query['categories']},${id}` : id;
+            }
+            updateQueryParam({
+                ...query,
+                ['categories']: queryValue,
+                page: 1,
+            });
+        },
+        [query, updateQueryParam]
+    );
+    const categoriesItems: MenuProps['items'] = categories?.map((category) => ({
+        key: category._id,
+        label: (
+            <Link onClick={() => handleFilter(category._id)} to={`/products?categories=${category._id}`}>
+                {category.name}
+            </Link>
+        ),
+        children: category.items.map((subCategory) => ({
+            key: subCategory._id,
+            label: (
+                <Link onClick={() => handleFilter(subCategory._id)} to={`/products?categories=${subCategory._id}`}>
+                    {subCategory.name}
+                </Link>
+            ),
+        })),
+    }));
+
+    const deboundedSearchChange = useCallback(
+        _.debounce((searchText) => {
+            navigate(`/products?search=${searchText}`);
+            setSearchInputValue('');
+        }, 600),
+        []
+    );
+
+    const handleSearchChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        setSearchInputValue(e.target.value);
+        deboundedSearchChange(e.target.value);
+    }, []);
+
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        navigate(`/products?search=${searchInputValue}`);
+        setSearchInputValue('');
+    };
+
+    useEffect(() => {
+        if (data && data.items.length !== quantityCart) {
+            dispatch(setQuantityInCart(data?.items.length as number));
+        }
+    }, [data?.items]);
+
     return (
         <header
             className={`sticky top-0 right-0 left-0 z-50 border-b border-gray-300 bg-white transition-all duration-300`}
@@ -79,12 +153,14 @@ const Header = () => {
                             <li className='text-sm font-semibold whitespace-nowrap text-[#8e8e8e] uppercase duration-300 hover:text-black'>
                                 <Link to='/products'>Sản phẩm</Link>
                             </li>
-                            <li className='text-sm font-semibold whitespace-nowrap text-[#8e8e8e] uppercase duration-300 hover:text-black'>
-                                <Link to='/'>Danh mục</Link>
-                            </li>
-                            <li className='text-sm font-semibold whitespace-nowrap text-[#8e8e8e] uppercase duration-300 hover:text-black'>
-                                <Link to='/'>Bán chạy</Link>
-                            </li>
+                            <Dropdown menu={{ items: categoriesItems }} placement='bottomLeft'>
+                                <li className='cursor-pointer text-sm font-semibold whitespace-nowrap text-[#8e8e8e] uppercase duration-300 hover:text-black'>
+                                    Danh mục
+                                </li>
+                            </Dropdown>
+                            {/* <li className='text-sm font-semibold whitespace-nowrap text-[#8e8e8e] uppercase duration-300 hover:text-black'>
+                                <Link to='/#selling'>Bán chạy</Link>
+                            </li> */}
                             <li className='text-sm font-semibold whitespace-nowrap text-[#8e8e8e] uppercase duration-300 hover:text-black'>
                                 <Link to='/'>Về chúng tôi</Link>
                             </li>
@@ -102,16 +178,21 @@ const Header = () => {
                                 <Popover
                                     content={
                                         <div>
-                                            <div className='flex'>
-                                                <input
-                                                    type='text'
-                                                    placeholder='Tìm kiếm...'
-                                                    className='border border-[#d8d3d3] bg-white px-3 py-2 outline-none'
-                                                />
-                                                <div className='flex items-center justify-between bg-black px-2.5'>
-                                                    <SearchOutlined style={{ fontSize: 16, color: '#fff' }} />
+                                            <form onSubmit={handleSubmit}>
+                                                <div className='flex'>
+                                                    <input
+                                                        type='text'
+                                                        name='search'
+                                                        value={searchInputValue}
+                                                        onChange={handleSearchChange}
+                                                        placeholder='Tìm kiếm...'
+                                                        className='border border-[#d8d3d3] bg-white px-3 py-2 outline-none'
+                                                    />
+                                                    <div className='flex items-center justify-between bg-black px-2.5'>
+                                                        <SearchOutlined style={{ fontSize: 16, color: '#fff' }} />
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            </form>
                                         </div>
                                     }
                                     trigger={['hover']}
