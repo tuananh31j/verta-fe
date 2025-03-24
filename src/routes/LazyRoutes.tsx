@@ -28,6 +28,7 @@ export const UpdateSize = lazy(() => import('~/pages/Admin/_size_/UpdateSize'));
 export const CategoryList = lazy(() => import('~/pages/Admin/_category_'));
 export const CreateCategory = lazy(() => import('~/pages/Admin/_category_/CreateCategory'))
 export const UpdateCategory = lazy(() => import('~/pages/Admin/_category_/UpdateCategory'))
+export const UserList = lazy(() => import('~/pages/Admin/_user_/UserList'))
 
 // Vouvher
 export const VoucherList = lazy(() => import('~/pages/Admin/Voucher/List'));

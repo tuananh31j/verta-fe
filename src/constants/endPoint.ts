@@ -65,6 +65,7 @@ export const INVENTORY_ENDPOINT = {
 export const USER_ENDPOINT = {
     PROFILE: 'user/private',
     UPDATE: 'user/update',
+    ALL: 'user/all',
 };
 export const REVIEWS_ENDPOINT = {
     ALL_REVIEWS_PRODUCT: 'review',
