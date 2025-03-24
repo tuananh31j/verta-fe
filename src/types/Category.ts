@@ -1,4 +1,3 @@
-import { message } from 'antd';
 export interface ICategoryPopular {
     totalProducts?: number;
     categoryId: string;

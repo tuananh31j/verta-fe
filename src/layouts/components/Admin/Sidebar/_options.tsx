@@ -1,6 +1,7 @@
 import {
     BarcodeOutlined,
     BgColorsOutlined,
+    CommentOutlined,
     LineChartOutlined,
     ProductOutlined,
     ProfileOutlined,
@@ -47,12 +48,6 @@ export const menuGroups: IMenuItem[] = [
             { label: 'Tạo mới voucher', route: ADMIN_ROUTES.VOUCHER_CREATE },
         ],
     },
-
-    // {
-    //     icon: <CommentOutlined />,
-    //     label: 'Quản lý người dùng',
-    //     children: [{ label: 'Tất cả người dùng', route: ADMIN_ROUTES.USERS }],
-    // },
     {
         icon: <BgColorsOutlined />,
         label: 'Quản lý thuộc tính',
@@ -73,5 +68,10 @@ export const menuGroups: IMenuItem[] = [
         icon: <StarFilled />,
         label: 'Quản lý đánh giá',
         children: [{ label: 'Tất cả đánh giá', route: ADMIN_ROUTES.REVIEWS }],
+    },
+    {
+        icon: <CommentOutlined />,
+        label: 'Quản lý người dùng',
+        children: [{ label: 'Tất cả người dùng', route: ADMIN_ROUTES.USERS }],
     },
 ];
