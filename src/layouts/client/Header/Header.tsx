@@ -118,7 +118,7 @@ const Header = () => {
         _.debounce((searchText) => {
             navigate(`/products?search=${searchText}`);
             setSearchInputValue('');
-        }, 600),
+        }, 800),
         []
     );
 
