@@ -8,4 +8,7 @@ export interface IUser {
     isActive?: boolean;
     avatarRef?: string;
     accessToken?: string;
+    isBanned: boolean;
+    bannedAt: string;
+    bannedReason: string;
 }

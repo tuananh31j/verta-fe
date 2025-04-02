@@ -180,7 +180,7 @@ const ProductList = () => {
             filters: categoriesDataFilter,
             render: (value, record) => {
                 console.log(record.categories);
-                return <h4>{record.categories.map((item) => item.name).join(' / ')}</h4>;
+                return <h4>{record.categories.map((item) => item?.name).join(' / ')}</h4>;
             },
         },
         {

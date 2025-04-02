@@ -18,6 +18,8 @@ import {
     UpdateColor,
     UpdateProduct,
     UpdateSize,
+    UserList,
+    UserStatusTimeLineList,
     VoucherList,
 } from './LazyRoutes';
 import { ADMIN_ROUTES } from '~/constants/router';
@@ -54,6 +56,15 @@ export const PrivateRoutes = [
                     { path: 'list', element:  <Suspense><ColorList /></Suspense>,},
                     { path: 'create', element:  <Suspense><CreateColor /></Suspense>,},
                     { path: 'edit/:id', element:  <Suspense><UpdateColor /></Suspense>,},
+                ],
+            },
+
+            // @User 
+            { path: ADMIN_ROUTES.USERS, element: <Suspense><Outlet /> </Suspense>,
+                children: [
+                    { index: true, element:  <Suspense><UserList /></Suspense>,},
+                    { path: 'list', element:  <Suspense><UserList /></Suspense>,},
+                    { path: 'backlog/:id', element:  <Suspense><UserStatusTimeLineList /></Suspense>,},
                 ],
             },
 

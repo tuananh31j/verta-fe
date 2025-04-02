@@ -1,6 +1,6 @@
 import { CATEGORY_ENDPONT } from '~/constants/endPoint';
 import { IAxiosResponse } from '~/types/AxiosResponse';
-import { ICate, ICategory, ICategoryFormData, ICategoryResponse, ICateUpdateFormData } from '~/types/Category';
+import { ICate, ICategory, ICategoryFormData, ICateUpdateFormData } from '~/types/Category';
 import instance from '~/utils/api/axiosInstance';
 
 export const categoryService = {

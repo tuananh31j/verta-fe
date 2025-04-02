@@ -65,9 +65,11 @@ const OrderSuccessPage: React.FC = () => {
                             <Title level={5} className='mt-4'>
                                 Phí giao hàng: {formatCurrency(orderData.shippingFee)}
                             </Title>
-                            <Title level={5} className='mt-4'>
-                                Mã giảm giá ({orderData.voucherCode}): {formatCurrency(orderData.voucherDiscount)}
-                            </Title>
+                            {orderData.voucherCode && (
+                                <Title level={5} className='mt-4'>
+                                    Mã giảm giá ({orderData.voucherCode}): {formatCurrency(orderData.voucherDiscount)}
+                                </Title>
+                            )}
                             <Title level={4} className='mt-4'>
                                 Tổng tiền: {formatCurrency(orderData.totalPrice)}
                             </Title>

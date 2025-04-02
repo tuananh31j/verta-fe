@@ -34,7 +34,7 @@ const FilterSideBar = () => {
             <span className='block text-sm font-bold'>Tất cả sản phẩm</span>
             <div className='mt-4'>
                 {categories?.map((category) => (
-                    <div className='mt-2'>
+                    <div key={category._id} className='mt-2'>
                         <span
                             className={`block cursor-pointer text-sm font-bold capitalize`}
                             onClick={() => handleFilter(category._id)}
@@ -45,6 +45,7 @@ const FilterSideBar = () => {
                         <div className='mt-2'>
                             {category.items.map((subCategory) => (
                                 <span
+                                    key={subCategory._id}
                                     className={`block cursor-pointer text-sm font-semibold capitalize duration-300 ${queryValues.includes(subCategory._id) ? 'text-primary' : 'text-secondary hover:text-primary'}`}
                                     onClick={() => handleFilter(subCategory._id)}
                                 >
