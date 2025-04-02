@@ -1,7 +1,8 @@
 import { SearchOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import { Badge, ConfigProvider, Dropdown, MenuProps, Popover } from 'antd';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CartModal from '~/components/CartModal/CartModal';
 import HeaderCart from '~/components/HeaderCart/HeaderCart';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
@@ -12,6 +13,8 @@ const Header = () => {
     useDocumentTitle('VERTA');
     const user = useTypedSelector((state) => state.auth.user);
     const dispatch = useDispatch();
+    const naviagate = useNavigate();
+    const [valueSearch, setValueSearch] = useState<string>('');
     const handleLogout = () => {
         dispatch(logout());
     };
@@ -64,7 +67,11 @@ const Header = () => {
     const truncateText = (text: string, maxLength: number) => {
         return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
     };
-
+    const handleSearch = (value: string) => {
+        if (value) {
+            naviagate(`/products?search=${value}`);
+        }
+    };
     return (
         <header
             className={`sticky top-0 right-0 left-0 z-50 border-b border-gray-300 bg-white transition-all duration-300`}
@@ -104,12 +111,17 @@ const Header = () => {
                                         <div>
                                             <div className='flex'>
                                                 <input
+                                                    value={valueSearch}
                                                     type='text'
+                                                    onChange={(e) => setValueSearch(e.target.value)}
                                                     placeholder='Tìm kiếm...'
                                                     className='border border-[#d8d3d3] bg-white px-3 py-2 outline-none'
                                                 />
                                                 <div className='flex items-center justify-between bg-black px-2.5'>
-                                                    <SearchOutlined style={{ fontSize: 16, color: '#fff' }} />
+                                                    <SearchOutlined
+                                                        onClick={() => handleSearch(valueSearch)}
+                                                        style={{ fontSize: 16, color: '#fff' }}
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
