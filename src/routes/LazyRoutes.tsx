@@ -30,6 +30,7 @@ export const CategoryList = lazy(() => import('~/pages/Admin/_category_'));
 export const CreateCategory = lazy(() => import('~/pages/Admin/_category_/CreateCategory'))
 export const UpdateCategory = lazy(() => import('~/pages/Admin/_category_/UpdateCategory'))
 export const UserList = lazy(() => import('~/pages/Admin/_user_/UserList'))
+export const UserStatusTimeLineList = lazy(() => import('~/pages/Admin/_user_/Backlog'))
 
 // Vouvher
 export const VoucherList = lazy(() => import('~/pages/Admin/Voucher/List'));

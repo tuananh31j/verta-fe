@@ -19,6 +19,7 @@ import {
     UpdateProduct,
     UpdateSize,
     UserList,
+    UserStatusTimeLineList,
     VoucherList,
 } from './LazyRoutes';
 import { ADMIN_ROUTES } from '~/constants/router';
@@ -63,6 +64,7 @@ export const PrivateRoutes = [
                 children: [
                     { index: true, element:  <Suspense><UserList /></Suspense>,},
                     { path: 'list', element:  <Suspense><UserList /></Suspense>,},
+                    { path: 'backlog/:id', element:  <Suspense><UserStatusTimeLineList /></Suspense>,},
                 ],
             },
 

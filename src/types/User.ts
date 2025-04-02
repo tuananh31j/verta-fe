@@ -23,4 +23,16 @@ export type IUsers = {
     name: string;
     email: string;
     phone?: string;
+    isBanned: boolean;
+    bannedAt: string;
+    bannedReason: string;
+};
+export type IUserTimeLine = {
+    action: string;
+    adminEmail: string;
+    adminId: string;
+    adminName: string;
+    reason: string;
+    timestamp: string;
+    _id: string;
 };

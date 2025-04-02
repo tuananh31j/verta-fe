@@ -1,5 +1,5 @@
 import { USER_ENDPOINT } from '~/constants/endPoint';
-import { IUserProfileResponse, IUserResponse } from '~/types/User';
+import { IUserProfileResponse, IUserResponse, IUserTimeLine } from '~/types/User';
 import instance from '~/utils/api/axiosInstance';
 
 export const userService = {
@@ -20,5 +20,21 @@ export const userService = {
     async updateProfile(payload: FormData) {
         const res = await instance.put(`${USER_ENDPOINT.UPDATE}`, payload);
         return res.data;
+    },
+    async banAccount(body: { userId: string; reason: string }) {
+        const data = await instance.patch('/user/ban', body);
+        return data;
+    },
+    async unBanAccount(body: { userId: string }) {
+        const data = await instance.patch('/user/unban', body);
+        return data;
+    },
+    async detailTimeLineAccount(id: string) {
+        const data = await instance.get<IUserTimeLine[]>('/user/ban-history', {
+            params: {
+                userId: id,
+            },
+        });
+        return data;
     },
 };
