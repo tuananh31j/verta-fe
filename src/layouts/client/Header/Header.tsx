@@ -1,7 +1,6 @@
 import { SearchOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import { Badge, ConfigProvider, Dropdown, MenuProps, Popover } from 'antd';
-import _ from 'lodash';
-import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import CartModal from '~/components/CartModal/CartModal';
@@ -18,13 +17,15 @@ const Header = () => {
     useDocumentTitle('VERTA');
     const user = useTypedSelector((state) => state.auth.user);
     const dispatch = useDispatch();
+    const naviagate = useNavigate();
+    const [valueSearch, setValueSearch] = useState<string>('');
     const handleLogout = () => {
         dispatch(logout());
     };
-    const quantityCart = useTypedSelector((state) => state.cart.quantityInCart);
     const { data } = useGetAllCart();
+    const { updateQueryParam, query } = useFilter();
+    const quantityCart = useTypedSelector((state) => state.cart.quantityInCart);
     const { data: categories } = useGetAllCate();
-    const [searchInputValue, setSearchInputValue] = useState('');
     const navigate = useNavigate();
 
     const dropDownItems: MenuProps['items'] = user
@@ -76,8 +77,6 @@ const Header = () => {
         return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
     };
 
-    const { query, updateQueryParam } = useFilter();
-
     const handleFilter = useCallback(
         (id: string) => {
             let queryValue = '';
@@ -97,6 +96,7 @@ const Header = () => {
         },
         [query, updateQueryParam]
     );
+
     const categoriesItems: MenuProps['items'] = categories?.map((category) => ({
         key: category._id,
         label: (
@@ -124,8 +124,17 @@ const Header = () => {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        navigate(`/products?search=${searchInputValue}`);
-        setSearchInputValue('');
+        updateQueryParam({ ...query, search: valueSearch }, false);
+        navigate(`/products?search=${valueSearch}`);
+        setValueSearch('');
+    };
+
+    const handleSearch = (value: string) => {
+        if (value) {
+            updateQueryParam({ ...query, search: value }, false);
+            naviagate(`/products?search=${value}`);
+            setValueSearch('');
+        }
     };
 
     useEffect(() => {
@@ -154,7 +163,7 @@ const Header = () => {
                                 </li>
                             </Dropdown>
                             {/* <li className='text-sm font-semibold whitespace-nowrap text-[#8e8e8e] uppercase duration-300 hover:text-black'>
-                                <Link to='/#selling'>Bán chạy</Link>
+                                <Link to='/'>Bán chạy</Link>
                             </li> */}
                             <li className='text-sm font-semibold whitespace-nowrap text-[#8e8e8e] uppercase duration-300 hover:text-black'>
                                 <Link to='/'>Về chúng tôi</Link>
@@ -173,25 +182,19 @@ const Header = () => {
                                 <Popover
                                     content={
                                         <div>
-                                            <form onSubmit={handleSubmit}>
-                                                <div className='flex'>
-                                                    <input
-                                                        type='text'
-                                                        name='search'
-                                                        value={searchInputValue}
-                                                        onChange={(e) => setSearchInputValue(e.target.value)}
-                                                        placeholder='Tìm kiếm...'
-                                                        className='border border-[#d8d3d3] bg-white px-3 py-2 outline-none'
+                                            <form className='flex' onSubmit={handleSubmit}>
+                                                <input
+                                                    value={valueSearch}
+                                                    type='text'
+                                                    onChange={(e) => setValueSearch(e.target.value)}
+                                                    placeholder='Tìm kiếm...'
+                                                    className='border border-[#d8d3d3] bg-white px-3 py-2 outline-none'
+                                                />
+                                                <div className='flex items-center justify-between bg-black px-2.5'>
+                                                    <SearchOutlined
+                                                        onClick={() => handleSearch(valueSearch)}
+                                                        style={{ fontSize: 16, color: '#fff' }}
                                                     />
-                                                    <div
-                                                        onClick={() => {
-                                                            navigate(`/products?search=${searchInputValue}`);
-                                                            setSearchInputValue('');
-                                                        }}
-                                                        className='flex cursor-pointer items-center justify-between bg-black px-2.5'
-                                                    >
-                                                        <SearchOutlined style={{ fontSize: 16, color: '#fff' }} />
-                                                    </div>
                                                 </div>
                                             </form>
                                         </div>

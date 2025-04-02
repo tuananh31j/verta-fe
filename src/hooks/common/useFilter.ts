@@ -34,7 +34,7 @@ const useFilter = () => {
         dispatch(updateGrid(gridClass));
     };
 
-    const updateQueryParam = (params: Params) => {
+    const updateQueryParam = (params: Params, isNavigate = true) => {
         const newParams = new URLSearchParams(searchParams?.toString());
         const checkedParams = _.omitBy(params, (value) => value === undefined || value === '' || value === null);
 
@@ -45,7 +45,9 @@ const useFilter = () => {
             }
         });
         dispatch(setQuery(checkedParams));
-        navigator(`${pathname}?${newParams.toString()}`);
+        if (isNavigate) {
+            navigator(`${pathname}?${newParams.toString()}`);
+        }
     };
 
     return { query, grid, updateQueryParam, reset, updateGridUI };
