@@ -100,36 +100,32 @@ const Header = () => {
     const categoriesItems: MenuProps['items'] = categories?.map((category) => ({
         key: category._id,
         label: (
-            <Link onClick={() => handleFilter(category._id)} to={`/products?categories=${category._id}`}>
+            <Link
+                className='py-2 pr-4 pl-2 capitalize'
+                onClick={() => handleFilter(category._id)}
+                to={`/products?categories=${category._id}`}
+            >
                 {category.name}
             </Link>
         ),
         children: category.items.map((subCategory) => ({
             key: subCategory._id,
             label: (
-                <Link onClick={() => handleFilter(subCategory._id)} to={`/products?categories=${subCategory._id}`}>
+                <Link
+                    className='py-2 pr-4 pl-2 capitalize'
+                    onClick={() => handleFilter(subCategory._id)}
+                    to={`/products?categories=${subCategory._id}`}
+                >
                     {subCategory.name}
                 </Link>
             ),
         })),
     }));
 
-    const deboundedSearchChange = useCallback(
-        _.debounce((searchText) => {
-            navigate(`/products?search=${searchText}`);
-            setSearchInputValue('');
-        }, 800),
-        []
-    );
-
-    const handleSearchChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setSearchInputValue(e.target.value);
-        deboundedSearchChange(e.target.value);
-    }, []);
-
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         navigate(`/products?search=${searchInputValue}`);
+        updateQueryParam({ ...query, search: searchInputValue });
         setSearchInputValue('');
     };
 
@@ -184,11 +180,18 @@ const Header = () => {
                                                         type='text'
                                                         name='search'
                                                         value={searchInputValue}
-                                                        onChange={handleSearchChange}
+                                                        onChange={(e) => setSearchInputValue(e.target.value)}
                                                         placeholder='Tìm kiếm...'
                                                         className='border border-[#d8d3d3] bg-white px-3 py-2 outline-none'
                                                     />
-                                                    <div className='flex items-center justify-between bg-black px-2.5'>
+                                                    <div
+                                                        onClick={() => {
+                                                            navigate(`/products?search=${searchInputValue}`);
+                                                            updateQueryParam({ ...query, search: searchInputValue });
+                                                            setSearchInputValue('');
+                                                        }}
+                                                        className='flex cursor-pointer items-center justify-between bg-black px-2.5'
+                                                    >
                                                         <SearchOutlined style={{ fontSize: 16, color: '#fff' }} />
                                                     </div>
                                                 </div>

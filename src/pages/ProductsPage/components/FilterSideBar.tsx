@@ -45,6 +45,7 @@ const FilterSideBar = () => {
                         <div className='mt-2'>
                             {category.items.map((subCategory) => (
                                 <span
+                                    key={subCategory._id}
                                     className={`block cursor-pointer text-sm font-semibold capitalize duration-300 ${queryValues.includes(subCategory._id) ? 'text-primary' : 'text-secondary hover:text-primary'}`}
                                     onClick={() => handleFilter(subCategory._id)}
                                 >

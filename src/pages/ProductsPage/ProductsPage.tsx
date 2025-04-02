@@ -1,7 +1,7 @@
 import { CaretDownOutlined, CaretUpOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Button, Pagination, Popover, Space, Spin } from 'antd';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import twoColsIcon from '~/assets/icons/2col.webp';
 import threeColsIcon from '~/assets/icons/3col.webp';
 import ProductCard from '~/components/ProductCard/ProductCard';
@@ -23,6 +23,7 @@ const ProductsPage = () => {
     const productsList = data?.data;
     const totalDocs = data?.totalDocs;
     const queryKeys = Object.keys(query);
+    const [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
         if (grid) {
@@ -96,7 +97,14 @@ const ProductsPage = () => {
                         <div>
                             {queryKeys.length > 0 && (
                                 <div className='mb-3'>
-                                    <Button onClick={() => reset()} icon={<ReloadOutlined />}>
+                                    <Button
+                                        onClick={() => {
+                                            reset();
+                                            searchParams.delete('selectPrice');
+                                            setSearchParams(searchParams);
+                                        }}
+                                        icon={<ReloadOutlined />}
+                                    >
                                         Đặt lại
                                     </Button>
                                 </div>
