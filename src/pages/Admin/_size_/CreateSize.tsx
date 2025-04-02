@@ -99,7 +99,7 @@ const CreateSize = () => {
                                                 className='flex h-20 items-center justify-center text-center'
                                             >
                                                 <div>
-                                                    <div className='font-medium'>Free Size</div>
+                                                    <div className='font-medium'>Size chữ</div>
                                                     <div className='text-xs text-gray-500'>
                                                         Kích cỡ tự do (S, M, L, XL...)
                                                     </div>
@@ -110,7 +110,7 @@ const CreateSize = () => {
                                                 className='flex h-20 items-center justify-center text-center'
                                             >
                                                 <div>
-                                                    <div className='font-medium'>Numeric Size</div>
+                                                    <div className='font-medium'>Size số</div>
                                                     <div className='text-xs text-gray-500'>
                                                         Kích cỡ số (38, 39, 40, 41...)
                                                     </div>
