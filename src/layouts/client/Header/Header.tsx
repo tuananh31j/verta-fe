@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import CartModal from '~/components/CartModal/CartModal';
 import HeaderCart from '~/components/HeaderCart/HeaderCart';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
+import useFilter from '~/hooks/common/useFilter';
 import { logout } from '~/store/slice/authSlice';
 import { useTypedSelector } from '~/store/store';
 
@@ -18,6 +19,7 @@ const Header = () => {
     const handleLogout = () => {
         dispatch(logout());
     };
+    const { updateQueryParam } = useFilter();
     const quantityCart = useTypedSelector((state) => state.cart.quantityInCart);
     const dropDownItems: MenuProps['items'] = user
         ? [
@@ -70,6 +72,7 @@ const Header = () => {
     const handleSearch = (value: string) => {
         if (value) {
             naviagate(`/products?search=${value}`);
+            updateQueryParam({ search: value });
         }
     };
     return (
