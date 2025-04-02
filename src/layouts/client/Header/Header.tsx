@@ -125,7 +125,6 @@ const Header = () => {
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         navigate(`/products?search=${searchInputValue}`);
-        updateQueryParam({ ...query, search: searchInputValue });
         setSearchInputValue('');
     };
 
@@ -187,7 +186,6 @@ const Header = () => {
                                                     <div
                                                         onClick={() => {
                                                             navigate(`/products?search=${searchInputValue}`);
-                                                            updateQueryParam({ ...query, search: searchInputValue });
                                                             setSearchInputValue('');
                                                         }}
                                                         className='flex cursor-pointer items-center justify-between bg-black px-2.5'

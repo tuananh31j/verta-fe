@@ -19,7 +19,8 @@ const ProductsPage = () => {
     const [isColorOpen, setIsColorOpen] = useState(false);
     const [isPriceOpen, setIsPriceOpen] = useState(false);
     const { windowWidth } = useWindowSize();
-    const { data, isLoading } = useGetAllProducts({ ...query, limit: grid === '2' ? '10' : '9' });
+    const { selectPrice, ...restQuery } = query;
+    const { data, isLoading } = useGetAllProducts({ ...restQuery, limit: grid === '2' ? '10' : '9' });
     const productsList = data?.data;
     const totalDocs = data?.totalDocs;
     const queryKeys = Object.keys(query);
