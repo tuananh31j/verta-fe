@@ -2,8 +2,8 @@ import { Carousel } from 'antd';
 import { useCallback, useRef } from 'react';
 
 import { CarouselRef } from 'antd/es/carousel';
-import bannerOne from '~/assets/ms_banner_img1_master.webp';
-import bannerTwo from '~/assets/ms_banner_img2_master.webp';
+import bannerOne from '~/assets/ms_banner_img1_master.png';
+import bannerTwo from '~/assets/ms_banner_img2_master.png';
 import NavigatonSlider from '../elements/NavigationSlider';
 
 export default function BannerSlider() {
