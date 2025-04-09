@@ -11,11 +11,11 @@ export default function BannerSlider() {
     const slideRef = useRef<CarouselRef>(null);
 
     const nextSlide = useCallback(() => {
-        slideRef.current?.prev();
+        slideRef.current?.next();
     }, []);
 
     const prevSlide = useCallback(() => {
-        slideRef.current?.next();
+        slideRef.current?.prev();
     }, []);
 
     return (

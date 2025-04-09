@@ -29,14 +29,14 @@ export default function HomePage() {
             <BannerSlider />
             <div className='my-1 flex items-center justify-between gap-1'>
                 <div className='basis-[50%] bg-[#f0eff3]'>
-                    <img src={HomeNewBannerOne} alt='Bộ sưu tập mới' />
+                    <img src={HomeNewBannerOne} alt='Bộ sưu tập mới' className='w-full' />
                     <div className='flex items-baseline justify-between px-4 py-3'>
                         <span className='text-primary text-lg font-medium uppercase'>new collection</span>
                         <span className='text-primary text-sm font-thin uppercase'>shop now</span>
                     </div>
                 </div>
                 <div className='basis-[50%] bg-[#f0eff3]'>
-                    <img src={HomeNewBannerTwo} alt='Danh mục' />
+                    <img src={HomeNewBannerTwo} alt='Danh mục' className='w-full' />
                     <div className='flex items-baseline justify-between px-4 py-3'>
                         <span className='text-primary text-lg font-medium uppercase'>croptop</span>
                         <span className='text-primary text-sm font-thin uppercase'>shop now</span>
