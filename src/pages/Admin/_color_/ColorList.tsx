@@ -13,7 +13,7 @@ const ColorList = () => {
     const { query, onFilter, onSelectPaginateChange, getColumnSearchProps } = useTable<IColor>();
     const { data } = useGetColors(query);
 
-    const colorList = data || [];
+    const colorList = data?.colors || [];
     const totalDocs = data?.totalDocs || 0;
     const currentPage = data?.page || 1;
 
@@ -67,7 +67,7 @@ const ColorList = () => {
                 onFilter={onFilter}
                 columns={columns}
                 currentPage={currentPage}
-                dataSource={colorList}
+                dataSource={colorList || []}
                 onSelectPaginateChange={onSelectPaginateChange}
                 totalDocs={totalDocs}
             />

@@ -6,7 +6,7 @@ import { Params } from 'react-router-dom';
 
 const colorService = {
     async getAll(params: Params) {
-        const res = await instance.get<IAxiosResponse<IColorResponse>>(`${COLOR_ENDPOINT.ALL}`, { params });
+        const res = await instance.get<IColorResponse>(`${COLOR_ENDPOINT.ALL}`, { params });
         return res.data;
     },
     async getAllColors() {
