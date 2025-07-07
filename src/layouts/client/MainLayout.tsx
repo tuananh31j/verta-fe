@@ -4,8 +4,6 @@ import Header from './Header/Header';
 import HeaderTop from './Header/HeaderTop';
 import { useEffect, useState } from 'react';
 import useGetProfile from '~/hooks/queries/profile/useGetProfile';
-import { months } from 'moment';
-import { MAIN_ROUTES } from '~/constants/router';
 
 export default function MainLayout() {
     const [paddingTopSticky, setPaddingTopSticky] = useState(0);

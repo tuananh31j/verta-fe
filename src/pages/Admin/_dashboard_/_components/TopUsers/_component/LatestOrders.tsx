@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Flex, Typography, Tag, Avatar, Tooltip, Button } from 'antd';
+import { Card, Flex, Typography, Avatar, Tooltip, Button } from 'antd';
 import { CreditCardOutlined, DollarOutlined, EyeOutlined, UserOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';

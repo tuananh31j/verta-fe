@@ -1,5 +1,5 @@
 import { Button, Popconfirm } from 'antd';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDeliveredOrder } from '~/hooks/mutations/order/useDeliveredOrder';
 import { useToast } from '~/context/ToastProvider';

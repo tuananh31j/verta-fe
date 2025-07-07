@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { ADMIN_ROUTES } from '~/constants/router';
 import { useMutationCreateColor } from '~/hooks/Colors/Mutations/useCreateColor';
 import { IColorFormData } from '~/types/Color';

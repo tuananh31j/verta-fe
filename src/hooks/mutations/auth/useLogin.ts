@@ -15,7 +15,8 @@ export const useLogin = () => {
         mutationFn: (body: ILoginPayload) => authService.login(body),
         onSuccess(data) {
             toast('success', data.message);
-            dispatch(login(data.data));
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            dispatch(login(data.data as any));
             const user = {
                 name: data.data.name,
                 role: data.data.role,

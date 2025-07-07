@@ -24,7 +24,7 @@ export const useMutationCreateSize = () => {
             navigate(ADMIN_ROUTES.SIZES, { replace: true });
         },
         onError: (error: errorResponse) => {
-            showMessage(error.response.data.message, 'error');
+            showMessage(error.message, 'error');
         },
     });
 };

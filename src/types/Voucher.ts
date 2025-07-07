@@ -11,7 +11,6 @@ export type IVoucher = {
     status: boolean;
     isOnlyForNewUser: boolean;
     minimumOrderPrice: number;
-    remainingQuantity: number;
     startDate: string;
     endDate: string;
     createdAt: string;

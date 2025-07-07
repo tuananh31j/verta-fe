@@ -4,8 +4,6 @@ import { useEditor } from '@tiptap/react';
 import {
     Button,
     Divider,
-    Drawer,
-    DrawerProps,
     Flex,
     Form,
     FormInstance,
@@ -14,7 +12,6 @@ import {
     message,
     Modal,
     Select,
-    Space,
     Tooltip,
     TreeSelect,
     Upload,
@@ -60,11 +57,7 @@ const FormProduct = (props: {
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [open, setOpen] = useState(false);
 
-    const onClose = () => {
-        setOpen(false);
-    };
     const navigate = useNavigate();
 
     const editorInstance = useEditor({

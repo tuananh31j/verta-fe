@@ -25,7 +25,7 @@ export const useMutationUpdateColor = () => {
             navigate(ADMIN_ROUTES.COLORS, { replace: true });
         },
         onError: (error: errorResponse) => {
-            showMessage(error.response.data.message, 'error');
+            showMessage(error.message, 'error');
         },
     });
 };

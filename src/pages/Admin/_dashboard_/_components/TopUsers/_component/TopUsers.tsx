@@ -6,7 +6,6 @@ import WrapperList from '~/components/_common/WrapperList';
 import DateRangePickerCard from '../../DatePickerCard/DateRangePickerCard';
 import LatestOrders from './LatestOrders';
 import { columns } from '../_option';
-import { OrderStatus } from '~/constants/enum';
 import { useTopBuyers } from '~/hooks/queries/stats/useTopBuyers';
 
 const { Title } = Typography;

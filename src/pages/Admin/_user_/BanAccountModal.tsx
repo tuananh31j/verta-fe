@@ -1,4 +1,4 @@
-import { Button, Form, Modal, Rate } from 'antd';
+import { Button, Form, Modal } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { FormProps } from 'antd/lib';
 import { useBanAccount } from '~/hooks/mutations/user/useBanUser';

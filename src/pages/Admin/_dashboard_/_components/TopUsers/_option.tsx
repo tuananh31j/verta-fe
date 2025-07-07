@@ -15,14 +15,6 @@ type TopBuyer = {
     avatar?: string;
 };
 
-type TopBuyersData = {
-    topBuyers: TopBuyer[];
-    dateRange: {
-        start: string;
-        end: string;
-    };
-};
-
 export const columns: TableProps<TopBuyer>['columns'] = [
     {
         title: <span className='text-base font-semibold'>#</span>,

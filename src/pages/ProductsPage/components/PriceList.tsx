@@ -1,6 +1,6 @@
 import { Radio, RadioChangeEvent } from 'antd';
 import { useEffect, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import useFilter from '~/hooks/common/useFilter';
 import { formatCurrency } from '~/utils/formatCurrrency';
 
