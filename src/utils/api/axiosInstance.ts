@@ -13,6 +13,7 @@ const instance = axios.create(axiosOptions);
 
 instance.interceptors.request.use(
     (config) => {
+        console.log(config, 'config');
         const accessToken = getAccessToken();
         if (config && config.headers && accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
