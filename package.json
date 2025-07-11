@@ -26,6 +26,7 @@
         "@tiptap/extension-underline": "^2.11.5",
         "@tiptap/react": "^2.11.5",
         "@tiptap/starter-kit": "^2.11.5",
+        "@vitejs/plugin-react": "^4.6.0",
         "antd": "^5.24.0",
         "axios": "^1.7.9",
         "clsx": "^2.1.1",
